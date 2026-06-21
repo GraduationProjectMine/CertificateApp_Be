@@ -1,4 +1,4 @@
-import { IsEmail, IsString, MinLength, MaxLength, Matches } from 'class-validator';
+import { IsEmail, IsString, IsIn, MinLength, MaxLength, Matches } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class RegisterDto {
@@ -12,6 +12,11 @@ export class RegisterDto {
   @MaxLength(30, { message: 'Username must not exceed 30 characters' })
   @Matches(/^[a-zA-Z0-9_]+$/, { message: 'Username can only contain letters, numbers, and underscores' })
   username!: string;
+
+  @ApiProperty({ example: 'issuer', enum: ['issuer', 'student'], description: 'User role' })
+  @IsString()
+  @IsIn(['issuer', 'student'], { message: 'Role must be either "issuer" or "student"' })
+  role!: 'issuer' | 'student';
 
   @ApiProperty({ example: 'StrongP@ss1', description: 'Password (min 8 chars, 1 uppercase, 1 lowercase, 1 number)' })
   @IsString()
