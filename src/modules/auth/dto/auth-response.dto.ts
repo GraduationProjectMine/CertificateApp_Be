@@ -7,8 +7,8 @@ export class AuthResponseDto {
   @ApiProperty({ example: 'user@example.com', description: 'User email' })
   email!: string;
 
-  @ApiProperty({ example: 'john_doe', description: 'Username' })
-  username!: string;
+  @ApiProperty({ example: 'Nguyễn Văn A', description: 'Full name of the user' })
+  name!: string;
 
   @ApiProperty({ example: 'issuer', enum: ['issuer', 'student'], description: 'User role' })
   role!: 'issuer' | 'student';

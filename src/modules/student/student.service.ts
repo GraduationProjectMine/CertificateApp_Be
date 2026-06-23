@@ -1,39 +1,40 @@
 import { Injectable } from '@nestjs/common';
-
-export interface Student {
-  id: number;
-  email: string;
-  username: string;
-  password: string;
-  role: 'student';
-  createdAt: Date;
-}
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { StudentAccount } from '../../core/database/entities/student-account.entity';
 
 @Injectable()
 export class StudentService {
-  private students: Student[] = [];
-  private nextId = 1;
+  constructor(
+    @InjectRepository(StudentAccount)
+    private readonly studentRepo: Repository<StudentAccount>,
+  ) {}
 
-  async create(email: string, username: string, hashedPassword: string): Promise<Omit<Student, 'password'>> {
-    const student: Student = {
-      id: this.nextId++,
+  async create(
+    student_fullName: string,
+    email: string,
+    hashedPassword: string,
+    organization_id: number,
+  ): Promise<Omit<StudentAccount, 'password'>> {
+    const student = this.studentRepo.create({
+      student_fullName,
       email,
-      username,
       password: hashedPassword,
-      role: 'student',
-      createdAt: new Date(),
-    };
-    this.students.push(student);
-    const { password, ...result } = student;
+      organization_id,
+      status: 'Active',
+    });
+    const saved = await this.studentRepo.save(student);
+    const { password, ...result } = saved;
     return result;
   }
 
-  async findByEmail(email: string): Promise<Student | undefined> {
-    return this.students.find((u) => u.email === email);
+  async findByEmail(email: string): Promise<StudentAccount | undefined> {
+    const student = await this.studentRepo.findOne({ where: { email } });
+    return student ?? undefined;
   }
 
-  async findById(id: number): Promise<Omit<Student, 'password'> | undefined> {
-    const student = this.students.find((u) => u.id === id);
+  async findById(id: number): Promise<Omit<StudentAccount, 'password'> | undefined> {
+    const student = await this.studentRepo.findOne({ where: { student_id: id } });
     if (!student) return undefined;
     const { password, ...result } = student;
     return result;

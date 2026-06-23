@@ -7,7 +7,7 @@ import { StudentService } from '../student/student.service';
 export interface JwtPayload {
   sub: number;
   email: string;
-  username: string;
+  name: string;
   role: 'issuer' | 'student';
 }
 
@@ -37,7 +37,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     return {
       id: payload.sub,
       email: payload.email,
-      username: payload.username,
+      name: payload.name,
       role: payload.role,
     };
   }
