@@ -1,0 +1,124 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum InstitutionStatus {
+  PENDING
+  ACTIVE
+  SUSPENDED
+
+  @@map("institution_status")
+}
+
+model Institution {
+  id                 String            @id @default(uuid()) @db.VarChar(36)
+  name               String            @db.VarChar(255)
+  code               String            @unique @db.VarChar(50)
+  email              String            @default("admin@university.edu") @db.VarChar(255)
+  contractAddress    String?           @unique @db.VarChar(255)
+  walletAddress      String?           @db.VarChar(255)
+  walletEncryptedKey String?           @db.Text
+  chainId            Int?
+  status             InstitutionStatus @default(PENDING)
+  createdAt          DateTime          @default(now()) @db.DateTime(0)
+  updatedAt          DateTime          @updatedAt @db.DateTime(0)
+
+  users        User[]
+  certificates Certificate[]
+
+  @@map("institution")
+}
+
+model User {
+  id                   String    @id @default(uuid()) @db.VarChar(36)
+  email                String    @unique @db.VarChar(255)
+  password             String    @db.VarChar(255)
+  role                 String    @default("student") @db.VarChar(50)
+  name                 String    @db.VarChar(255)
+  studentId            String?   @db.VarChar(50)
+  walletAddress        String?   @unique @db.VarChar(255)
+  walletNonce          String?   @unique @db.VarChar(255)
+  walletNonceExpiresAt DateTime? @db.DateTime(0)
+  googleId             String?   @unique @db.VarChar(255)
+  createdAt            DateTime  @default(now()) @db.DateTime(0)
+  updatedAt            DateTime  @updatedAt @db.DateTime(0)
+
+  institutionId String?      @db.VarChar(36)
+  institution   Institution? @relation(fields: [institutionId], references: [id], onDelete: SetNull)
+
+  studentCertificates Certificate[] @relation("StudentCertificates")
+  issuedCertificates  Certificate[] @relation("IssuerCertificates")
+  auditLogs           AuditLog[]
+
+  @@unique([institutionId, studentId])
+  @@map("user")
+}
+
+model Certificate {
+  id              String @id @default(uuid()) @db.VarChar(36)
+  certificateCode String @unique @db.VarChar(255)
+  studentCode     String @db.VarChar(255)
+  studentName     String @db.VarChar(255)
+  universityName  String @db.VarChar(255)
+  degree          String @db.VarChar(255)
+  major           String @db.VarChar(255)
+  graduationYear  String @db.VarChar(50)
+  gpa             String @db.VarChar(50)
+
+  fileCid         String?   @db.VarChar(255)
+  metadataCid     String?   @db.VarChar(255)
+  certificateHash String?   @db.VarChar(255)
+  txHash          String?   @db.VarChar(255)
+  revokeTxHash    String?   @db.VarChar(255)
+  contractAddress String?   @db.VarChar(255)
+  chainId         Int?
+  status          String    @default("DRAFT") @db.VarChar(50)
+  revokedReason   String?   @db.Text
+  revokedAt       DateTime? @db.DateTime(0)
+
+  studentUserId String? @db.VarChar(36)
+  studentUser   User?   @relation("StudentCertificates", fields: [studentUserId], references: [id], onDelete: SetNull)
+  issuerUserId  String? @db.VarChar(36)
+  issuerUser    User?   @relation("IssuerCertificates", fields: [issuerUserId], references: [id], onDelete: SetNull)
+
+  institutionId String?      @db.VarChar(36)
+  institution   Institution? @relation(fields: [institutionId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now()) @db.DateTime(0)
+  updatedAt DateTime @updatedAt @db.DateTime(0)
+
+  verificationLogs VerificationLog[]
+
+  @@map("certificate")
+}
+
+model VerificationLog {
+  id              String       @id @default(uuid()) @db.VarChar(36)
+  certificateCode String       @db.VarChar(255)
+  result          String       @db.VarChar(50)
+  verifierIpHash  String?      @db.VarChar(255)
+  userAgent       String?      @db.Text
+  certificateId   String?      @db.VarChar(36)
+  certificate     Certificate? @relation(fields: [certificateId], references: [id], onDelete: SetNull)
+  createdAt       DateTime     @default(now()) @db.DateTime(0)
+
+  @@map("verificationlog")
+}
+
+model AuditLog {
+  id         String   @id @default(uuid()) @db.VarChar(36)
+  actorId    String?  @db.VarChar(36)
+  actor      User?    @relation(fields: [actorId], references: [id], onDelete: SetNull)
+  action     String   @db.VarChar(100)
+  targetType String   @db.VarChar(50)
+  targetId   String?  @db.VarChar(36)
+  metadata   Json?
+  createdAt  DateTime @default(now()) @db.DateTime(0)
+
+  @@map("auditlog")
+}
