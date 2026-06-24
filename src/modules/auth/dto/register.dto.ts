@@ -2,17 +2,17 @@ import { IsEmail, IsString, MinLength, MaxLength, Matches } from 'class-validato
 import { ApiProperty } from '@nestjs/swagger';
 
 export class RegisterDto {
-  @ApiProperty({ example: 'admin@organization.com', description: 'Email address of the Issuer' })
+  @ApiProperty({ example: 'truongthpt@edu.vn', description: 'Email của nhà trường (dùng để đăng nhập)' })
   @IsEmail({}, { message: 'Invalid email format' })
   email!: string;
 
-  @ApiProperty({ example: 'Đại học CMC', description: 'Name of the Issuer organization' })
+  @ApiProperty({ example: 'Trường THPT Mặc Định', description: 'Tên trường / tổ chức' })
   @IsString()
   @MinLength(2, { message: 'Name must be at least 2 characters' })
   @MaxLength(255, { message: 'Name must not exceed 255 characters' })
   name!: string;
 
-  @ApiProperty({ example: 'StrongP@ss1', description: 'Password (min 8 chars, 1 uppercase, 1 lowercase, 1 number)' })
+  @ApiProperty({ example: 'StrongP@ss1', description: 'Mật khẩu (tối thiểu 8 ký tự, 1 chữ hoa, 1 chữ thường, 1 số)' })
   @IsString()
   @MinLength(8, { message: 'Password must be at least 8 characters' })
   @MaxLength(64, { message: 'Password must not exceed 64 characters' })

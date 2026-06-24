@@ -16,6 +16,7 @@ export class IssuerService {
     hashedPassword: string,
     organization_id: number,
     created_by?: number,
+    role: string = 'Staff',
   ): Promise<Omit<StaffAccount, 'password'>> {
     const staff = this.staffRepo.create({
       name,
@@ -23,7 +24,7 @@ export class IssuerService {
       password: hashedPassword,
       organization_id,
       created_by,
-      role: 'Staff',
+      role,
       status: 'Active',
     });
     const saved = await this.staffRepo.save(staff);
