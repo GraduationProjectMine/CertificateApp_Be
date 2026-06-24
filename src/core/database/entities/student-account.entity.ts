@@ -22,6 +22,9 @@ export class StudentAccount {
   @JoinColumn({ name: 'organization_id' })
   organization!: IssuingOrganization;
 
+  @Column({ type: 'int', nullable: true })
+  created_by!: number;
+
   @Column({ type: 'varchar', length: 255 })
   student_fullName!: string;
 

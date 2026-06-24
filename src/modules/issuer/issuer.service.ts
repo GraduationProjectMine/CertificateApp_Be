@@ -15,12 +15,14 @@ export class IssuerService {
     email: string,
     hashedPassword: string,
     organization_id: number,
+    created_by?: number,
   ): Promise<Omit<StaffAccount, 'password'>> {
     const staff = this.staffRepo.create({
       name,
       email,
       password: hashedPassword,
       organization_id,
+      created_by,
       role: 'Staff',
       status: 'Active',
     });

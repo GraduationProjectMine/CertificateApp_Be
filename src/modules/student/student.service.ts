@@ -15,12 +15,14 @@ export class StudentService {
     email: string,
     hashedPassword: string,
     organization_id: number,
+    created_by?: number,
   ): Promise<Omit<StudentAccount, 'password'>> {
     const student = this.studentRepo.create({
       student_fullName,
       email,
       password: hashedPassword,
       organization_id,
+      created_by,
       status: 'Active',
     });
     const saved = await this.studentRepo.save(student);

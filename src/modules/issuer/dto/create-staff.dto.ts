@@ -1,12 +1,12 @@
-import { IsEmail, IsString, MinLength, MaxLength, Matches } from 'class-validator';
+import { IsEmail, IsString, IsInt, MinLength, MaxLength, Matches } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class RegisterDto {
-  @ApiProperty({ example: 'admin@organization.com', description: 'Email address of the Issuer' })
+export class CreateStaffDto {
+  @ApiProperty({ example: 'nhanvien@truong.edu.vn', description: 'Email of staff member' })
   @IsEmail({}, { message: 'Invalid email format' })
   email!: string;
 
-  @ApiProperty({ example: 'Đại học CMC', description: 'Name of the Issuer organization' })
+  @ApiProperty({ example: 'Nguyễn Văn B', description: 'Full name of staff member' })
   @IsString()
   @MinLength(2, { message: 'Name must be at least 2 characters' })
   @MaxLength(255, { message: 'Name must not exceed 255 characters' })
