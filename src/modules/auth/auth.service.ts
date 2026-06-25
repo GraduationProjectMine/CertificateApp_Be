@@ -20,7 +20,7 @@ export class AuthService {
   ) {}
 
   async register(dto: RegisterDto): Promise<AuthResponseDto> {
-    const { email, name, password } = dto;
+    const { email, name, password, adminName } = dto;
 
     const existingOrg = await this.organizationService.findByEmail(email);
     if (existingOrg) {
@@ -35,8 +35,9 @@ export class AuthService {
     const organization = await this.organizationService.create(name, email);
 
     const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
+    const staffName = adminName || name;
     const created = await this.issuerService.create(
-      name,
+      staffName,
       email,
       hashedPassword,
       organization.organization_id,
