@@ -10,6 +10,12 @@ async function bootstrap() {
 
   const app = await NestFactory.create(AppModule);
 
+  app.enableCors({
+    origin: true,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    credentials: true,
+  });
+
   const swaggerConfig = new DocumentBuilder()
     .setTitle('DATN API')
     .setDescription('API documentation for the DATN backend')
