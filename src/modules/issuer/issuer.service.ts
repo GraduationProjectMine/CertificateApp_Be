@@ -1,46 +1,36 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { StaffAccount } from '../../core/database/entities/staff-account.entity';
+import { PrismaService } from '../../core/prisma/prisma.service';
 
 @Injectable()
 export class IssuerService {
-  constructor(
-    @InjectRepository(StaffAccount)
-    private readonly staffRepo: Repository<StaffAccount>,
-  ) {}
+  constructor(private readonly prisma: PrismaService) {}
 
   async create(
     name: string,
     email: string,
     hashedPassword: string,
-    organization_id: number,
-    created_by?: number,
+    organization_id: string,
+    organization_name?: string,
     role: string = 'Staff',
-  ): Promise<Omit<StaffAccount, 'password'>> {
-    const staff = this.staffRepo.create({
-      name,
-      email,
-      password: hashedPassword,
-      organization_id,
-      created_by,
-      role,
-      status: 'Active',
+  ) {
+    return this.prisma.staffAccount.create({
+      data: {
+        name,
+        email,
+        password: hashedPassword,
+        organization_id,
+        organization_name: organization_name ?? '',
+        role,
+        status: 'ACTIVE',
+      },
     });
-    const saved = await this.staffRepo.save(staff);
-    const { password, ...result } = saved;
-    return result;
   }
 
-  async findByEmail(email: string): Promise<StaffAccount | undefined> {
-    const staff = await this.staffRepo.findOne({ where: { email } });
-    return staff ?? undefined;
+  async findByEmail(email: string) {
+    return this.prisma.staffAccount.findUnique({ where: { email } });
   }
 
-  async findById(id: number): Promise<Omit<StaffAccount, 'password'> | undefined> {
-    const staff = await this.staffRepo.findOne({ where: { staff_id: id } });
-    if (!staff) return undefined;
-    const { password, ...result } = staff;
-    return result;
+  async findById(id: string) {
+    return this.prisma.staffAccount.findUnique({ where: { staff_id: id } });
   }
 }

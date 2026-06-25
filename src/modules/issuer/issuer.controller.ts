@@ -47,9 +47,9 @@ export class IssuerController {
       dto.email,
       hashedPassword,
       issuer.organization_id,
-      issuer.id,
     );
-    return { message: 'Staff account created successfully', staff };
+    const { password, ...result } = staff;
+    return { message: 'Staff account created successfully', staff: result };
   }
 
   @Post('students')
@@ -71,8 +71,8 @@ export class IssuerController {
       dto.email,
       hashedPassword,
       issuer.organization_id,
-      issuer.id,
     );
-    return { message: 'Student account created successfully', student };
+    const { password, ...result } = student;
+    return { message: 'Student account created successfully', student: result };
   }
 }

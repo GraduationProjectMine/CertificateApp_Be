@@ -5,11 +5,11 @@ import { IssuerService } from '../issuer/issuer.service';
 import { StudentService } from '../student/student.service';
 
 export interface JwtPayload {
-  sub: number;
+  sub: string;
   email: string;
   name: string;
   role: 'issuer' | 'student';
-  organization_id: number;
+  organization_id: string;
 }
 
 @Injectable()

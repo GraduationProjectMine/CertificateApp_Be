@@ -9,9 +9,9 @@ import { DatabaseModule } from './core/database/database.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
-    DatabaseModule, 
-    OcrModule, 
-    AuthModule
+    DatabaseModule,
+    OcrModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

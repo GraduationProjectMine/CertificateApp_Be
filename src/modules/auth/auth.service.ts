@@ -22,30 +22,26 @@ export class AuthService {
   async register(dto: RegisterDto): Promise<AuthResponseDto> {
     const { email, name, password } = dto;
 
-    // Kiểm tra email tổ chức đã tồn tại chưa
     const existingOrg = await this.organizationService.findByEmail(email);
     if (existingOrg) {
       throw new ConflictException('Tổ chức với email này đã tồn tại');
     }
 
-    // Kiểm tra staff account với email này đã tồn tại chưa
     const existingStaff = await this.issuerService.findByEmail(email);
     if (existingStaff) {
       throw new ConflictException('Email này đã được đăng ký');
     }
 
-    // 1. Tạo tổ chức mới
     const organization = await this.organizationService.create(name, email);
 
-    // 2. Tạo tài khoản admin cho tổ chức
     const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
     const created = await this.issuerService.create(
       name,
       email,
       hashedPassword,
       organization.organization_id,
-      undefined,
-      'Admin',
+      organization.organization_name,
+      'ADMIN',
     );
 
     const accessToken = this.jwtService.sign({
@@ -57,7 +53,7 @@ export class AuthService {
     });
 
     return {
-      id: organization.organization_id,
+      id: created.staff_id,
       email: created.email,
       name: created.name,
       role: 'issuer',
@@ -98,7 +94,7 @@ export class AuthService {
       id,
       email: user.email,
       name,
-      role,
+      role: role as 'issuer' | 'student',
       accessToken,
     };
   }
