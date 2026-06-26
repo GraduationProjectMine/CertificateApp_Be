@@ -32,7 +32,9 @@ export class IpfsService {
   /**
    * Stores the certificate data and its SHA-3 hash to IPFS using Pinata API.
    */
-  async storeToIpfs(data: StoreCertificateDto): Promise<StoreCertificateResponseDto> {
+  async storeToIpfs(
+    data: StoreCertificateDto,
+  ): Promise<StoreCertificateResponseDto> {
     const sha3Hash = this.calculateSha3Hash(data);
 
     // Prepare headers for Pinata API
@@ -75,15 +77,20 @@ export class IpfsService {
     };
 
     try {
-      const response = await fetch('https://api.pinata.cloud/pinning/pinJSONToIPFS', {
-        method: 'POST',
-        headers,
-        body: JSON.stringify(payload),
-      });
+      const response = await fetch(
+        'https://api.pinata.cloud/pinning/pinJSONToIPFS',
+        {
+          method: 'POST',
+          headers,
+          body: JSON.stringify(payload),
+        },
+      );
 
       if (!response.ok) {
         const errorText = await response.text();
-        throw new Error(`Pinata API response error: status ${response.status} - ${errorText}`);
+        throw new Error(
+          `Pinata API response error: status ${response.status} - ${errorText}`,
+        );
       }
 
       const responseData = (await response.json()) as { IpfsHash: string };
@@ -96,7 +103,9 @@ export class IpfsService {
         data,
       };
     } catch (error) {
-      throw new InternalServerErrorException(`Failed to upload to IPFS: ${error.message}`);
+      throw new InternalServerErrorException(
+        `Failed to upload to IPFS: ${error.message}`,
+      );
     }
   }
 }

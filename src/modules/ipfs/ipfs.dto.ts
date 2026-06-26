@@ -89,13 +89,15 @@ export class StoreCertificateResponseDto {
 
   @ApiProperty({
     description: 'IPFS Gateway URL',
-    example: 'https://gateway.pinata.cloud/ipfs/QmXoypizjW3WknFixtdKLBU6gJHdW35pdj6dF4iW54VpY8',
+    example:
+      'https://gateway.pinata.cloud/ipfs/QmXoypizjW3WknFixtdKLBU6gJHdW35pdj6dF4iW54VpY8',
   })
   ipfsUrl: string;
 
   @ApiProperty({
     description: 'SHA-3 Hash of the certificate data',
-    example: 'a69f73cca23a9ac5c8b567dc185a756e97c982164fe25859e0d1dcc1475c80a61',
+    example:
+      'a69f73cca23a9ac5c8b567dc185a756e97c982164fe25859e0d1dcc1475c80a61',
   })
   sha3Hash: string;
 

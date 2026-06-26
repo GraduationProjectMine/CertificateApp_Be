@@ -11,7 +11,8 @@ export class IpfsController {
   @Post('store-certificate')
   @ApiOperation({
     summary: 'Store certificate extracted text to IPFS',
-    description: 'Calculates the SHA-3 hash of the certificate data and uploads both the data and hash to IPFS using Pinata API, returning the CID.',
+    description:
+      'Calculates the SHA-3 hash of the certificate data and uploads both the data and hash to IPFS using Pinata API, returning the CID.',
   })
   @ApiBody({
     type: StoreCertificateDto,
@@ -28,9 +29,12 @@ export class IpfsController {
   })
   @ApiResponse({
     status: 500,
-    description: 'Failed to upload to IPFS due to Pinata API or environment configuration issues',
+    description:
+      'Failed to upload to IPFS due to Pinata API or environment configuration issues',
   })
-  async storeCertificate(@Body() body: StoreCertificateDto): Promise<StoreCertificateResponseDto> {
+  async storeCertificate(
+    @Body() body: StoreCertificateDto,
+  ): Promise<StoreCertificateResponseDto> {
     // Validate that all required properties are present
     const requiredFields: Array<keyof StoreCertificateDto> = [
       'documentTitle',

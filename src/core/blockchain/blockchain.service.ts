@@ -1,4 +1,9 @@
-import { Injectable, InternalServerErrorException, OnModuleInit, Logger } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  OnModuleInit,
+  Logger,
+} from '@nestjs/common';
 import { ethers } from 'ethers';
 import * as contractArtifact from './abi/CertificateRegistry.json';
 
@@ -17,7 +22,7 @@ export class BlockchainService implements OnModuleInit {
     if (!rpcUrl || !privateKey || !contractAddress) {
       this.logger.warn(
         'Warning: Blockchain environment variables are not fully configured. ' +
-        'Please set BLOCKCHAIN_RPC_URL, BLOCKCHAIN_PRIVATE_KEY, and BLOCKCHAIN_CONTRACT_ADDRESS in .env.',
+          'Please set BLOCKCHAIN_RPC_URL, BLOCKCHAIN_PRIVATE_KEY, and BLOCKCHAIN_CONTRACT_ADDRESS in .env.',
       );
       return;
     }
@@ -30,7 +35,9 @@ export class BlockchainService implements OnModuleInit {
         contractArtifact.abi,
         this.wallet,
       );
-      this.logger.log(`BlockchainService initialized successfully. Contract Address: ${contractAddress}`);
+      this.logger.log(
+        `BlockchainService initialized successfully. Contract Address: ${contractAddress}`,
+      );
     } catch (error) {
       this.logger.error('Failed to initialize blockchain service:', error);
     }
@@ -51,7 +58,9 @@ export class BlockchainService implements OnModuleInit {
       cleanHex = cleanHex.slice(2);
     }
     if (cleanHex.length !== 64) {
-      throw new Error(`Invalid 32-byte hex string (must be 64 characters): ${hexString}`);
+      throw new Error(
+        `Invalid 32-byte hex string (must be 64 characters): ${hexString}`,
+      );
     }
     return `0x${cleanHex}`;
   }
@@ -63,7 +72,11 @@ export class BlockchainService implements OnModuleInit {
     const contract = this.ensureInitialized();
     try {
       const formattedHash = this.formatBytes32(sha3Hash);
-      const tx = await contract.registerCertificate(formattedHash, cid, signature);
+      const tx = await contract.registerCertificate(
+        formattedHash,
+        cid,
+        signature,
+      );
       const receipt = await tx.wait();
       return {
         success: true,
@@ -71,8 +84,13 @@ export class BlockchainService implements OnModuleInit {
         blockNumber: receipt?.blockNumber ?? null,
       };
     } catch (error) {
-      this.logger.error(`Failed to register certificate hash ${sha3Hash} on-chain:`, error);
-      throw new InternalServerErrorException(`Failed to register certificate on-chain: ${error.message}`);
+      this.logger.error(
+        `Failed to register certificate hash ${sha3Hash} on-chain:`,
+        error,
+      );
+      throw new InternalServerErrorException(
+        `Failed to register certificate on-chain: ${error.message}`,
+      );
     }
   }
 
@@ -91,8 +109,13 @@ export class BlockchainService implements OnModuleInit {
         blockNumber: receipt?.blockNumber ?? null,
       };
     } catch (error) {
-      this.logger.error(`Failed to revoke certificate hash ${sha3Hash} on-chain:`, error);
-      throw new InternalServerErrorException(`Failed to revoke certificate on-chain: ${error.message}`);
+      this.logger.error(
+        `Failed to revoke certificate hash ${sha3Hash} on-chain:`,
+        error,
+      );
+      throw new InternalServerErrorException(
+        `Failed to revoke certificate on-chain: ${error.message}`,
+      );
     }
   }
 
@@ -114,8 +137,13 @@ export class BlockchainService implements OnModuleInit {
         exists: result[6],
       };
     } catch (error) {
-      this.logger.error(`Failed to retrieve certificate details for hash ${sha3Hash}:`, error);
-      throw new InternalServerErrorException(`Failed to retrieve certificate details: ${error.message}`);
+      this.logger.error(
+        `Failed to retrieve certificate details for hash ${sha3Hash}:`,
+        error,
+      );
+      throw new InternalServerErrorException(
+        `Failed to retrieve certificate details: ${error.message}`,
+      );
     }
   }
 }
