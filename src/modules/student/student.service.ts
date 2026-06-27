@@ -10,7 +10,7 @@ export class StudentService {
     email: string,
     hashedPassword: string,
     organization_id: string,
-    organization_name?: string,
+    organization_name: string,
   ) {
     return this.prisma.studentAccount.create({
       data: {
@@ -18,14 +18,14 @@ export class StudentService {
         email,
         password: hashedPassword,
         organization_id,
-        organization_name: organization_name ?? '',
+        organization_name,
         status: 'ACTIVE',
       },
     });
   }
 
   async findByEmail(email: string) {
-    return this.prisma.studentAccount.findUnique({ where: { email } });
+    return this.prisma.studentAccount.findUnique({ where: { email } }) ?? undefined;
   }
 
   async findById(id: string) {

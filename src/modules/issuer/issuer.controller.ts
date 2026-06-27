@@ -36,7 +36,6 @@ export class IssuerController {
   @ApiResponse({ status: 409, description: 'Email already exists' })
   async createStaff(@Req() req: Request, @Body() dto: CreateStaffDto) {
     const issuer = req.user as any;
-
     const existing = await this.issuerService.findByEmail(dto.email);
     if (existing) {
       return { statusCode: 409, message: 'Email already exists' };
@@ -47,9 +46,10 @@ export class IssuerController {
       dto.email,
       hashedPassword,
       issuer.organization_id,
+      issuer.organization_name || '',
+      'STAFF',
     );
-    const { password, ...result } = staff;
-    return { message: 'Staff account created successfully', staff: result };
+    return { message: 'Staff account created successfully', staff };
   }
 
   @Post('students')
@@ -60,7 +60,6 @@ export class IssuerController {
   @ApiResponse({ status: 409, description: 'Email already exists' })
   async createStudent(@Req() req: Request, @Body() dto: CreateStudentDto) {
     const issuer = req.user as any;
-
     const existing = await this.studentService.findByEmail(dto.email);
     if (existing) {
       return { statusCode: 409, message: 'Email already exists' };
@@ -71,8 +70,8 @@ export class IssuerController {
       dto.email,
       hashedPassword,
       issuer.organization_id,
+      issuer.organization_name || '',
     );
-    const { password, ...result } = student;
-    return { message: 'Student account created successfully', student: result };
+    return { message: 'Student account created successfully', student };
   }
 }

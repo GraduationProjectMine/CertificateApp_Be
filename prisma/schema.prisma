@@ -60,7 +60,7 @@ model StudentAccount {
   createdAt         DateTime @default(now())
 
   organization      IssuingOrganization @relation(fields: [organization_id], references: [organization_id])
-  certificates       Certificate[]
+  certificates      Certificate[]
 
   @@index([organization_id])
   @@map("student_accounts")
@@ -68,23 +68,47 @@ model StudentAccount {
 
 // =========================================
 // Certificate (Văn bằng / Chứng chỉ)
+// Vòng đời: DRAFT -> APPROVED -> IPFS_UPLOADED -> BLOCKCHAIN_NOTARIZED
 // =========================================
 model Certificate {
-  certificate_id     String   @id @default(uuid())
-  organization_id    String
-  student_id         String
-  certificate_title  String
-  organization_name  String
-  student_fullName   String
-  ipfs_cid           String?
-  tx_hash            String?
-  status             String   @default("PENDING") // PENDING | ISSUED | REVOKED
-  issuedAt           DateTime @default(now())
+  certificate_id        String   @id @default(uuid())
+  organization_id       String
+  student_id            String
+  certificate_title     String
+  organization_name     String
+  student_fullName      String
 
-  organization       IssuingOrganization @relation(fields: [organization_id], references: [organization_id])
-  student            StudentAccount      @relation(fields: [student_id], references: [student_id])
+  // Vòng đời hồ sơ
+  status                String   @default("DRAFT")  // DRAFT | APPROVED | IPFS_UPLOADED | BLOCKCHAIN_NOTARIZED
+
+  // Dữ liệu mở rộng
+  issue_date            DateTime?                     // Ngày cấp bằng
+  expiry_date           DateTime?                     // Ngày hết hạn (nếu có)
+  metadata              String?                       // JSON metadata bổ sung
+  template_id           String?                       // ID mẫu văn bằng
+
+  // IPFS & Blockchain
+  ipfs_cid              String?                       // CID sau khi upload IPFS
+  ipfs_url              String?                       // URL gateway IPFS
+  tx_hash               String?                       // Transaction hash trên blockchain
+
+  // Thông tin kiểm duyệt
+  approved_by           String?                       // Staff ID người duyệt
+  approved_at           DateTime?                     // Thời gian duyệt
+  rejected_reason       String?                       // Lý do từ chối (nếu có)
+
+  // Người tạo / cập nhật
+  created_by            String?
+  updated_by            String?
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  // Quan hệ
+  organization          IssuingOrganization @relation(fields: [organization_id], references: [organization_id])
+  student               StudentAccount      @relation(fields: [student_id], references: [student_id])
 
   @@index([organization_id])
   @@index([student_id])
+  @@index([status])
   @@map("certificate")
 }

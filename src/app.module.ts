@@ -5,13 +5,17 @@ import { AppService } from './app.service';
 import { OcrModule } from './modules/ocr/ocr.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { DatabaseModule } from './core/database/database.module';
+import { PrismaModule } from './core/prisma/prisma.module';
+import { CertificateModule } from './modules/certificate/certificate.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     DatabaseModule,
+    PrismaModule,
     OcrModule,
     AuthModule,
+    CertificateModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -7,11 +7,7 @@ export class OrganizationService {
 
   async create(organization_name: string, contact_email: string) {
     return this.prisma.issuingOrganization.create({
-      data: {
-        organization_name,
-        contact_email,
-        is_verified: false,
-      },
+      data: { organization_name, contact_email, is_verified: false },
     });
   }
 

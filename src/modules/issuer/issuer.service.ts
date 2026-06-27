@@ -10,8 +10,8 @@ export class IssuerService {
     email: string,
     hashedPassword: string,
     organization_id: string,
-    organization_name?: string,
-    role: string = 'Staff',
+    organization_name: string,
+    role: string = 'STAFF',
   ) {
     return this.prisma.staffAccount.create({
       data: {
@@ -19,7 +19,7 @@ export class IssuerService {
         email,
         password: hashedPassword,
         organization_id,
-        organization_name: organization_name ?? '',
+        organization_name,
         role,
         status: 'ACTIVE',
       },
@@ -27,7 +27,7 @@ export class IssuerService {
   }
 
   async findByEmail(email: string) {
-    return this.prisma.staffAccount.findUnique({ where: { email } });
+    return this.prisma.staffAccount.findUnique({ where: { email } }) ?? undefined;
   }
 
   async findById(id: string) {
