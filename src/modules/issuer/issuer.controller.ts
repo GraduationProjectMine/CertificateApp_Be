@@ -8,7 +8,13 @@ import {
   Req,
 } from '@nestjs/common';
 import type { Request } from 'express';
-import { ApiTags, ApiOperation, ApiResponse, ApiBody, ApiBearerAuth } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBody,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { IssuerService } from './issuer.service';
 import { StudentService } from '../student/student.service';
@@ -30,9 +36,14 @@ export class IssuerController {
 
   @Post('staff')
   @HttpCode(HttpStatus.CREATED)
-  @ApiOperation({ summary: '[Issuer] Create a new staff account under this organization' })
+  @ApiOperation({
+    summary: '[Issuer] Create a new staff account under this organization',
+  })
   @ApiBody({ type: CreateStaffDto })
-  @ApiResponse({ status: 201, description: 'Staff account created successfully' })
+  @ApiResponse({
+    status: 201,
+    description: 'Staff account created successfully',
+  })
   @ApiResponse({ status: 409, description: 'Email already exists' })
   async createStaff(@Req() req: Request, @Body() dto: CreateStaffDto) {
     const issuer = req.user as any;
@@ -54,9 +65,14 @@ export class IssuerController {
 
   @Post('students')
   @HttpCode(HttpStatus.CREATED)
-  @ApiOperation({ summary: '[Issuer] Create a new student account under this organization' })
+  @ApiOperation({
+    summary: '[Issuer] Create a new student account under this organization',
+  })
   @ApiBody({ type: CreateStudentDto })
-  @ApiResponse({ status: 201, description: 'Student account created successfully' })
+  @ApiResponse({
+    status: 201,
+    description: 'Student account created successfully',
+  })
   @ApiResponse({ status: 409, description: 'Email already exists' })
   async createStudent(@Req() req: Request, @Body() dto: CreateStudentDto) {
     const issuer = req.user as any;

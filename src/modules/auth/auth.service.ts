@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException, ConflictException } from '@nestjs/common';
+import {
+  Injectable,
+  UnauthorizedException,
+  ConflictException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { IssuerService } from '../issuer/issuer.service';
@@ -77,8 +81,12 @@ export class AuthService {
     }
 
     const role = existingIssuer ? 'issuer' : 'student';
-    const name = existingIssuer ? existingIssuer.name : existingStudent!.student_fullName;
-    const id = existingIssuer ? existingIssuer.staff_id : existingStudent!.student_id;
+    const name = existingIssuer
+      ? existingIssuer.name
+      : existingStudent!.student_fullName;
+    const id = existingIssuer
+      ? existingIssuer.staff_id
+      : existingStudent!.student_id;
     const organization_id = existingIssuer
       ? existingIssuer.organization_id
       : existingStudent!.organization_id;
