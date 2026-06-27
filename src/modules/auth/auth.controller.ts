@@ -12,7 +12,9 @@ export class AuthController {
 
   @Post('register')
   @HttpCode(HttpStatus.CREATED)
-  @ApiOperation({ summary: 'Register a new issuer (school/organization) account' })
+  @ApiOperation({
+    summary: 'Register a new issuer (school/organization) account',
+  })
   @ApiBody({ type: RegisterDto })
   @ApiResponse({
     status: 201,
@@ -27,7 +29,9 @@ export class AuthController {
 
   @Post('login')
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Authenticate user (issuer/staff/student) and return JWT token' })
+  @ApiOperation({
+    summary: 'Authenticate user (issuer/staff/student) and return JWT token',
+  })
   @ApiBody({ type: LoginDto })
   @ApiResponse({
     status: 200,

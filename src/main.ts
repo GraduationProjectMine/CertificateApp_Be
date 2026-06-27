@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import { NestFactory } from '@nestjs/core';
 import { Logger } from '@nestjs/common';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'; // Use DocumentBuilder
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
@@ -20,10 +20,26 @@ async function bootstrap() {
     .setTitle('DATN API')
     .setDescription('API documentation for the DATN backend')
     .setVersion('1.0')
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        name: 'JWT',
+        description: 'Enter your access token',
+        in: 'header',
+      },
+      'bearer',
+    )
     .build();
 
   const swaggerDocument = SwaggerModule.createDocument(app, swaggerConfig);
-  SwaggerModule.setup('api-docs', app, swaggerDocument);
+
+  SwaggerModule.setup('api-docs', app, swaggerDocument, {
+    swaggerOptions: {
+      persistAuthorization: true,
+    },
+  });
 
   await app.listen(port);
   logger.log(`Application is running on: http://localhost:${port}`);

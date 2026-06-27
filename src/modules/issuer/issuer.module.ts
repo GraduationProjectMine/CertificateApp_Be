@@ -4,7 +4,7 @@ import { IssuerService } from './issuer.service';
 import { StudentModule } from '../student/student.module';
 
 @Module({
-  imports: [StudentModule],
+  imports: [StudentModule, PassportModule.register({ defaultStrategy: 'jwt' })],
   controllers: [IssuerController],
   providers: [IssuerService],
   exports: [IssuerService],

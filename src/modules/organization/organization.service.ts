@@ -12,10 +12,14 @@ export class OrganizationService {
   }
 
   async findById(id: string) {
-    return this.prisma.issuingOrganization.findUnique({ where: { organization_id: id } });
+    return this.prisma.issuingOrganization.findUnique({
+      where: { organization_id: id },
+    });
   }
 
   async findByEmail(email: string) {
-    return this.prisma.issuingOrganization.findUnique({ where: { contact_email: email } });
+    return this.prisma.issuingOrganization.findUnique({
+      where: { contact_email: email },
+    });
   }
 }
