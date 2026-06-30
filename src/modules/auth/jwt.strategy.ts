@@ -41,6 +41,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       name: payload.name,
       role: payload.role,
       organization_id: payload.organization_id,
+      staffRole: payload.role === 'issuer' ? (user as any).role : null,
     };
   }
 }
