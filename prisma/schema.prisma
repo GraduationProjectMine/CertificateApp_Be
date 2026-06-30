@@ -77,9 +77,20 @@ model Certificate {
   certificate_title  String
   organization_name  String
   student_fullName   String
+  dob                String?
+  placeOfBirth       String?
+  gender             String?
+  ethnicity          String?
+  schoolName         String?
+  examCohort         String?
+  examBoard          String?
+  issueLocation      String?
+  issueDate          String?
+  serialNumber       String?
+  registryNumber     String?
   ipfs_cid           String?
   tx_hash            String?
-  status             String   @default("PENDING") // PENDING | ISSUED | REVOKED
+  status             String   @default("DRAFT") // DRAFT | PENDING | ISSUED | REVOKED
   issuedAt           DateTime @default(now())
 
   organization       IssuingOrganization @relation(fields: [organization_id], references: [organization_id])

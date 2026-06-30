@@ -15,14 +15,14 @@ export class BlockchainService implements OnModuleInit {
   private contract: ethers.Contract | null = null;
 
   onModuleInit() {
-    const rpcUrl = process.env.BLOCKCHAIN_RPC_URL;
-    const privateKey = process.env.BLOCKCHAIN_PRIVATE_KEY;
-    const contractAddress = process.env.BLOCKCHAIN_CONTRACT_ADDRESS;
+    const rpcUrl = process.env.BLOCKCHAIN_RPC_URL || process.env.RPC_URL;
+    const privateKey = process.env.BLOCKCHAIN_PRIVATE_KEY || process.env.ADMIN_PRIVATE_KEY;
+    const contractAddress = process.env.BLOCKCHAIN_CONTRACT_ADDRESS || process.env.CONTRACT_ADDRESS;
 
     if (!rpcUrl || !privateKey || !contractAddress) {
       this.logger.warn(
         'Warning: Blockchain environment variables are not fully configured. ' +
-          'Please set BLOCKCHAIN_RPC_URL, BLOCKCHAIN_PRIVATE_KEY, and BLOCKCHAIN_CONTRACT_ADDRESS in .env.',
+          'Please set RPC_URL/BLOCKCHAIN_RPC_URL, ADMIN_PRIVATE_KEY/BLOCKCHAIN_PRIVATE_KEY, and CONTRACT_ADDRESS/BLOCKCHAIN_CONTRACT_ADDRESS in .env.',
       );
       return;
     }
@@ -50,6 +50,25 @@ export class BlockchainService implements OnModuleInit {
       );
     }
     return this.contract;
+  }
+
+  /**
+   * Checks if the blockchain service has been successfully initialized.
+   */
+  isInitialized(): boolean {
+    return !!this.contract && !!this.wallet;
+  }
+
+  /**
+   * Signs a SHA-3 hash using the initialized wallet private key.
+   */
+  async signHash(sha3Hash: string): Promise<string> {
+    if (!this.wallet) {
+      throw new InternalServerErrorException(
+        'Blockchain wallet not initialized. Cannot sign hash.',
+      );
+    }
+    return this.wallet.signMessage(sha3Hash);
   }
 
   private formatBytes32(hexString: string): string {
