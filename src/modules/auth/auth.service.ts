@@ -63,6 +63,7 @@ export class AuthService {
       name: created.name,
       role: 'issuer',
       accessToken,
+      staffRole: 'ADMIN',
     };
   }
 
@@ -105,6 +106,7 @@ export class AuthService {
       name,
       role: role as 'issuer' | 'student',
       accessToken,
+      staffRole: existingIssuer ? existingIssuer.role : undefined,
     };
   }
 }

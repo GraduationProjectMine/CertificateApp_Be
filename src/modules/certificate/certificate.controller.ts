@@ -165,6 +165,9 @@ export class CertificateController {
     if (user.role !== 'issuer') {
       throw new ForbiddenException('Only issuing organization accounts can approve/issue certificates');
     }
+    if (user.staffRole !== 'ADMIN') {
+      throw new ForbiddenException('Only administrators can approve and issue certificates to the blockchain');
+    }
     return this.certificateService.approve(id, user.organization_id);
   }
 

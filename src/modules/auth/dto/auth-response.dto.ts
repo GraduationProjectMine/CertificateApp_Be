@@ -25,4 +25,11 @@ export class AuthResponseDto {
     description: 'JWT access token',
   })
   accessToken!: string;
+
+  @ApiProperty({
+    example: 'ADMIN',
+    description: 'The specific role of the staff if the user is an issuer',
+    required: false,
+  })
+  staffRole?: string;
 }
