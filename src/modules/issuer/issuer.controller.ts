@@ -6,6 +6,7 @@ import {
   HttpCode,
   HttpStatus,
   Req,
+  ForbiddenException,
 } from '@nestjs/common';
 import type { Request } from 'express';
 import {
@@ -16,7 +17,7 @@ import {
   ApiBearerAuth,
 } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { IssuerService } from './issuer.service';
+import { StaffService } from '../staff/staff.service';
 import { StudentService } from '../student/student.service';
 import { CreateStaffDto } from './dto/create-staff.dto';
 import { CreateStudentDto } from './dto/create-student.dto';
@@ -30,7 +31,7 @@ const SALT_ROUNDS = 12;
 @UseGuards(JwtAuthGuard)
 export class IssuerController {
   constructor(
-    private readonly issuerService: IssuerService,
+    private readonly staffService: StaffService,
     private readonly studentService: StudentService,
   ) {}
 
@@ -45,19 +46,25 @@ export class IssuerController {
     description: 'Staff account created successfully',
   })
   @ApiResponse({ status: 409, description: 'Email already exists' })
+  @ApiResponse({ status: 403, description: 'Forbidden - Only organization admin can perform this action' })
   async createStaff(@Req() req: Request, @Body() dto: CreateStaffDto) {
     const issuer = req.user as any;
+    if (issuer.role !== 'issuer') {
+      throw new ForbiddenException('Only organization administrators can perform this action');
+    }
 
-    const existing = await this.issuerService.findByEmail(dto.email);
+    const existing = await this.staffService.findByEmail(dto.email);
     if (existing) {
       return { statusCode: 409, message: 'Email already exists' };
     }
     const hashedPassword = await bcrypt.hash(dto.password, SALT_ROUNDS);
-    const staff = await this.issuerService.create(
+    const staff = await this.staffService.create(
       dto.name,
       dto.email,
       hashedPassword,
       issuer.organization_id,
+      undefined,
+      'STAFF',
     );
     const { password, ...result } = staff;
     return { message: 'Staff account created successfully', staff: result };
@@ -74,8 +81,12 @@ export class IssuerController {
     description: 'Student account created successfully',
   })
   @ApiResponse({ status: 409, description: 'Email already exists' })
+  @ApiResponse({ status: 403, description: 'Forbidden - Only organization admin can perform this action' })
   async createStudent(@Req() req: Request, @Body() dto: CreateStudentDto) {
     const issuer = req.user as any;
+    if (issuer.role !== 'issuer') {
+      throw new ForbiddenException('Only organization administrators can perform this action');
+    }
 
     const existing = await this.studentService.findByEmail(dto.email);
     if (existing) {

@@ -15,10 +15,10 @@ export class AuthResponseDto {
 
   @ApiProperty({
     example: 'issuer',
-    enum: ['issuer', 'student'],
+    enum: ['issuer', 'staff', 'student'],
     description: 'User role',
   })
-  role!: 'issuer' | 'student';
+  role!: 'issuer' | 'staff' | 'student';
 
   @ApiProperty({
     example: 'eyJhbGciOiJIUzI1NiIs...',

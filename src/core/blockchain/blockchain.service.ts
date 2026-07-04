@@ -16,8 +16,10 @@ export class BlockchainService implements OnModuleInit {
 
   onModuleInit() {
     const rpcUrl = process.env.BLOCKCHAIN_RPC_URL || process.env.RPC_URL;
-    const privateKey = process.env.BLOCKCHAIN_PRIVATE_KEY || process.env.ADMIN_PRIVATE_KEY;
-    const contractAddress = process.env.BLOCKCHAIN_CONTRACT_ADDRESS || process.env.CONTRACT_ADDRESS;
+    const privateKey =
+      process.env.BLOCKCHAIN_PRIVATE_KEY || process.env.ADMIN_PRIVATE_KEY;
+    const contractAddress =
+      process.env.BLOCKCHAIN_CONTRACT_ADDRESS || process.env.CONTRACT_ADDRESS;
 
     if (!rpcUrl || !privateKey || !contractAddress) {
       this.logger.warn(
