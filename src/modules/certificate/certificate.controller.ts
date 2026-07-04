@@ -23,7 +23,10 @@ import {
 } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CertificateService } from './certificate.service';
-import { CreateCertificateDto, UpdateCertificateDto } from './dto/certificate.dto';
+import {
+  CreateCertificateDto,
+  UpdateCertificateDto,
+} from './dto/certificate.dto';
 
 @ApiTags('certificates')
 @ApiBearerAuth()
@@ -46,11 +49,16 @@ export class CertificateController {
     status: 201,
     description: 'Certificate draft created successfully',
   })
-  @ApiResponse({ status: 403, description: 'Forbidden - Only issuers can create drafts' })
+  @ApiResponse({
+    status: 403,
+    description: 'Forbidden - Only issuers can create drafts',
+  })
   async createDraft(@Req() req: Request, @Body() dto: CreateCertificateDto) {
     const user = req.user as any;
-    if (user.role !== 'issuer') {
-      throw new ForbiddenException('Only issuing organization accounts can create drafts');
+    if (user.role !== 'issuer' && user.role !== 'staff') {
+      throw new ForbiddenException(
+        'Only issuing organization accounts and staff can create drafts',
+      );
     }
     return this.certificateService.createDraft(user.organization_id, dto);
   }
@@ -66,8 +74,16 @@ export class CertificateController {
     description:
       'Retrieve a list of certificates. If user is an issuer, this returns certificates for their organization. If student, this returns only their certificates.',
   })
-  @ApiQuery({ name: 'status', required: false, description: 'Filter by status (DRAFT, PENDING, ISSUED, REVOKED)' })
-  @ApiQuery({ name: 'student_id', required: false, description: 'Filter by student ID (Issuers only)' })
+  @ApiQuery({
+    name: 'status',
+    required: false,
+    description: 'Filter by status (DRAFT, PENDING, ISSUED, REVOKED)',
+  })
+  @ApiQuery({
+    name: 'student_id',
+    required: false,
+    description: 'Filter by student ID (Issuers only)',
+  })
   async findAll(
     @Req() req: Request,
     @Query('status') status?: string,
@@ -111,11 +127,15 @@ export class CertificateController {
 
     if (user.role === 'student') {
       if (certificate.student_id !== user.id) {
-        throw new ForbiddenException('You do not have permission to view this certificate');
+        throw new ForbiddenException(
+          'You do not have permission to view this certificate',
+        );
       }
     } else {
       if (certificate.organization_id !== user.organization_id) {
-        throw new ForbiddenException('You do not have permission to view this certificate');
+        throw new ForbiddenException(
+          'You do not have permission to view this certificate',
+        );
       }
     }
 
@@ -129,9 +149,13 @@ export class CertificateController {
   @Put(':id')
   @ApiOperation({
     summary: '[Issuer] Update certificate status',
-    description: 'Update the status of a certificate (e.g., from DRAFT to PENDING).',
+    description:
+      'Update the status of a certificate (e.g., from DRAFT to PENDING).',
   })
-  @ApiResponse({ status: 200, description: 'Certificate status updated successfully' })
+  @ApiResponse({
+    status: 200,
+    description: 'Certificate status updated successfully',
+  })
   @ApiResponse({ status: 404, description: 'Certificate not found' })
   @ApiResponse({ status: 403, description: 'Forbidden' })
   async update(
@@ -140,8 +164,10 @@ export class CertificateController {
     @Body() dto: UpdateCertificateDto,
   ) {
     const user = req.user as any;
-    if (user.role !== 'issuer') {
-      throw new ForbiddenException('Only issuing organization accounts can update certificates');
+    if (user.role !== 'issuer' && user.role !== 'staff') {
+      throw new ForbiddenException(
+        'Only issuing organization accounts and staff can update certificates',
+      );
     }
     return this.certificateService.update(id, user.organization_id, dto);
   }
@@ -154,16 +180,25 @@ export class CertificateController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
     summary: '[Issuer] Approve and issue certificate to Blockchain/IPFS',
-    description: 'Constructs the certificate payload, stores it on IPFS via Pinata, signs and registers it on the blockchain smart contract, and sets status to ISSUED.',
+    description:
+      'Constructs the certificate payload, stores it on IPFS via Pinata, signs and registers it on the blockchain smart contract, and sets status to ISSUED.',
   })
-  @ApiResponse({ status: 200, description: 'Certificate approved and issued successfully' })
-  @ApiResponse({ status: 400, description: 'Invalid status or missing metadata fields' })
+  @ApiResponse({
+    status: 200,
+    description: 'Certificate approved and issued successfully',
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Invalid status or missing metadata fields',
+  })
   @ApiResponse({ status: 403, description: 'Forbidden' })
   @ApiResponse({ status: 404, description: 'Certificate not found' })
   async approve(@Req() req: Request, @Param('id') id: string) {
     const user = req.user as any;
     if (user.role !== 'issuer') {
-      throw new ForbiddenException('Only issuing organization accounts can approve/issue certificates');
+      throw new ForbiddenException(
+        'Only issuing organization accounts can approve/issue certificates',
+      );
     }
     return this.certificateService.approve(id, user.organization_id);
   }
@@ -176,15 +211,21 @@ export class CertificateController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
     summary: '[Issuer] Delete a certificate',
-    description: 'Delete a certificate from the database. Only certificates in DRAFT or PENDING status can be deleted.',
+    description:
+      'Delete a certificate from the database. Only certificates in DRAFT or PENDING status can be deleted.',
   })
   @ApiResponse({ status: 200, description: 'Certificate deleted successfully' })
   @ApiResponse({ status: 404, description: 'Certificate not found' })
-  @ApiResponse({ status: 403, description: 'Forbidden / ISSUED certificates cannot be deleted' })
+  @ApiResponse({
+    status: 403,
+    description: 'Forbidden / ISSUED certificates cannot be deleted',
+  })
   async delete(@Req() req: Request, @Param('id') id: string) {
     const user = req.user as any;
-    if (user.role !== 'issuer') {
-      throw new ForbiddenException('Only issuing organization accounts can delete certificates');
+    if (user.role !== 'issuer' && user.role !== 'staff') {
+      throw new ForbiddenException(
+        'Only issuing organization accounts and staff can delete certificates',
+      );
     }
     return this.certificateService.delete(id, user.organization_id);
   }

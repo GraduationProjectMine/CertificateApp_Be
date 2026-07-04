@@ -5,7 +5,10 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { PrismaService } from '../../core/prisma/prisma.service';
-import { CreateCertificateDto, UpdateCertificateDto } from './dto/certificate.dto';
+import {
+  CreateCertificateDto,
+  UpdateCertificateDto,
+} from './dto/certificate.dto';
 import { IpfsService } from '../ipfs/ipfs.service';
 import { BlockchainService } from '../../core/blockchain/blockchain.service';
 
@@ -38,7 +41,9 @@ export class CertificateService {
     }
 
     if (student.organization_id !== organizationId) {
-      throw new ForbiddenException('Student does not belong to your organization');
+      throw new ForbiddenException(
+        'Student does not belong to your organization',
+      );
     }
 
     // 3. Create draft certificate
@@ -75,7 +80,9 @@ export class CertificateService {
   }) {
     return this.prisma.certificate.findMany({
       where: {
-        ...(filters.organization_id && { organization_id: filters.organization_id }),
+        ...(filters.organization_id && {
+          organization_id: filters.organization_id,
+        }),
         ...(filters.student_id && { student_id: filters.student_id }),
         ...(filters.status && { status: filters.status }),
       },
@@ -98,7 +105,9 @@ export class CertificateService {
     }
 
     if (organizationId && certificate.organization_id !== organizationId) {
-      throw new ForbiddenException('You do not have access to this certificate');
+      throw new ForbiddenException(
+        'You do not have access to this certificate',
+      );
     }
 
     return certificate;
@@ -112,7 +121,9 @@ export class CertificateService {
     const certificate = await this.findOne(id, organizationId);
 
     if (certificate.status === 'ISSUED') {
-      throw new BadRequestException('Cannot modify an already ISSUED certificate.');
+      throw new BadRequestException(
+        'Cannot modify an already ISSUED certificate.',
+      );
     }
 
     // 2. We only allow transitioning status to DRAFT or PENDING
@@ -131,9 +142,6 @@ export class CertificateService {
     });
   }
 
-  /**
-   * Approve/Issue a pending certificate: upload to IPFS, register on blockchain, and set status to ISSUED
-   */
   async approve(id: string, organizationId: string) {
     const certificate = await this.findOne(id, organizationId);
 
@@ -147,7 +155,6 @@ export class CertificateService {
       );
     }
 
-    // Verify all required fields for IPFS/Blockchain are present
     const requiredFields: Array<keyof typeof certificate> = [
       'certificate_title',
       'student_fullName',

@@ -6,12 +6,17 @@ import {
   UploadedFile,
   BadRequestException,
   Query,
+  UseGuards,
+  Req,
+  ForbiddenException,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiTags, ApiConsumes, ApiBody, ApiResponse } from '@nestjs/swagger';
+import { ApiTags, ApiConsumes, ApiBody, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import type { Request } from 'express';
 import { OcrService } from './ocr.service';
 import { DiplomaParserService } from './diploma-parser.service';
 import { OcrResponseDto, DiplomaExtractionResponseDto } from './ocr.dto';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 const SUPPORTED_LANGUAGES = {
   eng: 'English',
@@ -25,7 +30,9 @@ const SUPPORTED_LANGUAGES = {
 };
 
 @ApiTags('ocr')
+@ApiBearerAuth()
 @Controller('ocr')
+@UseGuards(JwtAuthGuard)
 export class OcrController {
   constructor(
     private readonly ocrService: OcrService,
@@ -72,10 +79,20 @@ export class OcrController {
     status: 400,
     description: 'Invalid file or request',
   })
+  @ApiResponse({
+    status: 403,
+    description: 'Forbidden - Only organization admins and staff can use OCR',
+  })
   async extractText(
+    @Req() req: Request,
     @UploadedFile() file: any,
     @Query('language') language: string = 'eng',
   ): Promise<OcrResponseDto> {
+    const user = req.user as any;
+    if (user.role !== 'issuer' && user.role !== 'staff') {
+      throw new ForbiddenException('Only issuing organization accounts and staff can use OCR');
+    }
+
     if (!file) {
       throw new BadRequestException('No file uploaded');
     }
@@ -132,10 +149,20 @@ export class OcrController {
     status: 400,
     description: 'Invalid file or request',
   })
+  @ApiResponse({
+    status: 403,
+    description: 'Forbidden - Only organization admins and staff can use OCR',
+  })
   async extractDiploma(
+    @Req() req: Request,
     @UploadedFile() file: any,
     @Query('language') language: string = 'vie',
   ): Promise<DiplomaExtractionResponseDto> {
+    const user = req.user as any;
+    if (user.role !== 'issuer' && user.role !== 'staff') {
+      throw new ForbiddenException('Only issuing organization accounts and staff can use OCR');
+    }
+
     if (!file) {
       throw new BadRequestException('No file uploaded');
     }

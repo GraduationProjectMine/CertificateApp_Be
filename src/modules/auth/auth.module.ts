@@ -6,14 +6,14 @@ import { AuthService } from './auth.service';
 import { JwtStrategy } from './jwt.strategy';
 import { IssuerModule } from '../issuer/issuer.module';
 import { StudentModule } from '../student/student.module';
-import { OrganizationModule } from '../organization/organization.module';
+import { StaffModule } from '../staff/staff.module';
 
 @Global()
 @Module({
   imports: [
     IssuerModule,
     StudentModule,
-    OrganizationModule,
+    StaffModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
       secret: process.env.JWT_SECRET || 'certificate-app-jwt-secret-key',
