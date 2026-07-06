@@ -13,13 +13,21 @@ export class StaffService {
     organization_name?: string,
     role: string = 'STAFF',
   ) {
+    let orgName = organization_name;
+    if (!orgName) {
+      const org = await this.prisma.issuingOrganization.findUnique({
+        where: { organization_id },
+      });
+      orgName = org?.organization_name ?? '';
+    }
+
     return this.prisma.staffAccount.create({
       data: {
         name,
         email,
         password: hashedPassword,
         organization_id,
-        organization_name: organization_name ?? '',
+        organization_name: orgName,
         role,
         status: 'ACTIVE',
       },

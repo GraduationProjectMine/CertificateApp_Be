@@ -12,13 +12,21 @@ export class StudentService {
     organization_id: string,
     organization_name?: string,
   ) {
+    let orgName = organization_name;
+    if (!orgName) {
+      const org = await this.prisma.issuingOrganization.findUnique({
+        where: { organization_id },
+      });
+      orgName = org?.organization_name ?? '';
+    }
+
     return this.prisma.studentAccount.create({
       data: {
         student_fullName,
         email,
         password: hashedPassword,
         organization_id,
-        organization_name: organization_name ?? '',
+        organization_name: orgName,
         status: 'ACTIVE',
       },
     });
