@@ -38,13 +38,15 @@ pipeline {
 
         stage('Prisma Generate') {
             steps {
-                sh '''
-                    if [ -f prisma/schema.prisma ]; then
-                        npx prisma generate
-                    else
-                        echo "No Prisma schema found, skipping."
-                    fi
-                '''
+                withEnv(["DATABASE_URL=mysql://dummy:dummy@localhost:3306/dummy"]) {
+                    sh '''
+                        if [ -f prisma/schema.prisma ]; then
+                            npx prisma generate
+                        else
+                            echo "No Prisma schema found, skipping."
+                        fi
+                    '''
+                }
             }
         }
 
