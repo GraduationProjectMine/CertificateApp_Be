@@ -1,6 +1,12 @@
 pipeline {
     agent any
 
+    environment {
+        REGISTRY   = "docker.io"                              // Docker Hub registry mặc định
+        IMAGE_NAME = "nguyentt07/certificate-app-backend"          // đổi username nếu cần
+        TAG        = "dev-${env.BUILD_NUMBER}"                 // Tag image theo số build
+    }
+
     options {
         timestamps()
         disableConcurrentBuilds()
@@ -67,11 +73,28 @@ pipeline {
                 sh 'npm run build'
             }
         }
+
+        stage('Build & Push Image to Registry') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub-credentials',
+                    usernameVariable: 'REG_USER',
+                    passwordVariable: 'REG_PASS'
+                )]) {
+
+                    sh """
+                    docker login ${REGISTRY} -u "$REG_USER" -p "$REG_PASS"
+                    docker build -t ${IMAGE_NAME}:${TAG} .
+                    docker push ${IMAGE_NAME}:${TAG}
+                    """
+                }
+            }
+        }
     }
 
     post {
         success {
-            echo 'Backend CI succeeded.'
+            echo "✅ Backend CI succeeded: ${IMAGE_NAME}:${TAG}"
         }
 
         failure {
