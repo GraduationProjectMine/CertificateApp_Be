@@ -8,6 +8,7 @@ import { BlockchainModule } from './core/blockchain/blockchain.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { DatabaseModule } from './core/database/database.module';
 import { CertificateModule } from './modules/certificate/certificate.module';
+import { VerifierModule } from './modules/verifier/verifier.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { CertificateModule } from './modules/certificate/certificate.module';
     IpfsModule,
     BlockchainModule,
     CertificateModule,
+    VerifierModule,
   ],
   controllers: [AppController],
   providers: [AppService],
