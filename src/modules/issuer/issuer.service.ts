@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../core/prisma/prisma.service';
 
 @Injectable()
@@ -25,5 +25,45 @@ export class IssuerService {
     return this.prisma.issuingOrganization.findUnique({
       where: { contact_email: email },
     });
+  }
+
+  async findAll() {
+    return this.prisma.issuingOrganization.findMany({
+      orderBy: { created_at: 'desc' },
+    });
+  }
+
+  async update(
+    id: string,
+    data: {
+      organization_name?: string;
+      contact_email?: string;
+      logo_url?: string;
+      is_verified?: boolean;
+      wallet_address?: string;
+    },
+  ) {
+    const org = await this.findById(id);
+    if (!org) {
+      throw new NotFoundException('Organization not found');
+    }
+
+    return this.prisma.issuingOrganization.update({
+      where: { organization_id: id },
+      data,
+    });
+  }
+
+  async delete(id: string) {
+    const org = await this.findById(id);
+    if (!org) {
+      throw new NotFoundException('Organization not found');
+    }
+
+    await this.prisma.issuingOrganization.delete({
+      where: { organization_id: id },
+    });
+
+    return { message: 'Organization deleted successfully' };
   }
 }
