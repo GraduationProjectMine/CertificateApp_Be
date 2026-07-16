@@ -70,7 +70,8 @@ export class StudentController {
         'Only issuing organization accounts and staff can view students',
       );
     }
-    return this.studentService.findAll(user.organization_id);
+    const students = await this.studentService.findAll(user.organization_id);
+    return students.map(({ password, ...rest }) => rest);
   }
 
   @Get(':id')
