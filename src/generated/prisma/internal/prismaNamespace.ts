@@ -387,6 +387,7 @@ export const ModelName = {
   IssuingOrganization: 'IssuingOrganization',
   StaffAccount: 'StaffAccount',
   StudentAccount: 'StudentAccount',
+  CertificateTemplate: 'CertificateTemplate',
   Certificate: 'Certificate'
 } as const
 
@@ -403,7 +404,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "issuingOrganization" | "staffAccount" | "studentAccount" | "certificate"
+    modelProps: "issuingOrganization" | "staffAccount" | "studentAccount" | "certificateTemplate" | "certificate"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -605,6 +606,72 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    CertificateTemplate: {
+      payload: Prisma.$CertificateTemplatePayload<ExtArgs>
+      fields: Prisma.CertificateTemplateFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CertificateTemplateFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CertificateTemplatePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CertificateTemplateFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CertificateTemplatePayload>
+        }
+        findFirst: {
+          args: Prisma.CertificateTemplateFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CertificateTemplatePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CertificateTemplateFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CertificateTemplatePayload>
+        }
+        findMany: {
+          args: Prisma.CertificateTemplateFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CertificateTemplatePayload>[]
+        }
+        create: {
+          args: Prisma.CertificateTemplateCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CertificateTemplatePayload>
+        }
+        createMany: {
+          args: Prisma.CertificateTemplateCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.CertificateTemplateDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CertificateTemplatePayload>
+        }
+        update: {
+          args: Prisma.CertificateTemplateUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CertificateTemplatePayload>
+        }
+        deleteMany: {
+          args: Prisma.CertificateTemplateDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CertificateTemplateUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.CertificateTemplateUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CertificateTemplatePayload>
+        }
+        aggregate: {
+          args: Prisma.CertificateTemplateAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCertificateTemplate>
+        }
+        groupBy: {
+          args: Prisma.CertificateTemplateGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CertificateTemplateGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CertificateTemplateCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CertificateTemplateCountAggregateOutputType> | number
+        }
+      }
+    }
     Certificate: {
       payload: Prisma.$CertificatePayload<ExtArgs>
       fields: Prisma.CertificateFieldRefs
@@ -752,10 +819,26 @@ export const StudentAccountScalarFieldEnum = {
 export type StudentAccountScalarFieldEnum = (typeof StudentAccountScalarFieldEnum)[keyof typeof StudentAccountScalarFieldEnum]
 
 
+export const CertificateTemplateScalarFieldEnum = {
+  id: 'id',
+  organization_id: 'organization_id',
+  name: 'name',
+  description: 'description',
+  design_data: 'design_data',
+  thumbnail_url: 'thumbnail_url',
+  is_default: 'is_default',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+} as const
+
+export type CertificateTemplateScalarFieldEnum = (typeof CertificateTemplateScalarFieldEnum)[keyof typeof CertificateTemplateScalarFieldEnum]
+
+
 export const CertificateScalarFieldEnum = {
   certificate_id: 'certificate_id',
   organization_id: 'organization_id',
   student_id: 'student_id',
+  template_id: 'template_id',
   certificate_title: 'certificate_title',
   organization_name: 'organization_name',
   student_fullName: 'student_fullName',
@@ -785,6 +868,13 @@ export const SortOrder = {
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const NullsOrder = {
@@ -833,10 +923,39 @@ export const StudentAccountOrderByRelevanceFieldEnum = {
 export type StudentAccountOrderByRelevanceFieldEnum = (typeof StudentAccountOrderByRelevanceFieldEnum)[keyof typeof StudentAccountOrderByRelevanceFieldEnum]
 
 
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
+
+
+export const QueryMode = {
+  default: 'default',
+  insensitive: 'insensitive'
+} as const
+
+export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+export const CertificateTemplateOrderByRelevanceFieldEnum = {
+  id: 'id',
+  organization_id: 'organization_id',
+  name: 'name',
+  description: 'description',
+  thumbnail_url: 'thumbnail_url'
+} as const
+
+export type CertificateTemplateOrderByRelevanceFieldEnum = (typeof CertificateTemplateOrderByRelevanceFieldEnum)[keyof typeof CertificateTemplateOrderByRelevanceFieldEnum]
+
+
 export const CertificateOrderByRelevanceFieldEnum = {
   certificate_id: 'certificate_id',
   organization_id: 'organization_id',
   student_id: 'student_id',
+  template_id: 'template_id',
   certificate_title: 'certificate_title',
   organization_name: 'organization_name',
   student_fullName: 'student_fullName',
@@ -883,6 +1002,20 @@ export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel,
  * Reference to a field of type 'DateTime'
  */
 export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
+    
+
+
+/**
+ * Reference to a field of type 'Json'
+ */
+export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+/**
+ * Reference to a field of type 'QueryMode'
+ */
+export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
     
 
 
@@ -1005,6 +1138,7 @@ export type GlobalOmitConfig = {
   issuingOrganization?: Prisma.IssuingOrganizationOmit
   staffAccount?: Prisma.StaffAccountOmit
   studentAccount?: Prisma.StudentAccountOmit
+  certificateTemplate?: Prisma.CertificateTemplateOmit
   certificate?: Prisma.CertificateOmit
 }
 

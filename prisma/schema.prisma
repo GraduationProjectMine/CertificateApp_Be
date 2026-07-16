@@ -16,9 +16,11 @@ model IssuingOrganization {
   logo_url          String?
   is_verified       Boolean          @default(false)
   created_at        DateTime         @default(now())
-  certificates      Certificate[]
+
   staff_accounts    StaffAccount[]
   student_accounts  StudentAccount[]
+  certificates      Certificate[]
+  templates         CertificateTemplate[]
 
   @@map("issuing_organization")
 }
@@ -55,32 +57,60 @@ model StudentAccount {
   @@map("student_accounts")
 }
 
+// =========================================
+// Certificate Template (Mẫu văn bằng)
+// =========================================
+model CertificateTemplate {
+  id              String   @id @default(uuid())
+  organization_id String
+  name            String
+  description     String?
+  design_data     Json
+  thumbnail_url   String?
+  is_default      Boolean  @default(false)
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
+
+  organization    IssuingOrganization @relation(fields: [organization_id], references: [organization_id])
+  certificates    Certificate[]
+
+  @@index([organization_id])
+  @@map("certificate_templates")
+}
+
+// =========================================
+// Certificate (Văn bằng / Chứng chỉ)
+// =========================================
 model Certificate {
-  certificate_id    String              @id @default(uuid())
-  organization_id   String
-  student_id        String
-  certificate_title String
-  organization_name String
-  student_fullName  String
-  ipfs_cid          String?
-  tx_hash           String?
-  status            String              @default("DRAFT")
-  issuedAt          DateTime            @default(now())
-  dob               String?
-  ethnicity         String?
-  examBoard         String?
-  examCohort        String?
-  gender            String?
-  issueDate         String?
-  issueLocation     String?
-  placeOfBirth      String?
-  registryNumber    String?
-  schoolName        String?
-  serialNumber      String?
-  organization      IssuingOrganization @relation(fields: [organization_id], references: [organization_id])
-  student           StudentAccount      @relation(fields: [student_id], references: [student_id])
+  certificate_id     String   @id @default(uuid())
+  organization_id    String
+  student_id         String
+  template_id        String?
+  certificate_title   String
+  organization_name   String
+  student_fullName    String
+  dob                String?
+  placeOfBirth       String?
+  gender             String?
+  ethnicity          String?
+  schoolName         String?
+  examCohort         String?
+  examBoard          String?
+  issueLocation      String?
+  issueDate          String?
+  serialNumber       String?
+  registryNumber     String?
+  ipfs_cid           String?
+  tx_hash            String?
+  status             String   @default("DRAFT") // DRAFT | PENDING | ISSUED | REVOKED
+  issuedAt           DateTime @default(now())
+
+  organization       IssuingOrganization @relation(fields: [organization_id], references: [organization_id])
+  student            StudentAccount      @relation(fields: [student_id], references: [student_id])
+  template           CertificateTemplate? @relation(fields: [template_id], references: [id])
 
   @@index([organization_id])
   @@index([student_id])
+  @@index([template_id])
   @@map("certificate")
 }

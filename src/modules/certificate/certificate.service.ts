@@ -46,11 +46,25 @@ export class CertificateService {
       );
     }
 
-    // 3. Create draft certificate
+    // 3. Validate template if provided
+    if (dto.template_id) {
+      const template = await this.prisma.certificateTemplate.findUnique({
+        where: { id: dto.template_id },
+      });
+      if (!template) {
+        throw new NotFoundException('Certificate template not found');
+      }
+      if (template.organization_id !== organizationId) {
+        throw new ForbiddenException('Template does not belong to your organization');
+      }
+    }
+
+    // 4. Create draft certificate
     return this.prisma.certificate.create({
       data: {
         organization_id: organizationId,
         student_id: dto.student_id,
+        template_id: dto.template_id,
         certificate_title: dto.certificate_title,
         organization_name: organization.organization_name,
         student_fullName: student.student_fullName,

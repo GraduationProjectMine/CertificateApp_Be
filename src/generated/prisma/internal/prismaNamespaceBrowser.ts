@@ -54,6 +54,7 @@ export const ModelName = {
   IssuingOrganization: 'IssuingOrganization',
   StaffAccount: 'StaffAccount',
   StudentAccount: 'StudentAccount',
+  CertificateTemplate: 'CertificateTemplate',
   Certificate: 'Certificate'
 } as const
 
@@ -115,10 +116,26 @@ export const StudentAccountScalarFieldEnum = {
 export type StudentAccountScalarFieldEnum = (typeof StudentAccountScalarFieldEnum)[keyof typeof StudentAccountScalarFieldEnum]
 
 
+export const CertificateTemplateScalarFieldEnum = {
+  id: 'id',
+  organization_id: 'organization_id',
+  name: 'name',
+  description: 'description',
+  design_data: 'design_data',
+  thumbnail_url: 'thumbnail_url',
+  is_default: 'is_default',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+} as const
+
+export type CertificateTemplateScalarFieldEnum = (typeof CertificateTemplateScalarFieldEnum)[keyof typeof CertificateTemplateScalarFieldEnum]
+
+
 export const CertificateScalarFieldEnum = {
   certificate_id: 'certificate_id',
   organization_id: 'organization_id',
   student_id: 'student_id',
+  template_id: 'template_id',
   certificate_title: 'certificate_title',
   organization_name: 'organization_name',
   student_fullName: 'student_fullName',
@@ -148,6 +165,13 @@ export const SortOrder = {
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const NullsOrder = {
@@ -196,10 +220,39 @@ export const StudentAccountOrderByRelevanceFieldEnum = {
 export type StudentAccountOrderByRelevanceFieldEnum = (typeof StudentAccountOrderByRelevanceFieldEnum)[keyof typeof StudentAccountOrderByRelevanceFieldEnum]
 
 
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
+
+
+export const QueryMode = {
+  default: 'default',
+  insensitive: 'insensitive'
+} as const
+
+export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+export const CertificateTemplateOrderByRelevanceFieldEnum = {
+  id: 'id',
+  organization_id: 'organization_id',
+  name: 'name',
+  description: 'description',
+  thumbnail_url: 'thumbnail_url'
+} as const
+
+export type CertificateTemplateOrderByRelevanceFieldEnum = (typeof CertificateTemplateOrderByRelevanceFieldEnum)[keyof typeof CertificateTemplateOrderByRelevanceFieldEnum]
+
+
 export const CertificateOrderByRelevanceFieldEnum = {
   certificate_id: 'certificate_id',
   organization_id: 'organization_id',
   student_id: 'student_id',
+  template_id: 'template_id',
   certificate_title: 'certificate_title',
   organization_name: 'organization_name',
   student_fullName: 'student_fullName',

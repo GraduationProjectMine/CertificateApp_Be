@@ -9,6 +9,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { DatabaseModule } from './core/database/database.module';
 import { CertificateModule } from './modules/certificate/certificate.module';
 import { VerifierModule } from './modules/verifier/verifier.module';
+import { TemplatesModule } from './modules/templates/templates.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { VerifierModule } from './modules/verifier/verifier.module';
     BlockchainModule,
     CertificateModule,
     VerifierModule,
+    TemplatesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

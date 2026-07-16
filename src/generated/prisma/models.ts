@@ -11,5 +11,6 @@
 export type * from './models/IssuingOrganization.js'
 export type * from './models/StaffAccount.js'
 export type * from './models/StudentAccount.js'
+export type * from './models/CertificateTemplate.js'
 export type * from './models/Certificate.js'
 export type * from './commonInputTypes.js'

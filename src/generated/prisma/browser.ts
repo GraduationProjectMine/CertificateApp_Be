@@ -33,6 +33,11 @@ export type StaffAccount = Prisma.StaffAccountModel
  */
 export type StudentAccount = Prisma.StudentAccountModel
 /**
+ * Model CertificateTemplate
+ * 
+ */
+export type CertificateTemplate = Prisma.CertificateTemplateModel
+/**
  * Model Certificate
  * 
  */

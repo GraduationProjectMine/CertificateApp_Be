@@ -11,6 +11,15 @@ export class CreateCertificateDto {
   student_id: string;
 
   @ApiProperty({
+    example: 'uuid-of-template',
+    description: 'ID of the certificate template',
+    required: false,
+  })
+  @IsString()
+  @IsOptional()
+  template_id?: string;
+
+  @ApiProperty({
     example: 'BẰNG TỐT NGHIỆP TRUNG HỌC PHỔ THÔNG',
     description: 'Title of the certificate',
   })
