@@ -1,4 +1,10 @@
-import { IsString, IsNotEmpty, IsOptional } from 'class-validator';
+import {
+  IsString,
+  IsNotEmpty,
+  IsOptional,
+  MaxLength,
+  MinLength,
+} from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateCertificateDto {
@@ -135,4 +141,18 @@ export class UpdateCertificateDto {
   @IsString()
   @IsNotEmpty()
   status!: string;
+}
+
+export class RevokeCertificateDto {
+  @ApiProperty({
+    example: 'Sai thông tin sinh viên',
+    description: 'Reason shown in the revocation history',
+    minLength: 5,
+    maxLength: 500,
+  })
+  @IsString()
+  @IsNotEmpty()
+  @MinLength(5)
+  @MaxLength(500)
+  reason!: string;
 }

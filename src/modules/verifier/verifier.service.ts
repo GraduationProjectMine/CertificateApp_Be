@@ -146,6 +146,9 @@ export class VerifierService {
         organizationId: certificate.organization_id,
         txHash: certificate.tx_hash,
         issuedAt: certificate.issuedAt,
+        revokedAt: certificate.revokedAt,
+        revokeReason: certificate.revokeReason,
+        revokeTransactionHash: certificate.revoke_tx_hash,
       },
     };
   }

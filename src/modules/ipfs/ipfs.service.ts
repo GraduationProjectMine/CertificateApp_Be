@@ -4,6 +4,45 @@ import { StoreCertificateDto, StoreCertificateResponseDto } from './ipfs.dto';
 
 @Injectable()
 export class IpfsService {
+  async getHealth() {
+    const pinataJwt = process.env.PINATA_JWT;
+    const pinataApiKey = process.env.PINATA_API_KEY;
+    const pinataApiSecret = process.env.PINATA_API_SECRET;
+    const headers: Record<string, string> = {};
+    if (pinataJwt) headers.Authorization = `Bearer ${pinataJwt}`;
+    else if (pinataApiKey && pinataApiSecret) {
+      headers.pinata_api_key = pinataApiKey;
+      headers.pinata_secret_api_key = pinataApiSecret;
+    } else {
+      return {
+        connected: false,
+        gateway: 'https://gateway.pinata.cloud',
+        error: 'Pinata credentials are not configured',
+      };
+    }
+
+    try {
+      const response = await fetch(
+        'https://api.pinata.cloud/data/testAuthentication',
+        {
+          headers,
+          signal: AbortSignal.timeout(5000),
+        },
+      );
+      return {
+        connected: response.ok,
+        gateway: 'https://gateway.pinata.cloud',
+        error: response.ok ? null : `Pinata returned HTTP ${response.status}`,
+      };
+    } catch (error) {
+      return {
+        connected: false,
+        gateway: 'https://gateway.pinata.cloud',
+        error: error.message,
+      };
+    }
+  }
+
   /**
    * Hashes the certificate data using SHA-3 (sha3-256) in a deterministic format.
    */

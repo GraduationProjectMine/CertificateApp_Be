@@ -25,6 +25,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CertificateService } from './certificate.service';
 import {
   CreateCertificateDto,
+  RevokeCertificateDto,
   UpdateCertificateDto,
 } from './dto/certificate.dto';
 
@@ -60,7 +61,10 @@ export class CertificateController {
         'Only issuing organization accounts and staff can create drafts',
       );
     }
-    return this.certificateService.createDraft(user.organization_id, dto);
+    return this.certificateService.createDraft(user.organization_id, dto, {
+      id: user.id,
+      name: user.name,
+    });
   }
 
   /**
@@ -105,6 +109,26 @@ export class CertificateController {
       student_id: studentId,
       status,
     });
+  }
+
+  @Get('revoked')
+  @ApiOperation({ summary: '[Issuer] List revoked certificates' })
+  async findRevoked(
+    @Req() req: Request,
+    @Query('page') page?: string,
+    @Query('limit') limit?: string,
+  ) {
+    const user = req.user as any;
+    if (user.role !== 'issuer' && user.role !== 'staff') {
+      throw new ForbiddenException(
+        'Only organization accounts can view revocations',
+      );
+    }
+    return this.certificateService.findRevoked(
+      user.organization_id,
+      Number(page) || 1,
+      Number(limit) || 20,
+    );
   }
 
   /**
@@ -200,7 +224,51 @@ export class CertificateController {
         'Only issuing organization accounts can approve/issue certificates',
       );
     }
-    return this.certificateService.approve(id, user.organization_id);
+    return this.certificateService.approve(id, user.organization_id, {
+      id: user.id,
+      name: user.name,
+    });
+  }
+
+  @Post(':id/revoke')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: '[Issuer] Revoke an issued certificate on-chain' })
+  async revoke(
+    @Req() req: Request,
+    @Param('id') id: string,
+    @Body() dto: RevokeCertificateDto,
+  ) {
+    const user = req.user as any;
+    if (user.role !== 'issuer') {
+      throw new ForbiddenException(
+        'Only issuing organization administrators can revoke certificates',
+      );
+    }
+    return this.certificateService.revoke(
+      id,
+      user.organization_id,
+      user.id,
+      dto.reason,
+      user.name,
+    );
+  }
+
+  @Post(':id/retry-revoke')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: '[Issuer] Safely retry a failed revocation' })
+  async retryRevoke(@Req() req: Request, @Param('id') id: string) {
+    const user = req.user as any;
+    if (user.role !== 'issuer') {
+      throw new ForbiddenException(
+        'Only issuing organization administrators can retry revocations',
+      );
+    }
+    return this.certificateService.retryRevoke(
+      id,
+      user.organization_id,
+      user.id,
+      user.name,
+    );
   }
 
   /**
