@@ -7,6 +7,7 @@ import { JwtStrategy } from './jwt.strategy';
 import { IssuerModule } from '../issuer/issuer.module';
 import { StudentModule } from '../student/student.module';
 import { StaffModule } from '../staff/staff.module';
+import { SuperAdminModule } from '../super-admin/super-admin.module';
 
 @Global()
 @Module({
@@ -14,6 +15,7 @@ import { StaffModule } from '../staff/staff.module';
     IssuerModule,
     StudentModule,
     StaffModule,
+    SuperAdminModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
       secret: process.env.JWT_SECRET || 'certificate-app-jwt-secret-key',

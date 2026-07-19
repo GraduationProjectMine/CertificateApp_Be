@@ -31,6 +31,20 @@ model IssuingOrganization {
 }
 
 // =========================================
+// Super Admin (Quản trị viên hệ thống)
+// =========================================
+model SuperAdmin {
+  admin_id    String   @id @default(uuid())
+  name        String
+  email       String   @unique
+  password    String
+  status      String   @default("ACTIVE")
+  createdAt   DateTime @default(now())
+
+  @@map("super_admins")
+}
+
+// =========================================
 // Staff Account (Nhân viên thuộc 1 tổ chức)
 // =========================================
 model StaffAccount {

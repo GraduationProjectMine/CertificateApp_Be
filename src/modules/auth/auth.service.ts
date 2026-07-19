@@ -8,6 +8,8 @@ import * as bcrypt from 'bcrypt';
 import { StaffService } from '../staff/staff.service';
 import { StudentService } from '../student/student.service';
 import { IssuerService } from '../issuer/issuer.service';
+import { SuperAdminService } from '../super-admin/super-admin.service';
+import { PrismaService } from '../../core/prisma/prisma.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 
@@ -19,6 +21,8 @@ export class AuthService {
     private readonly staffService: StaffService,
     private readonly studentService: StudentService,
     private readonly issuerService: IssuerService,
+    private readonly superAdminService: SuperAdminService,
+    private readonly prisma: PrismaService,
     private readonly jwtService: JwtService,
   ) {}
 
@@ -76,6 +80,35 @@ export class AuthService {
   }
 
   async login(dto: LoginDto): Promise<any> {
+    // Check super admin first
+    const superAdmin = await this.prisma.superAdmin.findUnique({
+      where: { email: dto.email },
+    });
+
+    if (superAdmin) {
+      const isPasswordValid = await bcrypt.compare(dto.password, superAdmin.password);
+      if (!isPasswordValid) {
+        throw new UnauthorizedException('Invalid email or password');
+      }
+
+      const { accessToken, refreshToken } = await this.generateTokens({
+        sub: superAdmin.admin_id,
+        email: superAdmin.email,
+        name: superAdmin.name,
+        role: 'sysadmin',
+        organization_id: '',
+      });
+
+      return {
+        id: superAdmin.admin_id,
+        email: superAdmin.email,
+        name: superAdmin.name,
+        role: 'sysadmin',
+        accessToken,
+        refreshToken,
+      };
+    }
+
     const existingStaff = await this.staffService.findByEmail(dto.email);
     const existingStudent = await this.studentService.findByEmail(dto.email);
 
