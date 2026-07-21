@@ -103,6 +103,7 @@ export class BlockchainService implements OnModuleInit {
         success: true,
         transactionHash: tx.hash,
         blockNumber: receipt?.blockNumber ?? null,
+        gasUsed: receipt?.gasUsed?.toString() ?? null,
       };
     } catch (error) {
       this.logger.error(
@@ -128,6 +129,7 @@ export class BlockchainService implements OnModuleInit {
         success: true,
         transactionHash: tx.hash,
         blockNumber: receipt?.blockNumber ?? null,
+        gasUsed: receipt?.gasUsed?.toString() ?? null,
       };
     } catch (error) {
       this.logger.error(
@@ -165,6 +167,67 @@ export class BlockchainService implements OnModuleInit {
       throw new InternalServerErrorException(
         `Failed to retrieve certificate details: ${error.message}`,
       );
+    }
+  }
+
+  async getHealth() {
+    const contractAddress =
+      process.env.BLOCKCHAIN_CONTRACT_ADDRESS ||
+      process.env.CONTRACT_ADDRESS ||
+      null;
+    if (!this.provider || !this.wallet || !this.contract) {
+      return {
+        connected: false,
+        network: null,
+        chainId: null,
+        blockNumber: null,
+        contractAddress,
+        walletAddress: null,
+        walletBalance: null,
+      };
+    }
+    try {
+      const [network, blockNumber, balance] = await Promise.all([
+        this.provider.getNetwork(),
+        this.provider.getBlockNumber(),
+        this.provider.getBalance(this.wallet.address),
+      ]);
+      return {
+        connected: true,
+        network: network.name,
+        chainId: Number(network.chainId),
+        blockNumber,
+        contractAddress,
+        walletAddress: this.wallet.address,
+        walletBalance: ethers.formatEther(balance),
+      };
+    } catch (error) {
+      this.logger.warn(`Blockchain health check failed: ${error.message}`);
+      return {
+        connected: false,
+        network: null,
+        chainId: null,
+        blockNumber: null,
+        contractAddress,
+        walletAddress: this.wallet.address,
+        walletBalance: null,
+      };
+    }
+  }
+
+  async getTransactionReceipt(transactionHash: string) {
+    if (!this.provider) return null;
+    try {
+      const receipt =
+        await this.provider.getTransactionReceipt(transactionHash);
+      if (!receipt) return null;
+      return {
+        blockNumber: receipt.blockNumber,
+        gasUsed: receipt.gasUsed.toString(),
+        status: receipt.status === 1 ? 'SUCCESS' : 'FAILED',
+      };
+    } catch {
+      return null;
     }
   }
 }

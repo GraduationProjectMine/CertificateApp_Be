@@ -11,6 +11,7 @@ import {
 } from './dto/certificate.dto';
 import { IpfsService } from '../ipfs/ipfs.service';
 import { BlockchainService } from '../../core/blockchain/blockchain.service';
+import { AuditService } from '../audit/audit.service';
 
 @Injectable()
 export class CertificateService {
@@ -18,12 +19,35 @@ export class CertificateService {
     private readonly prisma: PrismaService,
     private readonly ipfsService: IpfsService,
     private readonly blockchainService: BlockchainService,
+    private readonly auditService: AuditService,
   ) {}
+
+  private toIpfsPayload(certificate: any) {
+    return {
+      documentTitle: certificate.certificate_title,
+      fullName: certificate.student_fullName,
+      dob: certificate.dob ?? '',
+      placeOfBirth: certificate.placeOfBirth ?? '',
+      gender: certificate.gender ?? '',
+      ethnicity: certificate.ethnicity ?? '',
+      schoolName: certificate.schoolName ?? '',
+      examCohort: certificate.examCohort ?? '',
+      examBoard: certificate.examBoard ?? '',
+      issueLocation: certificate.issueLocation ?? '',
+      issueDate: certificate.issueDate ?? '',
+      serialNumber: certificate.serialNumber ?? '',
+      registryNumber: certificate.registryNumber ?? '',
+    };
+  }
 
   /**
    * Create a new certificate draft
    */
-  async createDraft(organizationId: string, dto: CreateCertificateDto) {
+  async createDraft(
+    organizationId: string,
+    dto: CreateCertificateDto,
+    actor?: { id: string; name?: string },
+  ) {
     // 1. Fetch organization to get the official organization name
     const organization = await this.prisma.issuingOrganization.findUnique({
       where: { organization_id: organizationId },
@@ -55,12 +79,14 @@ export class CertificateService {
         throw new NotFoundException('Certificate template not found');
       }
       if (template.organization_id !== organizationId) {
-        throw new ForbiddenException('Template does not belong to your organization');
+        throw new ForbiddenException(
+          'Template does not belong to your organization',
+        );
       }
     }
 
     // 4. Create draft certificate
-    return this.prisma.certificate.create({
+    const created = await this.prisma.certificate.create({
       data: {
         organization_id: organizationId,
         student_id: dto.student_id,
@@ -82,6 +108,18 @@ export class CertificateService {
         status: 'DRAFT',
       },
     });
+    if (actor) {
+      await this.auditService.log({
+        organizationId,
+        actorId: actor.id,
+        actorName: actor.name,
+        action: 'CREATE_CERTIFICATE',
+        targetType: 'CERTIFICATE',
+        targetId: created.certificate_id,
+        success: true,
+      });
+    }
+    return created;
   }
 
   /**
@@ -156,7 +194,11 @@ export class CertificateService {
     });
   }
 
-  async approve(id: string, organizationId: string) {
+  async approve(
+    id: string,
+    organizationId: string,
+    actor?: { id: string; name?: string },
+  ) {
     const certificate = await this.findOne(id, organizationId);
 
     if (certificate.status === 'ISSUED') {
@@ -193,21 +235,7 @@ export class CertificateService {
     }
 
     // 1. Construct IPFS payload
-    const ipfsPayload = {
-      documentTitle: certificate.certificate_title,
-      fullName: certificate.student_fullName,
-      dob: certificate.dob!,
-      placeOfBirth: certificate.placeOfBirth!,
-      gender: certificate.gender!,
-      ethnicity: certificate.ethnicity!,
-      schoolName: certificate.schoolName!,
-      examCohort: certificate.examCohort!,
-      examBoard: certificate.examBoard!,
-      issueLocation: certificate.issueLocation!,
-      issueDate: certificate.issueDate!,
-      serialNumber: certificate.serialNumber!,
-      registryNumber: certificate.registryNumber!,
-    };
+    const ipfsPayload = this.toIpfsPayload(certificate);
 
     // 2. Upload metadata to IPFS
     const ipfsResult = await this.ipfsService.storeToIpfs(ipfsPayload);
@@ -215,6 +243,8 @@ export class CertificateService {
     const sha3Hash = ipfsResult.sha3Hash;
 
     let transactionHash: string | null = null;
+    let blockNumber: number | null = null;
+    let gasUsed: string | null = null;
 
     // 3. Register on blockchain
     if (this.blockchainService.isInitialized()) {
@@ -226,6 +256,8 @@ export class CertificateService {
           signature,
         );
         transactionHash = onChainResult.transactionHash;
+        blockNumber = onChainResult.blockNumber;
+        gasUsed = onChainResult.gasUsed;
       } catch (error) {
         throw new BadRequestException(
           `Failed to register certificate on-chain: ${error.message}`,
@@ -238,15 +270,186 @@ export class CertificateService {
     }
 
     // 4. Update the certificate status, cid, and transaction hash
-    return this.prisma.certificate.update({
+    const issued = await this.prisma.certificate.update({
       where: { certificate_id: id },
       data: {
         status: 'ISSUED',
         ipfs_cid: cid,
         tx_hash: transactionHash,
+        block_number: blockNumber,
+        gas_used: gasUsed,
         issuedAt: new Date(),
       },
     });
+    if (actor) {
+      await this.auditService.log({
+        organizationId,
+        actorId: actor.id,
+        actorName: actor.name,
+        action: 'ISSUE_CERTIFICATE',
+        targetType: 'CERTIFICATE',
+        targetId: id,
+        success: true,
+        details: { transactionHash, blockNumber, cid },
+      });
+    }
+    return issued;
+  }
+
+  async revoke(
+    id: string,
+    organizationId: string,
+    actorId: string,
+    reason: string,
+    actorName?: string,
+  ) {
+    const certificate = await this.findOne(id, organizationId);
+    const cleanReason = reason.replace(/<[^>]*>/g, '').trim();
+    if (cleanReason.length < 5 || cleanReason.length > 500) {
+      throw new BadRequestException(
+        'Revocation reason must contain 5 to 500 characters.',
+      );
+    }
+    if (
+      certificate.status !== 'ISSUED' &&
+      certificate.status !== 'REVOKE_FAILED'
+    ) {
+      throw new BadRequestException(
+        'Only ISSUED or failed revocation certificates can be revoked.',
+      );
+    }
+    if (!this.blockchainService.isInitialized()) {
+      throw new BadRequestException('Blockchain service is not initialized.');
+    }
+
+    if (certificate.status === 'REVOKE_FAILED') {
+      const hash = this.ipfsService.calculateSha3Hash(
+        this.toIpfsPayload(certificate),
+      );
+      const onChain = await this.blockchainService.getCertificate(hash);
+      if (onChain.isRevoked) {
+        const recovered = await this.prisma.certificate.update({
+          where: { certificate_id: id },
+          data: {
+            status: 'REVOKED',
+            revokedAt: certificate.revokedAt || new Date(),
+          },
+        });
+        await this.auditService.log({
+          organizationId,
+          actorId,
+          actorName,
+          action: 'REVOKE_CERTIFICATE',
+          targetType: 'CERTIFICATE',
+          targetId: id,
+          success: true,
+          details: { recoveredFromBlockchain: true },
+        });
+        return recovered;
+      }
+    }
+
+    await this.prisma.certificate.update({
+      where: { certificate_id: id },
+      data: {
+        status: 'REVOKE_PENDING',
+        revokeReason: cleanReason,
+        revokedById: actorId,
+      },
+    });
+
+    try {
+      const sha3Hash = this.ipfsService.calculateSha3Hash(
+        this.toIpfsPayload(certificate),
+      );
+      const onChainResult =
+        await this.blockchainService.revokeCertificate(sha3Hash);
+      const revoked = await this.prisma.certificate.update({
+        where: { certificate_id: id },
+        data: {
+          status: 'REVOKED',
+          revokedAt: new Date(),
+          revokedById: actorId,
+          revokeReason: cleanReason,
+          revoke_tx_hash: onChainResult.transactionHash,
+          revoke_block_number: onChainResult.blockNumber,
+        },
+      });
+      await this.auditService.log({
+        organizationId,
+        actorId,
+        actorName,
+        action: 'REVOKE_CERTIFICATE',
+        targetType: 'CERTIFICATE',
+        targetId: id,
+        success: true,
+        details: {
+          reason: cleanReason,
+          transactionHash: onChainResult.transactionHash,
+          blockNumber: onChainResult.blockNumber,
+        },
+      });
+      return revoked;
+    } catch (error) {
+      await this.prisma.certificate.update({
+        where: { certificate_id: id },
+        data: { status: 'REVOKE_FAILED' },
+      });
+      await this.auditService.log({
+        organizationId,
+        actorId,
+        actorName,
+        action: 'REVOKE_CERTIFICATE',
+        targetType: 'CERTIFICATE',
+        targetId: id,
+        success: false,
+        details: { reason: cleanReason, error: error.message },
+      });
+      throw error;
+    }
+  }
+
+  async retryRevoke(
+    id: string,
+    organizationId: string,
+    actorId: string,
+    actorName?: string,
+  ) {
+    const certificate = await this.findOne(id, organizationId);
+    if (certificate.status !== 'REVOKE_FAILED' || !certificate.revokeReason) {
+      throw new BadRequestException(
+        'This certificate has no failed revocation to retry.',
+      );
+    }
+    return this.revoke(
+      id,
+      organizationId,
+      actorId,
+      certificate.revokeReason,
+      actorName,
+    );
+  }
+
+  async findRevoked(organizationId: string, page = 1, limit = 20) {
+    const safePage = Math.max(1, page);
+    const safeLimit = Math.min(100, Math.max(1, limit));
+    const where = { organization_id: organizationId, status: 'REVOKED' };
+    const [items, total] = await Promise.all([
+      this.prisma.certificate.findMany({
+        where,
+        orderBy: { revokedAt: 'desc' },
+        skip: (safePage - 1) * safeLimit,
+        take: safeLimit,
+      }),
+      this.prisma.certificate.count({ where }),
+    ]);
+    return {
+      items,
+      total,
+      page: safePage,
+      limit: safeLimit,
+      totalPages: Math.ceil(total / safeLimit),
+    };
   }
 
   /**
@@ -256,7 +459,7 @@ export class CertificateService {
     const certificate = await this.findOne(id, organizationId);
 
     // Drafts and Pendings can be deleted, but issued certificates shouldn't be deleted via CRUD directly.
-    if (certificate.status === 'ISSUED') {
+    if (certificate.status !== 'DRAFT' && certificate.status !== 'PENDING') {
       throw new BadRequestException(
         `Cannot delete a certificate that is in 'ISSUED' status.`,
       );

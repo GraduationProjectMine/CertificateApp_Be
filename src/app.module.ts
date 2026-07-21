@@ -10,11 +10,15 @@ import { DatabaseModule } from './core/database/database.module';
 import { CertificateModule } from './modules/certificate/certificate.module';
 import { VerifierModule } from './modules/verifier/verifier.module';
 import { TemplatesModule } from './modules/templates/templates.module';
+import { AuditModule } from './modules/audit/audit.module';
+import { BatchesModule } from './modules/batches/batches.module';
+import { MonitorModule } from './modules/monitor/monitor.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     DatabaseModule,
+    AuditModule,
     OcrModule,
     AuthModule,
     IpfsModule,
@@ -22,6 +26,8 @@ import { TemplatesModule } from './modules/templates/templates.module';
     CertificateModule,
     VerifierModule,
     TemplatesModule,
+    BatchesModule,
+    MonitorModule,
   ],
   controllers: [AppController],
   providers: [AppService],

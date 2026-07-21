@@ -102,8 +102,15 @@ model Certificate {
   registryNumber     String?
   ipfs_cid           String?
   tx_hash            String?
+  block_number       Int?
+  gas_used           String?
   status             String   @default("DRAFT") // DRAFT | PENDING | ISSUED | REVOKED
   issuedAt           DateTime @default(now())
+  revokedAt          DateTime?
+  revokedById        String?
+  revokeReason       String?  @db.VarChar(500)
+  revoke_tx_hash     String?
+  revoke_block_number Int?
 
   organization       IssuingOrganization @relation(fields: [organization_id], references: [organization_id])
   student            StudentAccount      @relation(fields: [student_id], references: [student_id])
@@ -112,5 +119,68 @@ model Certificate {
   @@index([organization_id])
   @@index([student_id])
   @@index([template_id])
+  @@index([status, revokedAt])
+  @@index([revokedById])
   @@map("certificate")
+}
+
+model IssuanceBatch {
+  id              String   @id @default(uuid())
+  organization_id String
+  name            String
+  status          String   @default("PROCESSING")
+  totalRows       Int      @default(0)
+  successRows     Int      @default(0)
+  failedRows      Int      @default(0)
+  createdById     String
+  createdByName   String
+  createdAt       DateTime @default(now())
+  completedAt     DateTime?
+
+  organization    IssuingOrganization @relation(fields: [organization_id], references: [organization_id])
+  items           IssuanceBatchItem[]
+
+  @@index([organization_id, createdAt])
+  @@map("issuance_batches")
+}
+
+model IssuanceBatchItem {
+  id            String   @id @default(uuid())
+  batchId       String
+  rowNumber     Int
+  input         Json
+  status        String   @default("PENDING")
+  error         String?  @db.Text
+  certificateId String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  batch         IssuanceBatch @relation(fields: [batchId], references: [id], onDelete: Cascade)
+
+  @@unique([batchId, rowNumber])
+  @@index([batchId, status])
+  @@map("issuance_batch_items")
+}
+
+model AuditLog {
+  id              String   @id @default(uuid())
+  organization_id String
+  actorId         String?
+  actorName       String?
+  action          String
+  targetType      String
+  targetId        String?
+  ipAddress       String?
+  userAgent       String?  @db.VarChar(500)
+  success         Boolean  @default(true)
+  details         Json?
+  createdAt       DateTime @default(now())
+
+  organization    IssuingOrganization @relation(fields: [organization_id], references: [organization_id])
+
+  @@index([organization_id, createdAt])
+  @@index([actorId])
+  @@index([action])
+  @@index([targetId])
+  @@map("audit_logs")
 }
