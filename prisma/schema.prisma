@@ -21,6 +21,8 @@ model IssuingOrganization {
   student_accounts  StudentAccount[]
   certificates      Certificate[]
   templates         CertificateTemplate[]
+  issuance_batches   IssuanceBatch[]
+  audit_logs         AuditLog[]
 
   @@map("issuing_organization")
 }
