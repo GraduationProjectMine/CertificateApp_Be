@@ -205,8 +205,8 @@ export type StudentAccountWhereInput = {
   password?: Prisma.StringFilter<"StudentAccount"> | string
   status?: Prisma.StringFilter<"StudentAccount"> | string
   createdAt?: Prisma.DateTimeFilter<"StudentAccount"> | Date | string
-  organization?: Prisma.XOR<Prisma.IssuingOrganizationScalarRelationFilter, Prisma.IssuingOrganizationWhereInput>
   certificates?: Prisma.CertificateListRelationFilter
+  organization?: Prisma.XOR<Prisma.IssuingOrganizationScalarRelationFilter, Prisma.IssuingOrganizationWhereInput>
 }
 
 export type StudentAccountOrderByWithRelationInput = {
@@ -218,8 +218,8 @@ export type StudentAccountOrderByWithRelationInput = {
   password?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  organization?: Prisma.IssuingOrganizationOrderByWithRelationInput
   certificates?: Prisma.CertificateOrderByRelationAggregateInput
+  organization?: Prisma.IssuingOrganizationOrderByWithRelationInput
   _relevance?: Prisma.StudentAccountOrderByRelevanceInput
 }
 
@@ -235,8 +235,8 @@ export type StudentAccountWhereUniqueInput = Prisma.AtLeast<{
   password?: Prisma.StringFilter<"StudentAccount"> | string
   status?: Prisma.StringFilter<"StudentAccount"> | string
   createdAt?: Prisma.DateTimeFilter<"StudentAccount"> | Date | string
-  organization?: Prisma.XOR<Prisma.IssuingOrganizationScalarRelationFilter, Prisma.IssuingOrganizationWhereInput>
   certificates?: Prisma.CertificateListRelationFilter
+  organization?: Prisma.XOR<Prisma.IssuingOrganizationScalarRelationFilter, Prisma.IssuingOrganizationWhereInput>
 }, "student_id" | "email">
 
 export type StudentAccountOrderByWithAggregationInput = {
@@ -275,8 +275,8 @@ export type StudentAccountCreateInput = {
   password: string
   status?: string
   createdAt?: Date | string
-  organization: Prisma.IssuingOrganizationCreateNestedOneWithoutStudent_accountsInput
   certificates?: Prisma.CertificateCreateNestedManyWithoutStudentInput
+  organization: Prisma.IssuingOrganizationCreateNestedOneWithoutStudent_accountsInput
 }
 
 export type StudentAccountUncheckedCreateInput = {
@@ -299,8 +299,8 @@ export type StudentAccountUpdateInput = {
   password?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  organization?: Prisma.IssuingOrganizationUpdateOneRequiredWithoutStudent_accountsNestedInput
   certificates?: Prisma.CertificateUpdateManyWithoutStudentNestedInput
+  organization?: Prisma.IssuingOrganizationUpdateOneRequiredWithoutStudent_accountsNestedInput
 }
 
 export type StudentAccountUncheckedUpdateInput = {
@@ -661,8 +661,8 @@ export type StudentAccountSelect<ExtArgs extends runtime.Types.Extensions.Intern
   password?: boolean
   status?: boolean
   createdAt?: boolean
-  organization?: boolean | Prisma.IssuingOrganizationDefaultArgs<ExtArgs>
   certificates?: boolean | Prisma.StudentAccount$certificatesArgs<ExtArgs>
+  organization?: boolean | Prisma.IssuingOrganizationDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.StudentAccountCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["studentAccount"]>
 
@@ -681,16 +681,16 @@ export type StudentAccountSelectScalar = {
 
 export type StudentAccountOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"student_id" | "organization_id" | "student_fullName" | "organization_name" | "email" | "password" | "status" | "createdAt", ExtArgs["result"]["studentAccount"]>
 export type StudentAccountInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  organization?: boolean | Prisma.IssuingOrganizationDefaultArgs<ExtArgs>
   certificates?: boolean | Prisma.StudentAccount$certificatesArgs<ExtArgs>
+  organization?: boolean | Prisma.IssuingOrganizationDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.StudentAccountCountOutputTypeDefaultArgs<ExtArgs>
 }
 
 export type $StudentAccountPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "StudentAccount"
   objects: {
-    organization: Prisma.$IssuingOrganizationPayload<ExtArgs>
     certificates: Prisma.$CertificatePayload<ExtArgs>[]
+    organization: Prisma.$IssuingOrganizationPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     student_id: string
@@ -1041,8 +1041,8 @@ readonly fields: StudentAccountFieldRefs;
  */
 export interface Prisma__StudentAccountClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  organization<T extends Prisma.IssuingOrganizationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.IssuingOrganizationDefaultArgs<ExtArgs>>): Prisma.Prisma__IssuingOrganizationClient<runtime.Types.Result.GetResult<Prisma.$IssuingOrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   certificates<T extends Prisma.StudentAccount$certificatesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.StudentAccount$certificatesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CertificatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  organization<T extends Prisma.IssuingOrganizationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.IssuingOrganizationDefaultArgs<ExtArgs>>): Prisma.Prisma__IssuingOrganizationClient<runtime.Types.Result.GetResult<Prisma.$IssuingOrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
