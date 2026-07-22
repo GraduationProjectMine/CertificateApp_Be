@@ -5,11 +5,12 @@ import { PrismaService } from '../../core/prisma/prisma.service';
 export class IssuerService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(organization_name: string, contact_email: string) {
+  async create(organization_name: string, contact_email: string, wallet_address?: string) {
     return this.prisma.issuingOrganization.create({
       data: {
         organization_name,
         contact_email,
+        wallet_address: wallet_address ? wallet_address.toLowerCase() : null,
         is_verified: false,
       },
     });
@@ -24,6 +25,12 @@ export class IssuerService {
   async findByEmail(email: string) {
     return this.prisma.issuingOrganization.findUnique({
       where: { contact_email: email },
+    });
+  }
+
+  async findByWalletAddress(walletAddress: string) {
+    return this.prisma.issuingOrganization.findFirst({
+      where: { wallet_address: walletAddress.toLowerCase() },
     });
   }
 
