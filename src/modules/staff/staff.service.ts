@@ -52,6 +52,15 @@ export class StaffService {
     });
   }
 
+  async findOwnerByOrganization(organizationId: string) {
+    return this.prisma.staffAccount.findFirst({
+      where: {
+        organization_id: organizationId,
+        role: 'ISSUER',
+      },
+    });
+  }
+
   async update(
     staffId: string,
     organizationId: string,

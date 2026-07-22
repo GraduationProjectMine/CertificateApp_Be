@@ -14,6 +14,9 @@ import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 import { AuthResponseDto } from './dto/auth-response.dto';
+import { MetaMaskNonceDto } from './dto/metamask-nonce.dto';
+import { MetaMaskLoginDto } from './dto/metamask-login.dto';
+import { MetaMaskRegisterDto } from './dto/metamask-register.dto';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -128,5 +131,79 @@ export class AuthController {
       sameSite: 'lax',
     });
     return { message: 'Logged out successfully' };
+  }
+
+  @Post('metamask/nonce')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({
+    summary: 'Request a challenge nonce for MetaMask authentication',
+  })
+  @ApiBody({ type: MetaMaskNonceDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Challenge message and temp token successfully generated',
+  })
+  async getMetaMaskNonce(@Body() dto: MetaMaskNonceDto): Promise<any> {
+    return this.authService.generateMetaMaskNonce(dto.walletAddress);
+  }
+
+  @Post('metamask/login')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({
+    summary: 'Authenticate issuer owner using MetaMask signature',
+  })
+  @ApiBody({ type: MetaMaskLoginDto })
+  @ApiResponse({
+    status: 200,
+    description: 'User successfully logged in',
+    type: AuthResponseDto,
+  })
+  async loginWithMetaMask(
+    @Body() dto: MetaMaskLoginDto,
+    @Res({ passthrough: true }) res: express.Response,
+  ): Promise<any> {
+    const authResult = await this.authService.loginWithMetaMask(
+      dto.walletAddress,
+      dto.signature,
+      dto.tempToken,
+    );
+
+    res.cookie('refreshToken', authResult.refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    });
+
+    const { refreshToken, ...responseBody } = authResult;
+    return responseBody;
+  }
+
+  @Post('metamask/register')
+  @HttpCode(HttpStatus.CREATED)
+  @ApiOperation({
+    summary: 'Register a new issuer organization and owner using MetaMask',
+  })
+  @ApiBody({ type: MetaMaskRegisterDto })
+  @ApiResponse({
+    status: 201,
+    description: 'Issuer organization and owner registered successfully',
+    type: AuthResponseDto,
+  })
+  async registerWithMetaMask(
+    @Body() dto: MetaMaskRegisterDto,
+    @Res({ passthrough: true }) res: express.Response,
+  ): Promise<any> {
+    const authResult = await this.authService.registerWithMetaMask(dto);
+
+    res.cookie('refreshToken', authResult.refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    });
+
+    const { refreshToken, ...responseBody } = authResult;
+    return responseBody;
   }
 }
