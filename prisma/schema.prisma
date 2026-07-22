@@ -12,13 +12,14 @@ datasource db {
 // Issuing Organization (Trường/Đơn vị cấp bằng)
 // =========================================
 model IssuingOrganization {
-  organization_id   String   @id @default(uuid())
-  wallet_address     String?  @unique
-  organization_name  String
-  contact_email      String   @unique
-  logo_url           String?
-  is_verified        Boolean  @default(false)
-  created_at         DateTime @default(now())
+  organization_id      String   @id @default(uuid())
+  wallet_address       String?  @unique
+  encrypted_private_key String? @db.Text
+  organization_name    String
+  contact_email        String   @unique
+  logo_url             String?
+  is_verified          Boolean  @default(false)
+  created_at           DateTime @default(now())
 
   staff_accounts     StaffAccount[]
   student_accounts   StudentAccount[]
@@ -211,3 +212,14 @@ model AuditLog {
   @@index([targetId])
   @@map("audit_logs")
 }
+
+// =========================================
+// System Configuration (Cấu hình hệ thống)
+// =========================================
+model SystemConfig {
+  config_key   String @id
+  config_value String @db.Text
+
+  @@map("system_config")
+}
+

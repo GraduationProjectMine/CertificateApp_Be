@@ -21,10 +21,20 @@ describe('CertificateService revoke', () => {
     registryNumber: 'VS001',
   };
 
+  const mockOrg = {
+    organization_id: 'org-1',
+    organization_name: 'Test Org',
+    wallet_address: '0x123',
+    encrypted_private_key: 'iv:authTag:encrypted',
+  };
+
   const prisma = {
     certificate: {
       findUnique: jest.fn(),
       update: jest.fn(),
+    },
+    issuingOrganization: {
+      findUnique: jest.fn().mockResolvedValue(mockOrg),
     },
   } as any;
   const ipfs = {
@@ -32,11 +42,14 @@ describe('CertificateService revoke', () => {
   } as any;
   const blockchain = {
     isInitialized: jest.fn().mockReturnValue(true),
-    revokeCertificate: jest.fn().mockResolvedValue({
+    revokeCertificateAsOrg: jest.fn().mockResolvedValue({
       transactionHash: '0xrevoke',
       blockNumber: 42,
     }),
     getCertificate: jest.fn(),
+  } as any;
+  const crypto = {
+    decrypt: jest.fn().mockReturnValue('0xdecryptedprivatekey'),
   } as any;
   const audit = { log: jest.fn().mockResolvedValue(undefined) } as any;
 
@@ -48,7 +61,7 @@ describe('CertificateService revoke', () => {
       ...certificate,
       status: 'REVOKED',
     });
-    const service = new CertificateService(prisma, ipfs, blockchain, audit);
+    const service = new CertificateService(prisma, ipfs, blockchain, crypto, audit);
 
     const result = await service.revoke(
       'cert-1',
@@ -57,7 +70,10 @@ describe('CertificateService revoke', () => {
       'Sai thong tin sinh vien',
     );
 
-    expect(blockchain.revokeCertificate).toHaveBeenCalledWith('a'.repeat(64));
+    expect(blockchain.revokeCertificateAsOrg).toHaveBeenCalledWith(
+      '0xdecryptedprivatekey',
+      'a'.repeat(64),
+    );
     expect(prisma.certificate.update).toHaveBeenCalledWith(
       expect.objectContaining({
         data: expect.objectContaining({
@@ -78,12 +94,12 @@ describe('CertificateService revoke', () => {
       ...certificate,
       status: 'DRAFT',
     });
-    const service = new CertificateService(prisma, ipfs, blockchain, audit);
+    const service = new CertificateService(prisma, ipfs, blockchain, crypto, audit);
 
     await expect(
       service.revoke('cert-1', 'org-1', 'actor-1', 'Ly do hop le'),
     ).rejects.toBeInstanceOf(BadRequestException);
-    expect(blockchain.revokeCertificate).not.toHaveBeenCalled();
+    expect(blockchain.revokeCertificateAsOrg).not.toHaveBeenCalled();
   });
 
   it('recovers a failed local revocation when blockchain is already revoked', async () => {
@@ -98,12 +114,12 @@ describe('CertificateService revoke', () => {
       status: 'REVOKED',
     });
     blockchain.getCertificate.mockResolvedValue({ isRevoked: true });
-    const service = new CertificateService(prisma, ipfs, blockchain, audit);
+    const service = new CertificateService(prisma, ipfs, blockchain, crypto, audit);
 
     const result = await service.retryRevoke('cert-1', 'org-1', 'actor-1');
 
     expect(result.status).toBe('REVOKED');
-    expect(blockchain.revokeCertificate).not.toHaveBeenCalled();
+    expect(blockchain.revokeCertificateAsOrg).not.toHaveBeenCalled();
     expect(audit.log).toHaveBeenCalledWith(
       expect.objectContaining({ details: { recoveredFromBlockchain: true } }),
     );

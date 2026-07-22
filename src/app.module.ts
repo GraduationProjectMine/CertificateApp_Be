@@ -5,6 +5,7 @@ import { AppService } from './app.service';
 import { OcrModule } from './modules/ocr/ocr.module';
 import { IpfsModule } from './modules/ipfs/ipfs.module';
 import { BlockchainModule } from './core/blockchain/blockchain.module';
+import { CryptoModule } from './core/crypto/crypto.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { DatabaseModule } from './core/database/database.module';
 import { CertificateModule } from './modules/certificate/certificate.module';
@@ -24,6 +25,7 @@ import { SuperAdminModule } from './modules/super-admin/super-admin.module';
     AuthModule,
     IpfsModule,
     BlockchainModule,
+    CryptoModule,
     CertificateModule,
     VerifierModule,
     TemplatesModule,

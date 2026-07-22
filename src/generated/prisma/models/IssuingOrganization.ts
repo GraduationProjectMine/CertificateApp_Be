@@ -27,6 +27,7 @@ export type AggregateIssuingOrganization = {
 export type IssuingOrganizationMinAggregateOutputType = {
   organization_id: string | null
   wallet_address: string | null
+  encrypted_private_key: string | null
   organization_name: string | null
   contact_email: string | null
   logo_url: string | null
@@ -37,6 +38,7 @@ export type IssuingOrganizationMinAggregateOutputType = {
 export type IssuingOrganizationMaxAggregateOutputType = {
   organization_id: string | null
   wallet_address: string | null
+  encrypted_private_key: string | null
   organization_name: string | null
   contact_email: string | null
   logo_url: string | null
@@ -47,6 +49,7 @@ export type IssuingOrganizationMaxAggregateOutputType = {
 export type IssuingOrganizationCountAggregateOutputType = {
   organization_id: number
   wallet_address: number
+  encrypted_private_key: number
   organization_name: number
   contact_email: number
   logo_url: number
@@ -59,6 +62,7 @@ export type IssuingOrganizationCountAggregateOutputType = {
 export type IssuingOrganizationMinAggregateInputType = {
   organization_id?: true
   wallet_address?: true
+  encrypted_private_key?: true
   organization_name?: true
   contact_email?: true
   logo_url?: true
@@ -69,6 +73,7 @@ export type IssuingOrganizationMinAggregateInputType = {
 export type IssuingOrganizationMaxAggregateInputType = {
   organization_id?: true
   wallet_address?: true
+  encrypted_private_key?: true
   organization_name?: true
   contact_email?: true
   logo_url?: true
@@ -79,6 +84,7 @@ export type IssuingOrganizationMaxAggregateInputType = {
 export type IssuingOrganizationCountAggregateInputType = {
   organization_id?: true
   wallet_address?: true
+  encrypted_private_key?: true
   organization_name?: true
   contact_email?: true
   logo_url?: true
@@ -162,6 +168,7 @@ export type IssuingOrganizationGroupByArgs<ExtArgs extends runtime.Types.Extensi
 export type IssuingOrganizationGroupByOutputType = {
   organization_id: string
   wallet_address: string | null
+  encrypted_private_key: string | null
   organization_name: string
   contact_email: string
   logo_url: string | null
@@ -193,6 +200,7 @@ export type IssuingOrganizationWhereInput = {
   NOT?: Prisma.IssuingOrganizationWhereInput | Prisma.IssuingOrganizationWhereInput[]
   organization_id?: Prisma.StringFilter<"IssuingOrganization"> | string
   wallet_address?: Prisma.StringNullableFilter<"IssuingOrganization"> | string | null
+  encrypted_private_key?: Prisma.StringNullableFilter<"IssuingOrganization"> | string | null
   organization_name?: Prisma.StringFilter<"IssuingOrganization"> | string
   contact_email?: Prisma.StringFilter<"IssuingOrganization"> | string
   logo_url?: Prisma.StringNullableFilter<"IssuingOrganization"> | string | null
@@ -209,6 +217,7 @@ export type IssuingOrganizationWhereInput = {
 export type IssuingOrganizationOrderByWithRelationInput = {
   organization_id?: Prisma.SortOrder
   wallet_address?: Prisma.SortOrderInput | Prisma.SortOrder
+  encrypted_private_key?: Prisma.SortOrderInput | Prisma.SortOrder
   organization_name?: Prisma.SortOrder
   contact_email?: Prisma.SortOrder
   logo_url?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -230,6 +239,7 @@ export type IssuingOrganizationWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.IssuingOrganizationWhereInput | Prisma.IssuingOrganizationWhereInput[]
   OR?: Prisma.IssuingOrganizationWhereInput[]
   NOT?: Prisma.IssuingOrganizationWhereInput | Prisma.IssuingOrganizationWhereInput[]
+  encrypted_private_key?: Prisma.StringNullableFilter<"IssuingOrganization"> | string | null
   organization_name?: Prisma.StringFilter<"IssuingOrganization"> | string
   logo_url?: Prisma.StringNullableFilter<"IssuingOrganization"> | string | null
   is_verified?: Prisma.BoolFilter<"IssuingOrganization"> | boolean
@@ -245,6 +255,7 @@ export type IssuingOrganizationWhereUniqueInput = Prisma.AtLeast<{
 export type IssuingOrganizationOrderByWithAggregationInput = {
   organization_id?: Prisma.SortOrder
   wallet_address?: Prisma.SortOrderInput | Prisma.SortOrder
+  encrypted_private_key?: Prisma.SortOrderInput | Prisma.SortOrder
   organization_name?: Prisma.SortOrder
   contact_email?: Prisma.SortOrder
   logo_url?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -261,6 +272,7 @@ export type IssuingOrganizationScalarWhereWithAggregatesInput = {
   NOT?: Prisma.IssuingOrganizationScalarWhereWithAggregatesInput | Prisma.IssuingOrganizationScalarWhereWithAggregatesInput[]
   organization_id?: Prisma.StringWithAggregatesFilter<"IssuingOrganization"> | string
   wallet_address?: Prisma.StringNullableWithAggregatesFilter<"IssuingOrganization"> | string | null
+  encrypted_private_key?: Prisma.StringNullableWithAggregatesFilter<"IssuingOrganization"> | string | null
   organization_name?: Prisma.StringWithAggregatesFilter<"IssuingOrganization"> | string
   contact_email?: Prisma.StringWithAggregatesFilter<"IssuingOrganization"> | string
   logo_url?: Prisma.StringNullableWithAggregatesFilter<"IssuingOrganization"> | string | null
@@ -271,6 +283,7 @@ export type IssuingOrganizationScalarWhereWithAggregatesInput = {
 export type IssuingOrganizationCreateInput = {
   organization_id?: string
   wallet_address?: string | null
+  encrypted_private_key?: string | null
   organization_name: string
   contact_email: string
   logo_url?: string | null
@@ -287,6 +300,7 @@ export type IssuingOrganizationCreateInput = {
 export type IssuingOrganizationUncheckedCreateInput = {
   organization_id?: string
   wallet_address?: string | null
+  encrypted_private_key?: string | null
   organization_name: string
   contact_email: string
   logo_url?: string | null
@@ -303,6 +317,7 @@ export type IssuingOrganizationUncheckedCreateInput = {
 export type IssuingOrganizationUpdateInput = {
   organization_id?: Prisma.StringFieldUpdateOperationsInput | string
   wallet_address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  encrypted_private_key?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   organization_name?: Prisma.StringFieldUpdateOperationsInput | string
   contact_email?: Prisma.StringFieldUpdateOperationsInput | string
   logo_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -319,6 +334,7 @@ export type IssuingOrganizationUpdateInput = {
 export type IssuingOrganizationUncheckedUpdateInput = {
   organization_id?: Prisma.StringFieldUpdateOperationsInput | string
   wallet_address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  encrypted_private_key?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   organization_name?: Prisma.StringFieldUpdateOperationsInput | string
   contact_email?: Prisma.StringFieldUpdateOperationsInput | string
   logo_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -335,6 +351,7 @@ export type IssuingOrganizationUncheckedUpdateInput = {
 export type IssuingOrganizationCreateManyInput = {
   organization_id?: string
   wallet_address?: string | null
+  encrypted_private_key?: string | null
   organization_name: string
   contact_email: string
   logo_url?: string | null
@@ -345,6 +362,7 @@ export type IssuingOrganizationCreateManyInput = {
 export type IssuingOrganizationUpdateManyMutationInput = {
   organization_id?: Prisma.StringFieldUpdateOperationsInput | string
   wallet_address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  encrypted_private_key?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   organization_name?: Prisma.StringFieldUpdateOperationsInput | string
   contact_email?: Prisma.StringFieldUpdateOperationsInput | string
   logo_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -355,6 +373,7 @@ export type IssuingOrganizationUpdateManyMutationInput = {
 export type IssuingOrganizationUncheckedUpdateManyInput = {
   organization_id?: Prisma.StringFieldUpdateOperationsInput | string
   wallet_address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  encrypted_private_key?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   organization_name?: Prisma.StringFieldUpdateOperationsInput | string
   contact_email?: Prisma.StringFieldUpdateOperationsInput | string
   logo_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -371,6 +390,7 @@ export type IssuingOrganizationOrderByRelevanceInput = {
 export type IssuingOrganizationCountOrderByAggregateInput = {
   organization_id?: Prisma.SortOrder
   wallet_address?: Prisma.SortOrder
+  encrypted_private_key?: Prisma.SortOrder
   organization_name?: Prisma.SortOrder
   contact_email?: Prisma.SortOrder
   logo_url?: Prisma.SortOrder
@@ -381,6 +401,7 @@ export type IssuingOrganizationCountOrderByAggregateInput = {
 export type IssuingOrganizationMaxOrderByAggregateInput = {
   organization_id?: Prisma.SortOrder
   wallet_address?: Prisma.SortOrder
+  encrypted_private_key?: Prisma.SortOrder
   organization_name?: Prisma.SortOrder
   contact_email?: Prisma.SortOrder
   logo_url?: Prisma.SortOrder
@@ -391,6 +412,7 @@ export type IssuingOrganizationMaxOrderByAggregateInput = {
 export type IssuingOrganizationMinOrderByAggregateInput = {
   organization_id?: Prisma.SortOrder
   wallet_address?: Prisma.SortOrder
+  encrypted_private_key?: Prisma.SortOrder
   organization_name?: Prisma.SortOrder
   contact_email?: Prisma.SortOrder
   logo_url?: Prisma.SortOrder
@@ -506,6 +528,7 @@ export type IssuingOrganizationUpdateOneRequiredWithoutAudit_logsNestedInput = {
 export type IssuingOrganizationCreateWithoutStaff_accountsInput = {
   organization_id?: string
   wallet_address?: string | null
+  encrypted_private_key?: string | null
   organization_name: string
   contact_email: string
   logo_url?: string | null
@@ -521,6 +544,7 @@ export type IssuingOrganizationCreateWithoutStaff_accountsInput = {
 export type IssuingOrganizationUncheckedCreateWithoutStaff_accountsInput = {
   organization_id?: string
   wallet_address?: string | null
+  encrypted_private_key?: string | null
   organization_name: string
   contact_email: string
   logo_url?: string | null
@@ -552,6 +576,7 @@ export type IssuingOrganizationUpdateToOneWithWhereWithoutStaff_accountsInput = 
 export type IssuingOrganizationUpdateWithoutStaff_accountsInput = {
   organization_id?: Prisma.StringFieldUpdateOperationsInput | string
   wallet_address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  encrypted_private_key?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   organization_name?: Prisma.StringFieldUpdateOperationsInput | string
   contact_email?: Prisma.StringFieldUpdateOperationsInput | string
   logo_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -567,6 +592,7 @@ export type IssuingOrganizationUpdateWithoutStaff_accountsInput = {
 export type IssuingOrganizationUncheckedUpdateWithoutStaff_accountsInput = {
   organization_id?: Prisma.StringFieldUpdateOperationsInput | string
   wallet_address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  encrypted_private_key?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   organization_name?: Prisma.StringFieldUpdateOperationsInput | string
   contact_email?: Prisma.StringFieldUpdateOperationsInput | string
   logo_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -582,6 +608,7 @@ export type IssuingOrganizationUncheckedUpdateWithoutStaff_accountsInput = {
 export type IssuingOrganizationCreateWithoutStudent_accountsInput = {
   organization_id?: string
   wallet_address?: string | null
+  encrypted_private_key?: string | null
   organization_name: string
   contact_email: string
   logo_url?: string | null
@@ -597,6 +624,7 @@ export type IssuingOrganizationCreateWithoutStudent_accountsInput = {
 export type IssuingOrganizationUncheckedCreateWithoutStudent_accountsInput = {
   organization_id?: string
   wallet_address?: string | null
+  encrypted_private_key?: string | null
   organization_name: string
   contact_email: string
   logo_url?: string | null
@@ -628,6 +656,7 @@ export type IssuingOrganizationUpdateToOneWithWhereWithoutStudent_accountsInput 
 export type IssuingOrganizationUpdateWithoutStudent_accountsInput = {
   organization_id?: Prisma.StringFieldUpdateOperationsInput | string
   wallet_address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  encrypted_private_key?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   organization_name?: Prisma.StringFieldUpdateOperationsInput | string
   contact_email?: Prisma.StringFieldUpdateOperationsInput | string
   logo_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -643,6 +672,7 @@ export type IssuingOrganizationUpdateWithoutStudent_accountsInput = {
 export type IssuingOrganizationUncheckedUpdateWithoutStudent_accountsInput = {
   organization_id?: Prisma.StringFieldUpdateOperationsInput | string
   wallet_address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  encrypted_private_key?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   organization_name?: Prisma.StringFieldUpdateOperationsInput | string
   contact_email?: Prisma.StringFieldUpdateOperationsInput | string
   logo_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -658,6 +688,7 @@ export type IssuingOrganizationUncheckedUpdateWithoutStudent_accountsInput = {
 export type IssuingOrganizationCreateWithoutTemplatesInput = {
   organization_id?: string
   wallet_address?: string | null
+  encrypted_private_key?: string | null
   organization_name: string
   contact_email: string
   logo_url?: string | null
@@ -673,6 +704,7 @@ export type IssuingOrganizationCreateWithoutTemplatesInput = {
 export type IssuingOrganizationUncheckedCreateWithoutTemplatesInput = {
   organization_id?: string
   wallet_address?: string | null
+  encrypted_private_key?: string | null
   organization_name: string
   contact_email: string
   logo_url?: string | null
@@ -704,6 +736,7 @@ export type IssuingOrganizationUpdateToOneWithWhereWithoutTemplatesInput = {
 export type IssuingOrganizationUpdateWithoutTemplatesInput = {
   organization_id?: Prisma.StringFieldUpdateOperationsInput | string
   wallet_address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  encrypted_private_key?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   organization_name?: Prisma.StringFieldUpdateOperationsInput | string
   contact_email?: Prisma.StringFieldUpdateOperationsInput | string
   logo_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -719,6 +752,7 @@ export type IssuingOrganizationUpdateWithoutTemplatesInput = {
 export type IssuingOrganizationUncheckedUpdateWithoutTemplatesInput = {
   organization_id?: Prisma.StringFieldUpdateOperationsInput | string
   wallet_address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  encrypted_private_key?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   organization_name?: Prisma.StringFieldUpdateOperationsInput | string
   contact_email?: Prisma.StringFieldUpdateOperationsInput | string
   logo_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -734,6 +768,7 @@ export type IssuingOrganizationUncheckedUpdateWithoutTemplatesInput = {
 export type IssuingOrganizationCreateWithoutCertificatesInput = {
   organization_id?: string
   wallet_address?: string | null
+  encrypted_private_key?: string | null
   organization_name: string
   contact_email: string
   logo_url?: string | null
@@ -749,6 +784,7 @@ export type IssuingOrganizationCreateWithoutCertificatesInput = {
 export type IssuingOrganizationUncheckedCreateWithoutCertificatesInput = {
   organization_id?: string
   wallet_address?: string | null
+  encrypted_private_key?: string | null
   organization_name: string
   contact_email: string
   logo_url?: string | null
@@ -780,6 +816,7 @@ export type IssuingOrganizationUpdateToOneWithWhereWithoutCertificatesInput = {
 export type IssuingOrganizationUpdateWithoutCertificatesInput = {
   organization_id?: Prisma.StringFieldUpdateOperationsInput | string
   wallet_address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  encrypted_private_key?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   organization_name?: Prisma.StringFieldUpdateOperationsInput | string
   contact_email?: Prisma.StringFieldUpdateOperationsInput | string
   logo_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -795,6 +832,7 @@ export type IssuingOrganizationUpdateWithoutCertificatesInput = {
 export type IssuingOrganizationUncheckedUpdateWithoutCertificatesInput = {
   organization_id?: Prisma.StringFieldUpdateOperationsInput | string
   wallet_address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  encrypted_private_key?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   organization_name?: Prisma.StringFieldUpdateOperationsInput | string
   contact_email?: Prisma.StringFieldUpdateOperationsInput | string
   logo_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -810,6 +848,7 @@ export type IssuingOrganizationUncheckedUpdateWithoutCertificatesInput = {
 export type IssuingOrganizationCreateWithoutIssuance_batchesInput = {
   organization_id?: string
   wallet_address?: string | null
+  encrypted_private_key?: string | null
   organization_name: string
   contact_email: string
   logo_url?: string | null
@@ -825,6 +864,7 @@ export type IssuingOrganizationCreateWithoutIssuance_batchesInput = {
 export type IssuingOrganizationUncheckedCreateWithoutIssuance_batchesInput = {
   organization_id?: string
   wallet_address?: string | null
+  encrypted_private_key?: string | null
   organization_name: string
   contact_email: string
   logo_url?: string | null
@@ -856,6 +896,7 @@ export type IssuingOrganizationUpdateToOneWithWhereWithoutIssuance_batchesInput 
 export type IssuingOrganizationUpdateWithoutIssuance_batchesInput = {
   organization_id?: Prisma.StringFieldUpdateOperationsInput | string
   wallet_address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  encrypted_private_key?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   organization_name?: Prisma.StringFieldUpdateOperationsInput | string
   contact_email?: Prisma.StringFieldUpdateOperationsInput | string
   logo_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -871,6 +912,7 @@ export type IssuingOrganizationUpdateWithoutIssuance_batchesInput = {
 export type IssuingOrganizationUncheckedUpdateWithoutIssuance_batchesInput = {
   organization_id?: Prisma.StringFieldUpdateOperationsInput | string
   wallet_address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  encrypted_private_key?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   organization_name?: Prisma.StringFieldUpdateOperationsInput | string
   contact_email?: Prisma.StringFieldUpdateOperationsInput | string
   logo_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -886,6 +928,7 @@ export type IssuingOrganizationUncheckedUpdateWithoutIssuance_batchesInput = {
 export type IssuingOrganizationCreateWithoutAudit_logsInput = {
   organization_id?: string
   wallet_address?: string | null
+  encrypted_private_key?: string | null
   organization_name: string
   contact_email: string
   logo_url?: string | null
@@ -901,6 +944,7 @@ export type IssuingOrganizationCreateWithoutAudit_logsInput = {
 export type IssuingOrganizationUncheckedCreateWithoutAudit_logsInput = {
   organization_id?: string
   wallet_address?: string | null
+  encrypted_private_key?: string | null
   organization_name: string
   contact_email: string
   logo_url?: string | null
@@ -932,6 +976,7 @@ export type IssuingOrganizationUpdateToOneWithWhereWithoutAudit_logsInput = {
 export type IssuingOrganizationUpdateWithoutAudit_logsInput = {
   organization_id?: Prisma.StringFieldUpdateOperationsInput | string
   wallet_address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  encrypted_private_key?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   organization_name?: Prisma.StringFieldUpdateOperationsInput | string
   contact_email?: Prisma.StringFieldUpdateOperationsInput | string
   logo_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -947,6 +992,7 @@ export type IssuingOrganizationUpdateWithoutAudit_logsInput = {
 export type IssuingOrganizationUncheckedUpdateWithoutAudit_logsInput = {
   organization_id?: Prisma.StringFieldUpdateOperationsInput | string
   wallet_address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  encrypted_private_key?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   organization_name?: Prisma.StringFieldUpdateOperationsInput | string
   contact_email?: Prisma.StringFieldUpdateOperationsInput | string
   logo_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1038,6 +1084,7 @@ export type IssuingOrganizationCountOutputTypeCountAudit_logsArgs<ExtArgs extend
 export type IssuingOrganizationSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   organization_id?: boolean
   wallet_address?: boolean
+  encrypted_private_key?: boolean
   organization_name?: boolean
   contact_email?: boolean
   logo_url?: boolean
@@ -1057,6 +1104,7 @@ export type IssuingOrganizationSelect<ExtArgs extends runtime.Types.Extensions.I
 export type IssuingOrganizationSelectScalar = {
   organization_id?: boolean
   wallet_address?: boolean
+  encrypted_private_key?: boolean
   organization_name?: boolean
   contact_email?: boolean
   logo_url?: boolean
@@ -1064,7 +1112,7 @@ export type IssuingOrganizationSelectScalar = {
   created_at?: boolean
 }
 
-export type IssuingOrganizationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"organization_id" | "wallet_address" | "organization_name" | "contact_email" | "logo_url" | "is_verified" | "created_at", ExtArgs["result"]["issuingOrganization"]>
+export type IssuingOrganizationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"organization_id" | "wallet_address" | "encrypted_private_key" | "organization_name" | "contact_email" | "logo_url" | "is_verified" | "created_at", ExtArgs["result"]["issuingOrganization"]>
 export type IssuingOrganizationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   staff_accounts?: boolean | Prisma.IssuingOrganization$staff_accountsArgs<ExtArgs>
   student_accounts?: boolean | Prisma.IssuingOrganization$student_accountsArgs<ExtArgs>
@@ -1088,6 +1136,7 @@ export type $IssuingOrganizationPayload<ExtArgs extends runtime.Types.Extensions
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     organization_id: string
     wallet_address: string | null
+    encrypted_private_key: string | null
     organization_name: string
     contact_email: string
     logo_url: string | null
@@ -1470,6 +1519,7 @@ export interface Prisma__IssuingOrganizationClient<T, Null = never, ExtArgs exte
 export interface IssuingOrganizationFieldRefs {
   readonly organization_id: Prisma.FieldRef<"IssuingOrganization", 'String'>
   readonly wallet_address: Prisma.FieldRef<"IssuingOrganization", 'String'>
+  readonly encrypted_private_key: Prisma.FieldRef<"IssuingOrganization", 'String'>
   readonly organization_name: Prisma.FieldRef<"IssuingOrganization", 'String'>
   readonly contact_email: Prisma.FieldRef<"IssuingOrganization", 'String'>
   readonly logo_url: Prisma.FieldRef<"IssuingOrganization", 'String'>

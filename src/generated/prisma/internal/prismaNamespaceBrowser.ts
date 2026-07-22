@@ -59,7 +59,8 @@ export const ModelName = {
   Certificate: 'Certificate',
   IssuanceBatch: 'IssuanceBatch',
   IssuanceBatchItem: 'IssuanceBatchItem',
-  AuditLog: 'AuditLog'
+  AuditLog: 'AuditLog',
+  SystemConfig: 'SystemConfig'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -81,6 +82,7 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 export const IssuingOrganizationScalarFieldEnum = {
   organization_id: 'organization_id',
   wallet_address: 'wallet_address',
+  encrypted_private_key: 'encrypted_private_key',
   organization_name: 'organization_name',
   contact_email: 'contact_email',
   logo_url: 'logo_url',
@@ -232,6 +234,14 @@ export const AuditLogScalarFieldEnum = {
 export type AuditLogScalarFieldEnum = (typeof AuditLogScalarFieldEnum)[keyof typeof AuditLogScalarFieldEnum]
 
 
+export const SystemConfigScalarFieldEnum = {
+  config_key: 'config_key',
+  config_value: 'config_value'
+} as const
+
+export type SystemConfigScalarFieldEnum = (typeof SystemConfigScalarFieldEnum)[keyof typeof SystemConfigScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -266,6 +276,7 @@ export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 export const IssuingOrganizationOrderByRelevanceFieldEnum = {
   organization_id: 'organization_id',
   wallet_address: 'wallet_address',
+  encrypted_private_key: 'encrypted_private_key',
   organization_name: 'organization_name',
   contact_email: 'contact_email',
   logo_url: 'logo_url'
@@ -407,4 +418,12 @@ export const AuditLogOrderByRelevanceFieldEnum = {
 } as const
 
 export type AuditLogOrderByRelevanceFieldEnum = (typeof AuditLogOrderByRelevanceFieldEnum)[keyof typeof AuditLogOrderByRelevanceFieldEnum]
+
+
+export const SystemConfigOrderByRelevanceFieldEnum = {
+  config_key: 'config_key',
+  config_value: 'config_value'
+} as const
+
+export type SystemConfigOrderByRelevanceFieldEnum = (typeof SystemConfigOrderByRelevanceFieldEnum)[keyof typeof SystemConfigOrderByRelevanceFieldEnum]
 

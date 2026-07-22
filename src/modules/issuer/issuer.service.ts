@@ -1,15 +1,49 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  Logger,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { PrismaService } from '../../core/prisma/prisma.service';
+import { BlockchainService } from '../../core/blockchain/blockchain.service';
+import { CryptoService } from '../../core/crypto/crypto.service';
 
 @Injectable()
 export class IssuerService {
-  constructor(private readonly prisma: PrismaService) {}
+  private readonly logger = new Logger(IssuerService.name);
+
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly blockchainService: BlockchainService,
+    private readonly cryptoService: CryptoService,
+  ) {}
 
   async create(organization_name: string, contact_email: string) {
+    const { address, privateKey } = this.blockchainService.createOrgWallet();
+
+    const encryptedPK = this.cryptoService.encrypt(privateKey);
+
+    if (this.blockchainService.isInitialized()) {
+      try {
+        await this.blockchainService.authorizeIssuer(address);
+      } catch (error) {
+        this.logger.error(`Failed to authorize issuer ${address} on-chain: ${error.message}`);
+        throw new InternalServerErrorException(
+          'Failed to authorize organization on blockchain. Please try again.',
+        );
+      }
+    } else {
+      this.logger.warn(
+        'Blockchain not initialized. Organization created without on-chain authorization.',
+      );
+    }
+
     return this.prisma.issuingOrganization.create({
       data: {
         organization_name,
         contact_email,
+        wallet_address: address,
+        encrypted_private_key: encryptedPK,
         is_verified: false,
       },
     });

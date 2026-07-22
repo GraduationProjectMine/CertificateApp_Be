@@ -3,6 +3,7 @@ import {
   NotFoundException,
   ForbiddenException,
   BadRequestException,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import {
@@ -11,6 +12,7 @@ import {
 } from './dto/certificate.dto';
 import { IpfsService } from '../ipfs/ipfs.service';
 import { BlockchainService } from '../../core/blockchain/blockchain.service';
+import { CryptoService } from '../../core/crypto/crypto.service';
 import { AuditService } from '../audit/audit.service';
 
 @Injectable()
@@ -19,6 +21,7 @@ export class CertificateService {
     private readonly prisma: PrismaService,
     private readonly ipfsService: IpfsService,
     private readonly blockchainService: BlockchainService,
+    private readonly cryptoService: CryptoService,
     private readonly auditService: AuditService,
   ) {}
 
@@ -246,14 +249,22 @@ export class CertificateService {
     let blockNumber: number | null = null;
     let gasUsed: string | null = null;
 
-    // 3. Register on blockchain
+    // 3. Register on blockchain using org's wallet
     if (this.blockchainService.isInitialized()) {
       try {
-        const signature = await this.blockchainService.signHash(sha3Hash);
-        const onChainResult = await this.blockchainService.registerCertificate(
+        const org = await this.prisma.issuingOrganization.findUnique({
+          where: { organization_id: organizationId },
+        });
+        if (!org?.encrypted_private_key) {
+          throw new InternalServerErrorException(
+            'Organization has no wallet configured. Contact super admin.',
+          );
+        }
+        const privateKey = this.cryptoService.decrypt(org.encrypted_private_key);
+        const onChainResult = await this.blockchainService.registerCertificateAsOrg(
+          privateKey,
           sha3Hash,
           cid,
-          signature,
         );
         transactionHash = onChainResult.transactionHash;
         blockNumber = onChainResult.blockNumber;
@@ -362,8 +373,17 @@ export class CertificateService {
       const sha3Hash = this.ipfsService.calculateSha3Hash(
         this.toIpfsPayload(certificate),
       );
+      const org = await this.prisma.issuingOrganization.findUnique({
+        where: { organization_id: organizationId },
+      });
+      if (!org?.encrypted_private_key) {
+        throw new InternalServerErrorException(
+          'Organization has no wallet configured.',
+        );
+      }
+      const privateKey = this.cryptoService.decrypt(org.encrypted_private_key);
       const onChainResult =
-        await this.blockchainService.revokeCertificate(sha3Hash);
+        await this.blockchainService.revokeCertificateAsOrg(privateKey, sha3Hash);
       const revoked = await this.prisma.certificate.update({
         where: { certificate_id: id },
         data: {

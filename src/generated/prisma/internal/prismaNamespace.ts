@@ -392,7 +392,8 @@ export const ModelName = {
   Certificate: 'Certificate',
   IssuanceBatch: 'IssuanceBatch',
   IssuanceBatchItem: 'IssuanceBatchItem',
-  AuditLog: 'AuditLog'
+  AuditLog: 'AuditLog',
+  SystemConfig: 'SystemConfig'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -408,7 +409,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "issuingOrganization" | "superAdmin" | "staffAccount" | "studentAccount" | "certificateTemplate" | "certificate" | "issuanceBatch" | "issuanceBatchItem" | "auditLog"
+    modelProps: "issuingOrganization" | "superAdmin" | "staffAccount" | "studentAccount" | "certificateTemplate" | "certificate" | "issuanceBatch" | "issuanceBatchItem" | "auditLog" | "systemConfig"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1006,6 +1007,72 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    SystemConfig: {
+      payload: Prisma.$SystemConfigPayload<ExtArgs>
+      fields: Prisma.SystemConfigFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SystemConfigFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SystemConfigPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SystemConfigFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SystemConfigPayload>
+        }
+        findFirst: {
+          args: Prisma.SystemConfigFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SystemConfigPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SystemConfigFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SystemConfigPayload>
+        }
+        findMany: {
+          args: Prisma.SystemConfigFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SystemConfigPayload>[]
+        }
+        create: {
+          args: Prisma.SystemConfigCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SystemConfigPayload>
+        }
+        createMany: {
+          args: Prisma.SystemConfigCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.SystemConfigDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SystemConfigPayload>
+        }
+        update: {
+          args: Prisma.SystemConfigUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SystemConfigPayload>
+        }
+        deleteMany: {
+          args: Prisma.SystemConfigDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SystemConfigUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.SystemConfigUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SystemConfigPayload>
+        }
+        aggregate: {
+          args: Prisma.SystemConfigAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSystemConfig>
+        }
+        groupBy: {
+          args: Prisma.SystemConfigGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SystemConfigGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SystemConfigCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SystemConfigCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1048,6 +1115,7 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 export const IssuingOrganizationScalarFieldEnum = {
   organization_id: 'organization_id',
   wallet_address: 'wallet_address',
+  encrypted_private_key: 'encrypted_private_key',
   organization_name: 'organization_name',
   contact_email: 'contact_email',
   logo_url: 'logo_url',
@@ -1199,6 +1267,14 @@ export const AuditLogScalarFieldEnum = {
 export type AuditLogScalarFieldEnum = (typeof AuditLogScalarFieldEnum)[keyof typeof AuditLogScalarFieldEnum]
 
 
+export const SystemConfigScalarFieldEnum = {
+  config_key: 'config_key',
+  config_value: 'config_value'
+} as const
+
+export type SystemConfigScalarFieldEnum = (typeof SystemConfigScalarFieldEnum)[keyof typeof SystemConfigScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -1233,6 +1309,7 @@ export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 export const IssuingOrganizationOrderByRelevanceFieldEnum = {
   organization_id: 'organization_id',
   wallet_address: 'wallet_address',
+  encrypted_private_key: 'encrypted_private_key',
   organization_name: 'organization_name',
   contact_email: 'contact_email',
   logo_url: 'logo_url'
@@ -1374,6 +1451,14 @@ export const AuditLogOrderByRelevanceFieldEnum = {
 } as const
 
 export type AuditLogOrderByRelevanceFieldEnum = (typeof AuditLogOrderByRelevanceFieldEnum)[keyof typeof AuditLogOrderByRelevanceFieldEnum]
+
+
+export const SystemConfigOrderByRelevanceFieldEnum = {
+  config_key: 'config_key',
+  config_value: 'config_value'
+} as const
+
+export type SystemConfigOrderByRelevanceFieldEnum = (typeof SystemConfigOrderByRelevanceFieldEnum)[keyof typeof SystemConfigOrderByRelevanceFieldEnum]
 
 
 
@@ -1549,6 +1634,7 @@ export type GlobalOmitConfig = {
   issuanceBatch?: Prisma.IssuanceBatchOmit
   issuanceBatchItem?: Prisma.IssuanceBatchItemOmit
   auditLog?: Prisma.AuditLogOmit
+  systemConfig?: Prisma.SystemConfigOmit
 }
 
 /* Types for Logging */
