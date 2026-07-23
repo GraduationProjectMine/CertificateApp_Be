@@ -29,6 +29,24 @@ export class OcrResponseDto {
     example: 'vie',
   })
   language: string;
+
+  @ApiProperty({
+    description: 'IPFS CID of the uploaded image file',
+    required: false,
+  })
+  ipfs_cid?: string;
+
+  @ApiProperty({
+    description: 'IPFS Gateway URL of the uploaded image file',
+    required: false,
+  })
+  ipfs_url?: string;
+
+  @ApiProperty({
+    description: 'SHA-3 hash of the uploaded image file',
+    required: false,
+  })
+  sha3_hash?: string;
 }
 
 export class DiplomaDataDto {
@@ -138,4 +156,22 @@ export class DiplomaExtractionResponseDto {
     required: false,
   })
   validationErrors?: Record<string, string>;
+
+  @ApiProperty({
+    description: 'IPFS CID of the uploaded input file',
+    required: false,
+  })
+  ipfs_cid?: string;
+
+  @ApiProperty({
+    description: 'IPFS Gateway URL of the uploaded input file',
+    required: false,
+  })
+  ipfs_url?: string;
+
+  @ApiProperty({
+    description: 'SHA-3 hash of the uploaded input file',
+    required: false,
+  })
+  sha3_hash?: string;
 }

@@ -103,6 +103,7 @@ model Certificate {
   serialNumber       String?
   registryNumber     String?
   ipfs_cid           String?
+  file_url           String?
   tx_hash            String?
   block_number       Int?
   gas_used           String?
