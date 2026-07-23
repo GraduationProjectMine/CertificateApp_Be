@@ -14,10 +14,9 @@ export class UpdateStaffDto {
   @IsOptional()
   email?: string;
 
-  @ApiPropertyOptional({ example: 'ACTIVE', description: 'Status of staff account' })
-  @IsString()
+  @ApiPropertyOptional({ example: false, description: 'Active status of staff account' })
   @IsOptional()
-  status?: string;
+  isActive?: boolean;
 
   @ApiPropertyOptional({ example: 'STAFF', description: 'Role of staff account' })
   @IsString()

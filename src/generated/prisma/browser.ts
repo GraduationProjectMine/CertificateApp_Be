@@ -23,11 +23,6 @@ export * from './enums.js';
  */
 export type IssuingOrganization = Prisma.IssuingOrganizationModel
 /**
- * Model SuperAdmin
- * 
- */
-export type SuperAdmin = Prisma.SuperAdminModel
-/**
  * Model StaffAccount
  * 
  */
@@ -37,6 +32,16 @@ export type StaffAccount = Prisma.StaffAccountModel
  * 
  */
 export type StudentAccount = Prisma.StudentAccountModel
+/**
+ * Model Notification
+ * 
+ */
+export type Notification = Prisma.NotificationModel
+/**
+ * Model StudentImportBatch
+ * 
+ */
+export type StudentImportBatch = Prisma.StudentImportBatchModel
 /**
  * Model CertificateTemplate
  * 

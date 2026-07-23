@@ -1,5 +1,13 @@
-import { Controller, Post, Body, BadRequestException } from '@nestjs/common';
-import { ApiTags, ApiBody, ApiResponse, ApiOperation } from '@nestjs/swagger';
+import {
+  Controller,
+  Post,
+  Body,
+  BadRequestException,
+  UseInterceptors,
+  UploadedFile,
+} from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { ApiTags, ApiBody, ApiResponse, ApiOperation, ApiConsumes } from '@nestjs/swagger';
 import { IpfsService } from './ipfs.service';
 import { StoreCertificateDto, StoreCertificateResponseDto } from './ipfs.dto';
 
@@ -7,6 +15,44 @@ import { StoreCertificateDto, StoreCertificateResponseDto } from './ipfs.dto';
 @Controller('ipfs')
 export class IpfsController {
   constructor(private readonly ipfsService: IpfsService) {}
+
+  @Post('upload-file')
+  @UseInterceptors(FileInterceptor('file'))
+  @ApiOperation({
+    summary: 'Upload binary file (image, PDF, diploma scan) directly to IPFS',
+    description:
+      'Pins the uploaded binary file directly to IPFS via Pinata API and calculates its SHA-3 hash, returning the CID and gateway URL.',
+  })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        file: {
+          type: 'string',
+          format: 'binary',
+          description: 'File to upload to IPFS (image, pdf, etc.)',
+        },
+      },
+      required: ['file'],
+    },
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'File successfully uploaded and pinned to IPFS',
+  })
+  async uploadFile(@UploadedFile() file: any) {
+    if (!file) {
+      throw new BadRequestException('No file uploaded');
+    }
+
+    const fileName = file.originalname || `file_${Date.now()}`;
+    return this.ipfsService.storeFileToIpfs(
+      file.buffer,
+      fileName,
+      file.mimetype,
+    );
+  }
 
   @Post('store-certificate')
   @ApiOperation({

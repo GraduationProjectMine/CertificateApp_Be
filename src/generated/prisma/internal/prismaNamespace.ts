@@ -385,9 +385,10 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 export const ModelName = {
   IssuingOrganization: 'IssuingOrganization',
-  SuperAdmin: 'SuperAdmin',
   StaffAccount: 'StaffAccount',
   StudentAccount: 'StudentAccount',
+  Notification: 'Notification',
+  StudentImportBatch: 'StudentImportBatch',
   CertificateTemplate: 'CertificateTemplate',
   Certificate: 'Certificate',
   IssuanceBatch: 'IssuanceBatch',
@@ -408,7 +409,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "issuingOrganization" | "superAdmin" | "staffAccount" | "studentAccount" | "certificateTemplate" | "certificate" | "issuanceBatch" | "issuanceBatchItem" | "auditLog"
+    modelProps: "issuingOrganization" | "staffAccount" | "studentAccount" | "notification" | "studentImportBatch" | "certificateTemplate" | "certificate" | "issuanceBatch" | "issuanceBatchItem" | "auditLog"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -475,72 +476,6 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.IssuingOrganizationCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.IssuingOrganizationCountAggregateOutputType> | number
-        }
-      }
-    }
-    SuperAdmin: {
-      payload: Prisma.$SuperAdminPayload<ExtArgs>
-      fields: Prisma.SuperAdminFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.SuperAdminFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SuperAdminPayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.SuperAdminFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SuperAdminPayload>
-        }
-        findFirst: {
-          args: Prisma.SuperAdminFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SuperAdminPayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.SuperAdminFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SuperAdminPayload>
-        }
-        findMany: {
-          args: Prisma.SuperAdminFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SuperAdminPayload>[]
-        }
-        create: {
-          args: Prisma.SuperAdminCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SuperAdminPayload>
-        }
-        createMany: {
-          args: Prisma.SuperAdminCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        delete: {
-          args: Prisma.SuperAdminDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SuperAdminPayload>
-        }
-        update: {
-          args: Prisma.SuperAdminUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SuperAdminPayload>
-        }
-        deleteMany: {
-          args: Prisma.SuperAdminDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.SuperAdminUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        upsert: {
-          args: Prisma.SuperAdminUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SuperAdminPayload>
-        }
-        aggregate: {
-          args: Prisma.SuperAdminAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateSuperAdmin>
-        }
-        groupBy: {
-          args: Prisma.SuperAdminGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.SuperAdminGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.SuperAdminCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.SuperAdminCountAggregateOutputType> | number
         }
       }
     }
@@ -673,6 +608,138 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.StudentAccountCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.StudentAccountCountAggregateOutputType> | number
+        }
+      }
+    }
+    Notification: {
+      payload: Prisma.$NotificationPayload<ExtArgs>
+      fields: Prisma.NotificationFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.NotificationFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.NotificationFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload>
+        }
+        findFirst: {
+          args: Prisma.NotificationFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.NotificationFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload>
+        }
+        findMany: {
+          args: Prisma.NotificationFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload>[]
+        }
+        create: {
+          args: Prisma.NotificationCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload>
+        }
+        createMany: {
+          args: Prisma.NotificationCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.NotificationDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload>
+        }
+        update: {
+          args: Prisma.NotificationUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload>
+        }
+        deleteMany: {
+          args: Prisma.NotificationDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.NotificationUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.NotificationUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload>
+        }
+        aggregate: {
+          args: Prisma.NotificationAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateNotification>
+        }
+        groupBy: {
+          args: Prisma.NotificationGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.NotificationGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.NotificationCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.NotificationCountAggregateOutputType> | number
+        }
+      }
+    }
+    StudentImportBatch: {
+      payload: Prisma.$StudentImportBatchPayload<ExtArgs>
+      fields: Prisma.StudentImportBatchFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.StudentImportBatchFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentImportBatchPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.StudentImportBatchFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentImportBatchPayload>
+        }
+        findFirst: {
+          args: Prisma.StudentImportBatchFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentImportBatchPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.StudentImportBatchFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentImportBatchPayload>
+        }
+        findMany: {
+          args: Prisma.StudentImportBatchFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentImportBatchPayload>[]
+        }
+        create: {
+          args: Prisma.StudentImportBatchCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentImportBatchPayload>
+        }
+        createMany: {
+          args: Prisma.StudentImportBatchCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.StudentImportBatchDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentImportBatchPayload>
+        }
+        update: {
+          args: Prisma.StudentImportBatchUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentImportBatchPayload>
+        }
+        deleteMany: {
+          args: Prisma.StudentImportBatchDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.StudentImportBatchUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.StudentImportBatchUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentImportBatchPayload>
+        }
+        aggregate: {
+          args: Prisma.StudentImportBatchAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateStudentImportBatch>
+        }
+        groupBy: {
+          args: Prisma.StudentImportBatchGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.StudentImportBatchGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.StudentImportBatchCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.StudentImportBatchCountAggregateOutputType> | number
         }
       }
     }
@@ -1058,18 +1125,6 @@ export const IssuingOrganizationScalarFieldEnum = {
 export type IssuingOrganizationScalarFieldEnum = (typeof IssuingOrganizationScalarFieldEnum)[keyof typeof IssuingOrganizationScalarFieldEnum]
 
 
-export const SuperAdminScalarFieldEnum = {
-  admin_id: 'admin_id',
-  name: 'name',
-  email: 'email',
-  password: 'password',
-  status: 'status',
-  createdAt: 'createdAt'
-} as const
-
-export type SuperAdminScalarFieldEnum = (typeof SuperAdminScalarFieldEnum)[keyof typeof SuperAdminScalarFieldEnum]
-
-
 export const StaffAccountScalarFieldEnum = {
   staff_id: 'staff_id',
   organization_id: 'organization_id',
@@ -1078,7 +1133,7 @@ export const StaffAccountScalarFieldEnum = {
   email: 'email',
   password: 'password',
   role: 'role',
-  status: 'status',
+  isActive: 'isActive',
   createdAt: 'createdAt'
 } as const
 
@@ -1092,11 +1147,43 @@ export const StudentAccountScalarFieldEnum = {
   organization_name: 'organization_name',
   email: 'email',
   password: 'password',
-  status: 'status',
-  createdAt: 'createdAt'
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  imported_by: 'imported_by',
+  import_batch_id: 'import_batch_id'
 } as const
 
 export type StudentAccountScalarFieldEnum = (typeof StudentAccountScalarFieldEnum)[keyof typeof StudentAccountScalarFieldEnum]
+
+
+export const NotificationScalarFieldEnum = {
+  id: 'id',
+  student_id: 'student_id',
+  organization_id: 'organization_id',
+  title: 'title',
+  message: 'message',
+  type: 'type',
+  related_id: 'related_id',
+  is_read: 'is_read',
+  createdAt: 'createdAt'
+} as const
+
+export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum]
+
+
+export const StudentImportBatchScalarFieldEnum = {
+  id: 'id',
+  organization_id: 'organization_id',
+  created_by_id: 'created_by_id',
+  created_by_name: 'created_by_name',
+  file_name: 'file_name',
+  total_rows: 'total_rows',
+  success_rows: 'success_rows',
+  failed_rows: 'failed_rows',
+  createdAt: 'createdAt'
+} as const
+
+export type StudentImportBatchScalarFieldEnum = (typeof StudentImportBatchScalarFieldEnum)[keyof typeof StudentImportBatchScalarFieldEnum]
 
 
 export const CertificateTemplateScalarFieldEnum = {
@@ -1134,6 +1221,7 @@ export const CertificateScalarFieldEnum = {
   serialNumber: 'serialNumber',
   registryNumber: 'registryNumber',
   ipfs_cid: 'ipfs_cid',
+  file_url: 'file_url',
   tx_hash: 'tx_hash',
   block_number: 'block_number',
   gas_used: 'gas_used',
@@ -1241,17 +1329,6 @@ export const IssuingOrganizationOrderByRelevanceFieldEnum = {
 export type IssuingOrganizationOrderByRelevanceFieldEnum = (typeof IssuingOrganizationOrderByRelevanceFieldEnum)[keyof typeof IssuingOrganizationOrderByRelevanceFieldEnum]
 
 
-export const SuperAdminOrderByRelevanceFieldEnum = {
-  admin_id: 'admin_id',
-  name: 'name',
-  email: 'email',
-  password: 'password',
-  status: 'status'
-} as const
-
-export type SuperAdminOrderByRelevanceFieldEnum = (typeof SuperAdminOrderByRelevanceFieldEnum)[keyof typeof SuperAdminOrderByRelevanceFieldEnum]
-
-
 export const StaffAccountOrderByRelevanceFieldEnum = {
   staff_id: 'staff_id',
   organization_id: 'organization_id',
@@ -1259,8 +1336,7 @@ export const StaffAccountOrderByRelevanceFieldEnum = {
   organization_name: 'organization_name',
   email: 'email',
   password: 'password',
-  role: 'role',
-  status: 'status'
+  role: 'role'
 } as const
 
 export type StaffAccountOrderByRelevanceFieldEnum = (typeof StaffAccountOrderByRelevanceFieldEnum)[keyof typeof StaffAccountOrderByRelevanceFieldEnum]
@@ -1273,10 +1349,35 @@ export const StudentAccountOrderByRelevanceFieldEnum = {
   organization_name: 'organization_name',
   email: 'email',
   password: 'password',
-  status: 'status'
+  imported_by: 'imported_by',
+  import_batch_id: 'import_batch_id'
 } as const
 
 export type StudentAccountOrderByRelevanceFieldEnum = (typeof StudentAccountOrderByRelevanceFieldEnum)[keyof typeof StudentAccountOrderByRelevanceFieldEnum]
+
+
+export const NotificationOrderByRelevanceFieldEnum = {
+  id: 'id',
+  student_id: 'student_id',
+  organization_id: 'organization_id',
+  title: 'title',
+  message: 'message',
+  type: 'type',
+  related_id: 'related_id'
+} as const
+
+export type NotificationOrderByRelevanceFieldEnum = (typeof NotificationOrderByRelevanceFieldEnum)[keyof typeof NotificationOrderByRelevanceFieldEnum]
+
+
+export const StudentImportBatchOrderByRelevanceFieldEnum = {
+  id: 'id',
+  organization_id: 'organization_id',
+  created_by_id: 'created_by_id',
+  created_by_name: 'created_by_name',
+  file_name: 'file_name'
+} as const
+
+export type StudentImportBatchOrderByRelevanceFieldEnum = (typeof StudentImportBatchOrderByRelevanceFieldEnum)[keyof typeof StudentImportBatchOrderByRelevanceFieldEnum]
 
 
 export const JsonNullValueFilter = {
@@ -1327,6 +1428,7 @@ export const CertificateOrderByRelevanceFieldEnum = {
   serialNumber: 'serialNumber',
   registryNumber: 'registryNumber',
   ipfs_cid: 'ipfs_cid',
+  file_url: 'file_url',
   tx_hash: 'tx_hash',
   gas_used: 'gas_used',
   status: 'status',
@@ -1404,6 +1506,13 @@ export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel
 
 
 /**
+ * Reference to a field of type 'Int'
+ */
+export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
+    
+
+
+/**
  * Reference to a field of type 'Json'
  */
 export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
@@ -1414,13 +1523,6 @@ export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'J
  * Reference to a field of type 'QueryMode'
  */
 export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
-    
-
-
-/**
- * Reference to a field of type 'Int'
- */
-export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
     
 
 
@@ -1541,9 +1643,10 @@ export type PrismaClientOptions = ({
 }
 export type GlobalOmitConfig = {
   issuingOrganization?: Prisma.IssuingOrganizationOmit
-  superAdmin?: Prisma.SuperAdminOmit
   staffAccount?: Prisma.StaffAccountOmit
   studentAccount?: Prisma.StudentAccountOmit
+  notification?: Prisma.NotificationOmit
+  studentImportBatch?: Prisma.StudentImportBatchOmit
   certificateTemplate?: Prisma.CertificateTemplateOmit
   certificate?: Prisma.CertificateOmit
   issuanceBatch?: Prisma.IssuanceBatchOmit

@@ -32,7 +32,7 @@ export type StaffAccountMinAggregateOutputType = {
   email: string | null
   password: string | null
   role: string | null
-  status: string | null
+  isActive: boolean | null
   createdAt: Date | null
 }
 
@@ -44,7 +44,7 @@ export type StaffAccountMaxAggregateOutputType = {
   email: string | null
   password: string | null
   role: string | null
-  status: string | null
+  isActive: boolean | null
   createdAt: Date | null
 }
 
@@ -56,7 +56,7 @@ export type StaffAccountCountAggregateOutputType = {
   email: number
   password: number
   role: number
-  status: number
+  isActive: number
   createdAt: number
   _all: number
 }
@@ -70,7 +70,7 @@ export type StaffAccountMinAggregateInputType = {
   email?: true
   password?: true
   role?: true
-  status?: true
+  isActive?: true
   createdAt?: true
 }
 
@@ -82,7 +82,7 @@ export type StaffAccountMaxAggregateInputType = {
   email?: true
   password?: true
   role?: true
-  status?: true
+  isActive?: true
   createdAt?: true
 }
 
@@ -94,7 +94,7 @@ export type StaffAccountCountAggregateInputType = {
   email?: true
   password?: true
   role?: true
-  status?: true
+  isActive?: true
   createdAt?: true
   _all?: true
 }
@@ -179,7 +179,7 @@ export type StaffAccountGroupByOutputType = {
   email: string
   password: string
   role: string
-  status: string
+  isActive: boolean
   createdAt: Date
   _count: StaffAccountCountAggregateOutputType | null
   _min: StaffAccountMinAggregateOutputType | null
@@ -212,7 +212,7 @@ export type StaffAccountWhereInput = {
   email?: Prisma.StringFilter<"StaffAccount"> | string
   password?: Prisma.StringFilter<"StaffAccount"> | string
   role?: Prisma.StringFilter<"StaffAccount"> | string
-  status?: Prisma.StringFilter<"StaffAccount"> | string
+  isActive?: Prisma.BoolFilter<"StaffAccount"> | boolean
   createdAt?: Prisma.DateTimeFilter<"StaffAccount"> | Date | string
   organization?: Prisma.XOR<Prisma.IssuingOrganizationScalarRelationFilter, Prisma.IssuingOrganizationWhereInput>
 }
@@ -225,7 +225,7 @@ export type StaffAccountOrderByWithRelationInput = {
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
   role?: Prisma.SortOrder
-  status?: Prisma.SortOrder
+  isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   organization?: Prisma.IssuingOrganizationOrderByWithRelationInput
   _relevance?: Prisma.StaffAccountOrderByRelevanceInput
@@ -242,7 +242,7 @@ export type StaffAccountWhereUniqueInput = Prisma.AtLeast<{
   organization_name?: Prisma.StringFilter<"StaffAccount"> | string
   password?: Prisma.StringFilter<"StaffAccount"> | string
   role?: Prisma.StringFilter<"StaffAccount"> | string
-  status?: Prisma.StringFilter<"StaffAccount"> | string
+  isActive?: Prisma.BoolFilter<"StaffAccount"> | boolean
   createdAt?: Prisma.DateTimeFilter<"StaffAccount"> | Date | string
   organization?: Prisma.XOR<Prisma.IssuingOrganizationScalarRelationFilter, Prisma.IssuingOrganizationWhereInput>
 }, "staff_id" | "email">
@@ -255,7 +255,7 @@ export type StaffAccountOrderByWithAggregationInput = {
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
   role?: Prisma.SortOrder
-  status?: Prisma.SortOrder
+  isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.StaffAccountCountOrderByAggregateInput
   _max?: Prisma.StaffAccountMaxOrderByAggregateInput
@@ -273,7 +273,7 @@ export type StaffAccountScalarWhereWithAggregatesInput = {
   email?: Prisma.StringWithAggregatesFilter<"StaffAccount"> | string
   password?: Prisma.StringWithAggregatesFilter<"StaffAccount"> | string
   role?: Prisma.StringWithAggregatesFilter<"StaffAccount"> | string
-  status?: Prisma.StringWithAggregatesFilter<"StaffAccount"> | string
+  isActive?: Prisma.BoolWithAggregatesFilter<"StaffAccount"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"StaffAccount"> | Date | string
 }
 
@@ -284,7 +284,7 @@ export type StaffAccountCreateInput = {
   email: string
   password: string
   role?: string
-  status?: string
+  isActive?: boolean
   createdAt?: Date | string
   organization: Prisma.IssuingOrganizationCreateNestedOneWithoutStaff_accountsInput
 }
@@ -297,7 +297,7 @@ export type StaffAccountUncheckedCreateInput = {
   email: string
   password: string
   role?: string
-  status?: string
+  isActive?: boolean
   createdAt?: Date | string
 }
 
@@ -308,7 +308,7 @@ export type StaffAccountUpdateInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organization?: Prisma.IssuingOrganizationUpdateOneRequiredWithoutStaff_accountsNestedInput
 }
@@ -321,7 +321,7 @@ export type StaffAccountUncheckedUpdateInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -333,7 +333,7 @@ export type StaffAccountCreateManyInput = {
   email: string
   password: string
   role?: string
-  status?: string
+  isActive?: boolean
   createdAt?: Date | string
 }
 
@@ -344,7 +344,7 @@ export type StaffAccountUpdateManyMutationInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -356,7 +356,7 @@ export type StaffAccountUncheckedUpdateManyInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -384,7 +384,7 @@ export type StaffAccountCountOrderByAggregateInput = {
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
   role?: Prisma.SortOrder
-  status?: Prisma.SortOrder
+  isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -396,7 +396,7 @@ export type StaffAccountMaxOrderByAggregateInput = {
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
   role?: Prisma.SortOrder
-  status?: Prisma.SortOrder
+  isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -408,7 +408,7 @@ export type StaffAccountMinOrderByAggregateInput = {
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
   role?: Prisma.SortOrder
-  status?: Prisma.SortOrder
+  isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -461,7 +461,7 @@ export type StaffAccountCreateWithoutOrganizationInput = {
   email: string
   password: string
   role?: string
-  status?: string
+  isActive?: boolean
   createdAt?: Date | string
 }
 
@@ -472,7 +472,7 @@ export type StaffAccountUncheckedCreateWithoutOrganizationInput = {
   email: string
   password: string
   role?: string
-  status?: string
+  isActive?: boolean
   createdAt?: Date | string
 }
 
@@ -513,7 +513,7 @@ export type StaffAccountScalarWhereInput = {
   email?: Prisma.StringFilter<"StaffAccount"> | string
   password?: Prisma.StringFilter<"StaffAccount"> | string
   role?: Prisma.StringFilter<"StaffAccount"> | string
-  status?: Prisma.StringFilter<"StaffAccount"> | string
+  isActive?: Prisma.BoolFilter<"StaffAccount"> | boolean
   createdAt?: Prisma.DateTimeFilter<"StaffAccount"> | Date | string
 }
 
@@ -524,7 +524,7 @@ export type StaffAccountCreateManyOrganizationInput = {
   email: string
   password: string
   role?: string
-  status?: string
+  isActive?: boolean
   createdAt?: Date | string
 }
 
@@ -535,7 +535,7 @@ export type StaffAccountUpdateWithoutOrganizationInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -546,7 +546,7 @@ export type StaffAccountUncheckedUpdateWithoutOrganizationInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -557,7 +557,7 @@ export type StaffAccountUncheckedUpdateManyWithoutOrganizationInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -571,7 +571,7 @@ export type StaffAccountSelect<ExtArgs extends runtime.Types.Extensions.Internal
   email?: boolean
   password?: boolean
   role?: boolean
-  status?: boolean
+  isActive?: boolean
   createdAt?: boolean
   organization?: boolean | Prisma.IssuingOrganizationDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["staffAccount"]>
@@ -586,11 +586,11 @@ export type StaffAccountSelectScalar = {
   email?: boolean
   password?: boolean
   role?: boolean
-  status?: boolean
+  isActive?: boolean
   createdAt?: boolean
 }
 
-export type StaffAccountOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"staff_id" | "organization_id" | "name" | "organization_name" | "email" | "password" | "role" | "status" | "createdAt", ExtArgs["result"]["staffAccount"]>
+export type StaffAccountOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"staff_id" | "organization_id" | "name" | "organization_name" | "email" | "password" | "role" | "isActive" | "createdAt", ExtArgs["result"]["staffAccount"]>
 export type StaffAccountInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   organization?: boolean | Prisma.IssuingOrganizationDefaultArgs<ExtArgs>
 }
@@ -608,7 +608,7 @@ export type $StaffAccountPayload<ExtArgs extends runtime.Types.Extensions.Intern
     email: string
     password: string
     role: string
-    status: string
+    isActive: boolean
     createdAt: Date
   }, ExtArgs["result"]["staffAccount"]>
   composites: {}
@@ -987,7 +987,7 @@ export interface StaffAccountFieldRefs {
   readonly email: Prisma.FieldRef<"StaffAccount", 'String'>
   readonly password: Prisma.FieldRef<"StaffAccount", 'String'>
   readonly role: Prisma.FieldRef<"StaffAccount", 'String'>
-  readonly status: Prisma.FieldRef<"StaffAccount", 'String'>
+  readonly isActive: Prisma.FieldRef<"StaffAccount", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"StaffAccount", 'DateTime'>
 }
     

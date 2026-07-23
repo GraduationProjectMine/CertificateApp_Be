@@ -5,13 +5,17 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
+import * as crypto from 'crypto';
+import { verifyMessage } from 'ethers';
 import { StaffService } from '../staff/staff.service';
 import { StudentService } from '../student/student.service';
 import { IssuerService } from '../issuer/issuer.service';
-import { SuperAdminService } from '../super-admin/super-admin.service';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
+import { MetaMaskRegisterDto } from './dto/metamask-register.dto';
+
+import { BlockchainService } from '../../core/blockchain/blockchain.service';
 
 const SALT_ROUNDS = 12;
 
@@ -21,9 +25,9 @@ export class AuthService {
     private readonly staffService: StaffService,
     private readonly studentService: StudentService,
     private readonly issuerService: IssuerService,
-    private readonly superAdminService: SuperAdminService,
     private readonly prisma: PrismaService,
     private readonly jwtService: JwtService,
+    private readonly blockchainService: BlockchainService,
   ) {}
 
   async generateTokens(payload: any) {
@@ -80,35 +84,6 @@ export class AuthService {
   }
 
   async login(dto: LoginDto): Promise<any> {
-    // Check super admin first
-    const superAdmin = await this.prisma.superAdmin.findUnique({
-      where: { email: dto.email },
-    });
-
-    if (superAdmin) {
-      const isPasswordValid = await bcrypt.compare(dto.password, superAdmin.password);
-      if (!isPasswordValid) {
-        throw new UnauthorizedException('Invalid email or password');
-      }
-
-      const { accessToken, refreshToken } = await this.generateTokens({
-        sub: superAdmin.admin_id,
-        email: superAdmin.email,
-        name: superAdmin.name,
-        role: 'sysadmin',
-        organization_id: '',
-      });
-
-      return {
-        id: superAdmin.admin_id,
-        email: superAdmin.email,
-        name: superAdmin.name,
-        role: 'sysadmin',
-        accessToken,
-        refreshToken,
-      };
-    }
-
     const existingStaff = await this.staffService.findByEmail(dto.email);
     const existingStudent = await this.studentService.findByEmail(dto.email);
 
@@ -120,6 +95,10 @@ export class AuthService {
     const isPasswordValid = await bcrypt.compare(dto.password, user.password);
     if (!isPasswordValid) {
       throw new UnauthorizedException('Invalid email or password');
+    }
+
+    if (!user.isActive) {
+      throw new UnauthorizedException('Tài khoản đã bị khóa hoặc không hoạt động.');
     }
 
     let role: 'issuer' | 'staff' | 'student';
@@ -170,6 +149,10 @@ export class AuthService {
         throw new UnauthorizedException('User not found');
       }
 
+      if (!user.isActive) {
+        throw new UnauthorizedException('Tài khoản đã bị khóa hoặc không hoạt động.');
+      }
+
       let role: 'issuer' | 'staff' | 'student';
       let name: string;
       let id: string;
@@ -201,5 +184,166 @@ export class AuthService {
     } catch (e) {
       throw new UnauthorizedException('Invalid or expired refresh token');
     }
+  }
+
+  async generateMetaMaskNonce(walletAddress: string) {
+    const nonce = crypto.randomUUID();
+    const message = `Welcome to Certificate Verification Platform!\n\nSign this message to prove you own this wallet address.\n\nWallet: ${walletAddress.toLowerCase()}\nNonce: ${nonce}`;
+    const tempToken = this.jwtService.sign(
+      { walletAddress: walletAddress.toLowerCase(), nonce, message },
+      { expiresIn: '5m' },
+    );
+    return { message, tempToken };
+  }
+
+  async verifyMetaMaskSignature(
+    walletAddress: string,
+    signature: string,
+    tempToken: string,
+  ): Promise<any> {
+    let payload: any;
+    try {
+      payload = this.jwtService.verify(tempToken);
+    } catch (e) {
+      throw new UnauthorizedException(
+        'Phiên làm việc đã hết hạn hoặc không hợp lệ. Vui lòng thử lại.',
+      );
+    }
+
+    if (!payload || !payload.walletAddress || !payload.message) {
+      throw new UnauthorizedException('Token tạm thời không hợp lệ.');
+    }
+
+    if (payload.walletAddress.toLowerCase() !== walletAddress.toLowerCase()) {
+      throw new UnauthorizedException('Địa chỉ ví không khớp với yêu cầu.');
+    }
+
+    let recoveredAddress: string;
+    try {
+      recoveredAddress = verifyMessage(payload.message, signature);
+    } catch (e) {
+      throw new UnauthorizedException('Chữ ký không hợp lệ.');
+    }
+
+    if (recoveredAddress.toLowerCase() !== walletAddress.toLowerCase()) {
+      throw new UnauthorizedException('Xác minh chữ ký ví thất bại.');
+    }
+
+    return payload;
+  }
+
+  async loginWithMetaMask(
+    walletAddress: string,
+    signature: string,
+    tempToken: string,
+  ): Promise<any> {
+    await this.verifyMetaMaskSignature(walletAddress, signature, tempToken);
+
+    const org = await this.issuerService.findByWalletAddress(walletAddress);
+    if (!org) {
+      throw new UnauthorizedException(
+        'Địa chỉ ví này chưa được đăng ký cho tổ chức nào. Vui lòng đăng ký tài khoản mới.',
+      );
+    }
+
+    const owner = await this.staffService.findOwnerByOrganization(
+      org.organization_id,
+    );
+    if (!owner) {
+      throw new UnauthorizedException(
+        'Không tìm thấy tài khoản quản trị viên của tổ chức.',
+      );
+    }
+
+    if (!owner.isActive) {
+      throw new UnauthorizedException('Tài khoản đã bị khóa hoặc không hoạt động.');
+    }
+
+    const { accessToken, refreshToken } = await this.generateTokens({
+      sub: owner.staff_id,
+      email: owner.email,
+      name: owner.name,
+      role: 'issuer',
+      organization_id: org.organization_id,
+    });
+
+    return {
+      id: owner.staff_id,
+      email: owner.email,
+      name: owner.name,
+      role: 'issuer',
+      accessToken,
+      refreshToken,
+    };
+  }
+
+  async registerWithMetaMask(dto: MetaMaskRegisterDto): Promise<any> {
+    const { walletAddress, signature, tempToken, email, name, adminName } = dto;
+
+    await this.verifyMetaMaskSignature(walletAddress, signature, tempToken);
+
+    const existingOrgByWallet =
+      await this.issuerService.findByWalletAddress(walletAddress);
+    if (existingOrgByWallet) {
+      throw new ConflictException(
+        'Địa chỉ ví này đã được đăng ký cho tổ chức khác.',
+      );
+    }
+
+    const existingOrgByEmail = await this.issuerService.findByEmail(email);
+    if (existingOrgByEmail) {
+      throw new ConflictException('Tổ chức với email này đã tồn tại.');
+    }
+
+    const existingStaff = await this.staffService.findByEmail(email);
+    if (existingStaff) {
+      throw new ConflictException('Email này đã được đăng ký.');
+    }
+
+    const organization = await this.issuerService.create(
+      name,
+      email,
+      walletAddress,
+    );
+
+    // Automatically authorize this wallet address as an issuer on the blockchain smart contract
+    try {
+      if (this.blockchainService.isInitialized()) {
+        await this.blockchainService.authorizeIssuer(walletAddress);
+      }
+    } catch (err) {
+      // Log warning if blockchain authorization fails (e.g. node offline in dev)
+      console.warn(`Could not authorize wallet ${walletAddress} on blockchain:`, err);
+    }
+
+    const randomPassword = crypto.randomUUID();
+    const hashedPassword = await bcrypt.hash(randomPassword, SALT_ROUNDS);
+    const staffName = adminName || name;
+
+    const created = await this.staffService.create(
+      staffName,
+      email,
+      hashedPassword,
+      organization.organization_id,
+      organization.organization_name,
+      'ISSUER',
+    );
+
+    const { accessToken, refreshToken } = await this.generateTokens({
+      sub: created.staff_id,
+      email: created.email,
+      name: created.name,
+      role: 'issuer',
+      organization_id: organization.organization_id,
+    });
+
+    return {
+      id: created.staff_id,
+      email: created.email,
+      name: created.name,
+      role: 'issuer',
+      accessToken,
+      refreshToken,
+    };
   }
 }

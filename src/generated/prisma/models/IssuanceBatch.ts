@@ -566,14 +566,6 @@ export type IssuanceBatchUncheckedUpdateManyWithoutOrganizationNestedInput = {
   deleteMany?: Prisma.IssuanceBatchScalarWhereInput | Prisma.IssuanceBatchScalarWhereInput[]
 }
 
-export type IntFieldUpdateOperationsInput = {
-  set?: number
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
 export type IssuanceBatchCreateNestedOneWithoutItemsInput = {
   create?: Prisma.XOR<Prisma.IssuanceBatchCreateWithoutItemsInput, Prisma.IssuanceBatchUncheckedCreateWithoutItemsInput>
   connectOrCreate?: Prisma.IssuanceBatchCreateOrConnectWithoutItemsInput

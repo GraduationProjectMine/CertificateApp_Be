@@ -13,7 +13,7 @@ import { TemplatesModule } from './modules/templates/templates.module';
 import { AuditModule } from './modules/audit/audit.module';
 import { BatchesModule } from './modules/batches/batches.module';
 import { MonitorModule } from './modules/monitor/monitor.module';
-import { SuperAdminModule } from './modules/super-admin/super-admin.module';
+import { NotificationsModule } from './modules/notifications/notifications.module';
 
 @Module({
   imports: [
@@ -29,7 +29,7 @@ import { SuperAdminModule } from './modules/super-admin/super-admin.module';
     TemplatesModule,
     BatchesModule,
     MonitorModule,
-    SuperAdminModule,
+    NotificationsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

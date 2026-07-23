@@ -52,9 +52,10 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   IssuingOrganization: 'IssuingOrganization',
-  SuperAdmin: 'SuperAdmin',
   StaffAccount: 'StaffAccount',
   StudentAccount: 'StudentAccount',
+  Notification: 'Notification',
+  StudentImportBatch: 'StudentImportBatch',
   CertificateTemplate: 'CertificateTemplate',
   Certificate: 'Certificate',
   IssuanceBatch: 'IssuanceBatch',
@@ -91,18 +92,6 @@ export const IssuingOrganizationScalarFieldEnum = {
 export type IssuingOrganizationScalarFieldEnum = (typeof IssuingOrganizationScalarFieldEnum)[keyof typeof IssuingOrganizationScalarFieldEnum]
 
 
-export const SuperAdminScalarFieldEnum = {
-  admin_id: 'admin_id',
-  name: 'name',
-  email: 'email',
-  password: 'password',
-  status: 'status',
-  createdAt: 'createdAt'
-} as const
-
-export type SuperAdminScalarFieldEnum = (typeof SuperAdminScalarFieldEnum)[keyof typeof SuperAdminScalarFieldEnum]
-
-
 export const StaffAccountScalarFieldEnum = {
   staff_id: 'staff_id',
   organization_id: 'organization_id',
@@ -111,7 +100,7 @@ export const StaffAccountScalarFieldEnum = {
   email: 'email',
   password: 'password',
   role: 'role',
-  status: 'status',
+  isActive: 'isActive',
   createdAt: 'createdAt'
 } as const
 
@@ -125,11 +114,43 @@ export const StudentAccountScalarFieldEnum = {
   organization_name: 'organization_name',
   email: 'email',
   password: 'password',
-  status: 'status',
-  createdAt: 'createdAt'
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  imported_by: 'imported_by',
+  import_batch_id: 'import_batch_id'
 } as const
 
 export type StudentAccountScalarFieldEnum = (typeof StudentAccountScalarFieldEnum)[keyof typeof StudentAccountScalarFieldEnum]
+
+
+export const NotificationScalarFieldEnum = {
+  id: 'id',
+  student_id: 'student_id',
+  organization_id: 'organization_id',
+  title: 'title',
+  message: 'message',
+  type: 'type',
+  related_id: 'related_id',
+  is_read: 'is_read',
+  createdAt: 'createdAt'
+} as const
+
+export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum]
+
+
+export const StudentImportBatchScalarFieldEnum = {
+  id: 'id',
+  organization_id: 'organization_id',
+  created_by_id: 'created_by_id',
+  created_by_name: 'created_by_name',
+  file_name: 'file_name',
+  total_rows: 'total_rows',
+  success_rows: 'success_rows',
+  failed_rows: 'failed_rows',
+  createdAt: 'createdAt'
+} as const
+
+export type StudentImportBatchScalarFieldEnum = (typeof StudentImportBatchScalarFieldEnum)[keyof typeof StudentImportBatchScalarFieldEnum]
 
 
 export const CertificateTemplateScalarFieldEnum = {
@@ -167,6 +188,7 @@ export const CertificateScalarFieldEnum = {
   serialNumber: 'serialNumber',
   registryNumber: 'registryNumber',
   ipfs_cid: 'ipfs_cid',
+  file_url: 'file_url',
   tx_hash: 'tx_hash',
   block_number: 'block_number',
   gas_used: 'gas_used',
@@ -274,17 +296,6 @@ export const IssuingOrganizationOrderByRelevanceFieldEnum = {
 export type IssuingOrganizationOrderByRelevanceFieldEnum = (typeof IssuingOrganizationOrderByRelevanceFieldEnum)[keyof typeof IssuingOrganizationOrderByRelevanceFieldEnum]
 
 
-export const SuperAdminOrderByRelevanceFieldEnum = {
-  admin_id: 'admin_id',
-  name: 'name',
-  email: 'email',
-  password: 'password',
-  status: 'status'
-} as const
-
-export type SuperAdminOrderByRelevanceFieldEnum = (typeof SuperAdminOrderByRelevanceFieldEnum)[keyof typeof SuperAdminOrderByRelevanceFieldEnum]
-
-
 export const StaffAccountOrderByRelevanceFieldEnum = {
   staff_id: 'staff_id',
   organization_id: 'organization_id',
@@ -292,8 +303,7 @@ export const StaffAccountOrderByRelevanceFieldEnum = {
   organization_name: 'organization_name',
   email: 'email',
   password: 'password',
-  role: 'role',
-  status: 'status'
+  role: 'role'
 } as const
 
 export type StaffAccountOrderByRelevanceFieldEnum = (typeof StaffAccountOrderByRelevanceFieldEnum)[keyof typeof StaffAccountOrderByRelevanceFieldEnum]
@@ -306,10 +316,35 @@ export const StudentAccountOrderByRelevanceFieldEnum = {
   organization_name: 'organization_name',
   email: 'email',
   password: 'password',
-  status: 'status'
+  imported_by: 'imported_by',
+  import_batch_id: 'import_batch_id'
 } as const
 
 export type StudentAccountOrderByRelevanceFieldEnum = (typeof StudentAccountOrderByRelevanceFieldEnum)[keyof typeof StudentAccountOrderByRelevanceFieldEnum]
+
+
+export const NotificationOrderByRelevanceFieldEnum = {
+  id: 'id',
+  student_id: 'student_id',
+  organization_id: 'organization_id',
+  title: 'title',
+  message: 'message',
+  type: 'type',
+  related_id: 'related_id'
+} as const
+
+export type NotificationOrderByRelevanceFieldEnum = (typeof NotificationOrderByRelevanceFieldEnum)[keyof typeof NotificationOrderByRelevanceFieldEnum]
+
+
+export const StudentImportBatchOrderByRelevanceFieldEnum = {
+  id: 'id',
+  organization_id: 'organization_id',
+  created_by_id: 'created_by_id',
+  created_by_name: 'created_by_name',
+  file_name: 'file_name'
+} as const
+
+export type StudentImportBatchOrderByRelevanceFieldEnum = (typeof StudentImportBatchOrderByRelevanceFieldEnum)[keyof typeof StudentImportBatchOrderByRelevanceFieldEnum]
 
 
 export const JsonNullValueFilter = {
@@ -360,6 +395,7 @@ export const CertificateOrderByRelevanceFieldEnum = {
   serialNumber: 'serialNumber',
   registryNumber: 'registryNumber',
   ipfs_cid: 'ipfs_cid',
+  file_url: 'file_url',
   tx_hash: 'tx_hash',
   gas_used: 'gas_used',
   status: 'status',

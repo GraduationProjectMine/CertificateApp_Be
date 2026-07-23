@@ -56,6 +56,7 @@ export type CertificateMinAggregateOutputType = {
   serialNumber: string | null
   registryNumber: string | null
   ipfs_cid: string | null
+  file_url: string | null
   tx_hash: string | null
   block_number: number | null
   gas_used: string | null
@@ -88,6 +89,7 @@ export type CertificateMaxAggregateOutputType = {
   serialNumber: string | null
   registryNumber: string | null
   ipfs_cid: string | null
+  file_url: string | null
   tx_hash: string | null
   block_number: number | null
   gas_used: string | null
@@ -120,6 +122,7 @@ export type CertificateCountAggregateOutputType = {
   serialNumber: number
   registryNumber: number
   ipfs_cid: number
+  file_url: number
   tx_hash: number
   block_number: number
   gas_used: number
@@ -164,6 +167,7 @@ export type CertificateMinAggregateInputType = {
   serialNumber?: true
   registryNumber?: true
   ipfs_cid?: true
+  file_url?: true
   tx_hash?: true
   block_number?: true
   gas_used?: true
@@ -196,6 +200,7 @@ export type CertificateMaxAggregateInputType = {
   serialNumber?: true
   registryNumber?: true
   ipfs_cid?: true
+  file_url?: true
   tx_hash?: true
   block_number?: true
   gas_used?: true
@@ -228,6 +233,7 @@ export type CertificateCountAggregateInputType = {
   serialNumber?: true
   registryNumber?: true
   ipfs_cid?: true
+  file_url?: true
   tx_hash?: true
   block_number?: true
   gas_used?: true
@@ -347,6 +353,7 @@ export type CertificateGroupByOutputType = {
   serialNumber: string | null
   registryNumber: string | null
   ipfs_cid: string | null
+  file_url: string | null
   tx_hash: string | null
   block_number: number | null
   gas_used: string | null
@@ -402,6 +409,7 @@ export type CertificateWhereInput = {
   serialNumber?: Prisma.StringNullableFilter<"Certificate"> | string | null
   registryNumber?: Prisma.StringNullableFilter<"Certificate"> | string | null
   ipfs_cid?: Prisma.StringNullableFilter<"Certificate"> | string | null
+  file_url?: Prisma.StringNullableFilter<"Certificate"> | string | null
   tx_hash?: Prisma.StringNullableFilter<"Certificate"> | string | null
   block_number?: Prisma.IntNullableFilter<"Certificate"> | number | null
   gas_used?: Prisma.StringNullableFilter<"Certificate"> | string | null
@@ -437,6 +445,7 @@ export type CertificateOrderByWithRelationInput = {
   serialNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   registryNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   ipfs_cid?: Prisma.SortOrderInput | Prisma.SortOrder
+  file_url?: Prisma.SortOrderInput | Prisma.SortOrder
   tx_hash?: Prisma.SortOrderInput | Prisma.SortOrder
   block_number?: Prisma.SortOrderInput | Prisma.SortOrder
   gas_used?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -476,6 +485,7 @@ export type CertificateWhereUniqueInput = Prisma.AtLeast<{
   serialNumber?: Prisma.StringNullableFilter<"Certificate"> | string | null
   registryNumber?: Prisma.StringNullableFilter<"Certificate"> | string | null
   ipfs_cid?: Prisma.StringNullableFilter<"Certificate"> | string | null
+  file_url?: Prisma.StringNullableFilter<"Certificate"> | string | null
   tx_hash?: Prisma.StringNullableFilter<"Certificate"> | string | null
   block_number?: Prisma.IntNullableFilter<"Certificate"> | number | null
   gas_used?: Prisma.StringNullableFilter<"Certificate"> | string | null
@@ -511,6 +521,7 @@ export type CertificateOrderByWithAggregationInput = {
   serialNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   registryNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   ipfs_cid?: Prisma.SortOrderInput | Prisma.SortOrder
+  file_url?: Prisma.SortOrderInput | Prisma.SortOrder
   tx_hash?: Prisma.SortOrderInput | Prisma.SortOrder
   block_number?: Prisma.SortOrderInput | Prisma.SortOrder
   gas_used?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -551,6 +562,7 @@ export type CertificateScalarWhereWithAggregatesInput = {
   serialNumber?: Prisma.StringNullableWithAggregatesFilter<"Certificate"> | string | null
   registryNumber?: Prisma.StringNullableWithAggregatesFilter<"Certificate"> | string | null
   ipfs_cid?: Prisma.StringNullableWithAggregatesFilter<"Certificate"> | string | null
+  file_url?: Prisma.StringNullableWithAggregatesFilter<"Certificate"> | string | null
   tx_hash?: Prisma.StringNullableWithAggregatesFilter<"Certificate"> | string | null
   block_number?: Prisma.IntNullableWithAggregatesFilter<"Certificate"> | number | null
   gas_used?: Prisma.StringNullableWithAggregatesFilter<"Certificate"> | string | null
@@ -580,6 +592,7 @@ export type CertificateCreateInput = {
   serialNumber?: string | null
   registryNumber?: string | null
   ipfs_cid?: string | null
+  file_url?: string | null
   tx_hash?: string | null
   block_number?: number | null
   gas_used?: string | null
@@ -615,6 +628,7 @@ export type CertificateUncheckedCreateInput = {
   serialNumber?: string | null
   registryNumber?: string | null
   ipfs_cid?: string | null
+  file_url?: string | null
   tx_hash?: string | null
   block_number?: number | null
   gas_used?: string | null
@@ -644,6 +658,7 @@ export type CertificateUpdateInput = {
   serialNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registryNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ipfs_cid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  file_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tx_hash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   block_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   gas_used?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -679,6 +694,7 @@ export type CertificateUncheckedUpdateInput = {
   serialNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registryNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ipfs_cid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  file_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tx_hash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   block_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   gas_used?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -711,6 +727,7 @@ export type CertificateCreateManyInput = {
   serialNumber?: string | null
   registryNumber?: string | null
   ipfs_cid?: string | null
+  file_url?: string | null
   tx_hash?: string | null
   block_number?: number | null
   gas_used?: string | null
@@ -740,6 +757,7 @@ export type CertificateUpdateManyMutationInput = {
   serialNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registryNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ipfs_cid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  file_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tx_hash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   block_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   gas_used?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -772,6 +790,7 @@ export type CertificateUncheckedUpdateManyInput = {
   serialNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registryNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ipfs_cid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  file_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tx_hash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   block_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   gas_used?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -820,6 +839,7 @@ export type CertificateCountOrderByAggregateInput = {
   serialNumber?: Prisma.SortOrder
   registryNumber?: Prisma.SortOrder
   ipfs_cid?: Prisma.SortOrder
+  file_url?: Prisma.SortOrder
   tx_hash?: Prisma.SortOrder
   block_number?: Prisma.SortOrder
   gas_used?: Prisma.SortOrder
@@ -857,6 +877,7 @@ export type CertificateMaxOrderByAggregateInput = {
   serialNumber?: Prisma.SortOrder
   registryNumber?: Prisma.SortOrder
   ipfs_cid?: Prisma.SortOrder
+  file_url?: Prisma.SortOrder
   tx_hash?: Prisma.SortOrder
   block_number?: Prisma.SortOrder
   gas_used?: Prisma.SortOrder
@@ -889,6 +910,7 @@ export type CertificateMinOrderByAggregateInput = {
   serialNumber?: Prisma.SortOrder
   registryNumber?: Prisma.SortOrder
   ipfs_cid?: Prisma.SortOrder
+  file_url?: Prisma.SortOrder
   tx_hash?: Prisma.SortOrder
   block_number?: Prisma.SortOrder
   gas_used?: Prisma.SortOrder
@@ -1061,6 +1083,7 @@ export type CertificateCreateWithoutOrganizationInput = {
   serialNumber?: string | null
   registryNumber?: string | null
   ipfs_cid?: string | null
+  file_url?: string | null
   tx_hash?: string | null
   block_number?: number | null
   gas_used?: string | null
@@ -1094,6 +1117,7 @@ export type CertificateUncheckedCreateWithoutOrganizationInput = {
   serialNumber?: string | null
   registryNumber?: string | null
   ipfs_cid?: string | null
+  file_url?: string | null
   tx_hash?: string | null
   block_number?: number | null
   gas_used?: string | null
@@ -1155,6 +1179,7 @@ export type CertificateScalarWhereInput = {
   serialNumber?: Prisma.StringNullableFilter<"Certificate"> | string | null
   registryNumber?: Prisma.StringNullableFilter<"Certificate"> | string | null
   ipfs_cid?: Prisma.StringNullableFilter<"Certificate"> | string | null
+  file_url?: Prisma.StringNullableFilter<"Certificate"> | string | null
   tx_hash?: Prisma.StringNullableFilter<"Certificate"> | string | null
   block_number?: Prisma.IntNullableFilter<"Certificate"> | number | null
   gas_used?: Prisma.StringNullableFilter<"Certificate"> | string | null
@@ -1184,6 +1209,7 @@ export type CertificateCreateWithoutStudentInput = {
   serialNumber?: string | null
   registryNumber?: string | null
   ipfs_cid?: string | null
+  file_url?: string | null
   tx_hash?: string | null
   block_number?: number | null
   gas_used?: string | null
@@ -1217,6 +1243,7 @@ export type CertificateUncheckedCreateWithoutStudentInput = {
   serialNumber?: string | null
   registryNumber?: string | null
   ipfs_cid?: string | null
+  file_url?: string | null
   tx_hash?: string | null
   block_number?: number | null
   gas_used?: string | null
@@ -1272,6 +1299,7 @@ export type CertificateCreateWithoutTemplateInput = {
   serialNumber?: string | null
   registryNumber?: string | null
   ipfs_cid?: string | null
+  file_url?: string | null
   tx_hash?: string | null
   block_number?: number | null
   gas_used?: string | null
@@ -1305,6 +1333,7 @@ export type CertificateUncheckedCreateWithoutTemplateInput = {
   serialNumber?: string | null
   registryNumber?: string | null
   ipfs_cid?: string | null
+  file_url?: string | null
   tx_hash?: string | null
   block_number?: number | null
   gas_used?: string | null
@@ -1362,6 +1391,7 @@ export type CertificateCreateManyOrganizationInput = {
   serialNumber?: string | null
   registryNumber?: string | null
   ipfs_cid?: string | null
+  file_url?: string | null
   tx_hash?: string | null
   block_number?: number | null
   gas_used?: string | null
@@ -1391,6 +1421,7 @@ export type CertificateUpdateWithoutOrganizationInput = {
   serialNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registryNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ipfs_cid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  file_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tx_hash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   block_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   gas_used?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1424,6 +1455,7 @@ export type CertificateUncheckedUpdateWithoutOrganizationInput = {
   serialNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registryNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ipfs_cid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  file_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tx_hash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   block_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   gas_used?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1455,6 +1487,7 @@ export type CertificateUncheckedUpdateManyWithoutOrganizationInput = {
   serialNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registryNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ipfs_cid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  file_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tx_hash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   block_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   gas_used?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1486,6 +1519,7 @@ export type CertificateCreateManyStudentInput = {
   serialNumber?: string | null
   registryNumber?: string | null
   ipfs_cid?: string | null
+  file_url?: string | null
   tx_hash?: string | null
   block_number?: number | null
   gas_used?: string | null
@@ -1515,6 +1549,7 @@ export type CertificateUpdateWithoutStudentInput = {
   serialNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registryNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ipfs_cid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  file_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tx_hash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   block_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   gas_used?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1548,6 +1583,7 @@ export type CertificateUncheckedUpdateWithoutStudentInput = {
   serialNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registryNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ipfs_cid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  file_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tx_hash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   block_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   gas_used?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1579,6 +1615,7 @@ export type CertificateUncheckedUpdateManyWithoutStudentInput = {
   serialNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registryNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ipfs_cid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  file_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tx_hash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   block_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   gas_used?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1610,6 +1647,7 @@ export type CertificateCreateManyTemplateInput = {
   serialNumber?: string | null
   registryNumber?: string | null
   ipfs_cid?: string | null
+  file_url?: string | null
   tx_hash?: string | null
   block_number?: number | null
   gas_used?: string | null
@@ -1639,6 +1677,7 @@ export type CertificateUpdateWithoutTemplateInput = {
   serialNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registryNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ipfs_cid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  file_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tx_hash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   block_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   gas_used?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1672,6 +1711,7 @@ export type CertificateUncheckedUpdateWithoutTemplateInput = {
   serialNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registryNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ipfs_cid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  file_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tx_hash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   block_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   gas_used?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1703,6 +1743,7 @@ export type CertificateUncheckedUpdateManyWithoutTemplateInput = {
   serialNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registryNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ipfs_cid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  file_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tx_hash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   block_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   gas_used?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1737,6 +1778,7 @@ export type CertificateSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   serialNumber?: boolean
   registryNumber?: boolean
   ipfs_cid?: boolean
+  file_url?: boolean
   tx_hash?: boolean
   block_number?: boolean
   gas_used?: boolean
@@ -1774,6 +1816,7 @@ export type CertificateSelectScalar = {
   serialNumber?: boolean
   registryNumber?: boolean
   ipfs_cid?: boolean
+  file_url?: boolean
   tx_hash?: boolean
   block_number?: boolean
   gas_used?: boolean
@@ -1786,7 +1829,7 @@ export type CertificateSelectScalar = {
   revoke_block_number?: boolean
 }
 
-export type CertificateOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"certificate_id" | "organization_id" | "student_id" | "template_id" | "certificate_title" | "organization_name" | "student_fullName" | "dob" | "placeOfBirth" | "gender" | "ethnicity" | "schoolName" | "examCohort" | "examBoard" | "issueLocation" | "issueDate" | "serialNumber" | "registryNumber" | "ipfs_cid" | "tx_hash" | "block_number" | "gas_used" | "status" | "issuedAt" | "revokedAt" | "revokedById" | "revokeReason" | "revoke_tx_hash" | "revoke_block_number", ExtArgs["result"]["certificate"]>
+export type CertificateOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"certificate_id" | "organization_id" | "student_id" | "template_id" | "certificate_title" | "organization_name" | "student_fullName" | "dob" | "placeOfBirth" | "gender" | "ethnicity" | "schoolName" | "examCohort" | "examBoard" | "issueLocation" | "issueDate" | "serialNumber" | "registryNumber" | "ipfs_cid" | "file_url" | "tx_hash" | "block_number" | "gas_used" | "status" | "issuedAt" | "revokedAt" | "revokedById" | "revokeReason" | "revoke_tx_hash" | "revoke_block_number", ExtArgs["result"]["certificate"]>
 export type CertificateInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   organization?: boolean | Prisma.IssuingOrganizationDefaultArgs<ExtArgs>
   student?: boolean | Prisma.StudentAccountDefaultArgs<ExtArgs>
@@ -1820,6 +1863,7 @@ export type $CertificatePayload<ExtArgs extends runtime.Types.Extensions.Interna
     serialNumber: string | null
     registryNumber: string | null
     ipfs_cid: string | null
+    file_url: string | null
     tx_hash: string | null
     block_number: number | null
     gas_used: string | null
@@ -2221,6 +2265,7 @@ export interface CertificateFieldRefs {
   readonly serialNumber: Prisma.FieldRef<"Certificate", 'String'>
   readonly registryNumber: Prisma.FieldRef<"Certificate", 'String'>
   readonly ipfs_cid: Prisma.FieldRef<"Certificate", 'String'>
+  readonly file_url: Prisma.FieldRef<"Certificate", 'String'>
   readonly tx_hash: Prisma.FieldRef<"Certificate", 'String'>
   readonly block_number: Prisma.FieldRef<"Certificate", 'Int'>
   readonly gas_used: Prisma.FieldRef<"Certificate", 'String'>
