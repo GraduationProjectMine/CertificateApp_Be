@@ -11,6 +11,8 @@
 export type * from './models/IssuingOrganization.js'
 export type * from './models/StaffAccount.js'
 export type * from './models/StudentAccount.js'
+export type * from './models/Notification.js'
+export type * from './models/StudentImportBatch.js'
 export type * from './models/CertificateTemplate.js'
 export type * from './models/Certificate.js'
 export type * from './models/IssuanceBatch.js'
