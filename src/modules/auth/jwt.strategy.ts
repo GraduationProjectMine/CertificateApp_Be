@@ -26,6 +26,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: JwtPayload) {
+    payload.role = payload.role?.toLowerCase() as JwtPayload['role'];
     if (payload.role === 'sysadmin') {
       return {
         id: payload.sub,

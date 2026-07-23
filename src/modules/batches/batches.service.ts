@@ -21,6 +21,7 @@ export class BatchesService {
     actor: { id: string; name: string },
     name: string,
     rows: CreateCertificateDto[],
+    mode: 'DRAFT_ONLY' | 'FULL' = 'FULL',
   ) {
     const batch = await this.prisma.issuanceBatch.create({
       data: {
@@ -40,7 +41,7 @@ export class BatchesService {
     });
 
     for (const item of batch.items) {
-      await this.processItem(item, organizationId, actor);
+      await this.processItem(item, organizationId, actor, mode);
     }
     const completed = await this.refreshTotals(batch.id);
     await this.audit.log({
@@ -55,6 +56,7 @@ export class BatchesService {
         totalRows: completed.totalRows,
         successRows: completed.successRows,
         failedRows: completed.failedRows,
+        mode,
       },
     });
     return this.findOne(batch.id, organizationId);
@@ -100,6 +102,7 @@ export class BatchesService {
     item: any,
     organizationId: string,
     actor: { id: string; name: string },
+    mode: 'DRAFT_ONLY' | 'FULL' = 'FULL',
   ) {
     await this.prisma.issuanceBatchItem.update({
       where: { id: item.id },
@@ -118,6 +121,13 @@ export class BatchesService {
           where: { id: item.id },
           data: { certificateId },
         });
+      }
+      if (mode === 'DRAFT_ONLY') {
+        await this.prisma.issuanceBatchItem.update({
+          where: { id: item.id },
+          data: { status: 'SUCCESS', error: null, certificateId },
+        });
+        return;
       }
       const certificate = await this.certificates.findOne(
         certificateId,

@@ -28,7 +28,7 @@ export class AuthService {
     private readonly prisma: PrismaService,
     private readonly jwtService: JwtService,
     private readonly blockchainService: BlockchainService,
-  ) {}
+  ) { }
 
   async generateTokens(payload: any) {
     const accessToken = this.jwtService.sign(payload, { expiresIn: '10m' });

@@ -3,6 +3,7 @@ import {
   ArrayMaxSize,
   ArrayMinSize,
   IsArray,
+  IsIn,
   IsNotEmpty,
   IsOptional,
   IsString,
@@ -23,6 +24,11 @@ export class CreateIssuanceBatchDto {
   @ValidateNested({ each: true })
   @Type(() => CreateCertificateDto)
   rows!: CreateCertificateDto[];
+
+  @IsString()
+  @IsOptional()
+  @IsIn(['DRAFT_ONLY', 'FULL'])
+  mode?: 'DRAFT_ONLY' | 'FULL';
 }
 
 export class BatchListQueryDto {
