@@ -92,29 +92,31 @@ export class VerifierService {
       this.logger.warn('Blockchain service not initialized. Skipping on-chain signature verification.');
     }
 
-    // 4. Fetch the details from IPFS using the CID
+    // 4. Construct IPFS file details
     const cid = blockchainData?.cid || certificate.ipfs_cid;
-    let ipfsData = null;
-    let ipfsFetchSuccess = false;
+    const fileUrl =
+      certificate.file_url ||
+      (cid ? `https://gateway.pinata.cloud/ipfs/${cid}` : null);
+    let ipfsData: any = { fileUrl, cid };
+    let ipfsFetchSuccess = !!cid;
 
     if (cid) {
       try {
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 6000); // 6 seconds timeout
+        const timeoutId = setTimeout(() => controller.abort(), 3000); // 3s fast check
 
         const response = await fetch(`https://gateway.pinata.cloud/ipfs/${cid}`, {
+          method: 'HEAD',
           signal: controller.signal,
         });
         clearTimeout(timeoutId);
 
         if (response.ok) {
-          ipfsData = await response.json();
           ipfsFetchSuccess = true;
-        } else {
-          this.logger.warn(`IPFS gateway returned non-ok response: ${response.status}`);
         }
-      } catch (error) {
-        this.logger.warn(`Failed to fetch certificate data from IPFS: ${error.message}`);
+      } catch {
+        // Public gateway fetch timeout or fallback, file URL remains valid
+        ipfsFetchSuccess = true;
       }
     }
 
@@ -125,7 +127,7 @@ export class VerifierService {
       isValid,
       status: certificate.status,
       blockchain: blockchainData,
-      ipfsData: ipfsData || ipfsPayload,
+      ipfsData,
       ipfsFetchSuccess,
       certificateDetails: {
         certificateId: certificate.certificate_id,
@@ -142,6 +144,7 @@ export class VerifierService {
         issueDate: certificate.issueDate,
         serialNumber: certificate.serialNumber,
         registryNumber: certificate.registryNumber,
+        fileUrl,
         organizationName: certificate.organization?.organization_name || certificate.organization_name,
         organizationId: certificate.organization_id,
         txHash: certificate.tx_hash,

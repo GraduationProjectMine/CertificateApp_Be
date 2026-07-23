@@ -131,6 +131,24 @@ export class CreateCertificateDto {
   @IsString()
   @IsOptional()
   registryNumber?: string;
+
+  @ApiProperty({
+    example: 'bafkreihdwdcefgh...',
+    description: 'IPFS CID of the attached file',
+    required: false,
+  })
+  @IsString()
+  @IsOptional()
+  ipfs_cid?: string;
+
+  @ApiProperty({
+    example: 'https://gateway.pinata.cloud/ipfs/bafkreih...',
+    description: 'URL of the uploaded certificate file',
+    required: false,
+  })
+  @IsString()
+  @IsOptional()
+  file_url?: string;
 }
 
 export class UpdateCertificateDto {

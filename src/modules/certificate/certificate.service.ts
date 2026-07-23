@@ -105,6 +105,12 @@ export class CertificateService {
         issueDate: dto.issueDate,
         serialNumber: dto.serialNumber,
         registryNumber: dto.registryNumber,
+        ipfs_cid: dto.ipfs_cid,
+        file_url:
+          dto.file_url ||
+          (dto.ipfs_cid
+            ? `https://gateway.pinata.cloud/ipfs/${dto.ipfs_cid}`
+            : null),
         status: 'DRAFT',
       },
     });
@@ -237,10 +243,15 @@ export class CertificateService {
     // 1. Construct IPFS payload
     const ipfsPayload = this.toIpfsPayload(certificate);
 
-    // 2. Upload metadata to IPFS
-    const ipfsResult = await this.ipfsService.storeToIpfs(ipfsPayload);
-    const cid = ipfsResult.cid;
-    const sha3Hash = ipfsResult.sha3Hash;
+    const cid = certificate.ipfs_cid;
+    if (!cid) {
+      throw new BadRequestException(
+        'Cannot approve certificate: Original document file (image/PDF) has not been uploaded to IPFS.',
+      );
+    }
+
+    // Binary file is pinned to IPFS, compute SHA-3 hash for on-chain registration
+    const sha3Hash = this.ipfsService.calculateSha3Hash(ipfsPayload);
 
     let transactionHash: string | null = null;
     let blockNumber: number | null = null;
@@ -269,12 +280,17 @@ export class CertificateService {
       );
     }
 
-    // 4. Update the certificate status, cid, and transaction hash
+    // 4. Update the certificate status, cid, file_url, and transaction hash
+    const fileUrl =
+      certificate.file_url ||
+      (cid ? `https://gateway.pinata.cloud/ipfs/${cid}` : null);
+
     const issued = await this.prisma.certificate.update({
       where: { certificate_id: id },
       data: {
         status: 'ISSUED',
         ipfs_cid: cid,
+        file_url: fileUrl,
         tx_hash: transactionHash,
         block_number: blockNumber,
         gas_used: gasUsed,
