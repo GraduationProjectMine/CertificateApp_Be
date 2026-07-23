@@ -253,7 +253,7 @@ export class AuthService {
       );
     }
 
-    if (owner.status !== 'ACTIVE' || !owner.isActive) {
+    if (!owner.isActive) {
       throw new UnauthorizedException('Tài khoản đã bị khóa hoặc không hoạt động.');
     }
 

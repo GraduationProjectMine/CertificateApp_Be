@@ -74,10 +74,9 @@ class UpdateStudentDto {
   @IsOptional()
   email?: string;
 
-  @ApiProperty({ example: 'ACTIVE', description: 'Status of student account', required: false })
-  @IsString()
+  @ApiProperty({ example: false, description: 'Active status of student account', required: false })
   @IsOptional()
-  status?: string;
+  isActive?: boolean;
 
   @ApiProperty({ example: 'StrongP@ss2', description: 'New password', required: false })
   @IsString()
@@ -85,10 +84,6 @@ class UpdateStudentDto {
   @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/)
   @IsOptional()
   password?: string;
-
-  @ApiProperty({ example: false, description: 'Active status of student account', required: false })
-  @IsOptional()
-  isActive?: boolean;
 }
 
 @ApiTags('students')

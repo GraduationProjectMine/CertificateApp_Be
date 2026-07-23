@@ -32,7 +32,6 @@ export class StaffService {
         organization_id,
         organization_name: orgName,
         role,
-        status: 'ACTIVE',
       },
     });
   }
@@ -64,7 +63,7 @@ export class StaffService {
   async update(
     staffId: string,
     organizationId: string,
-    data: { name?: string; email?: string; status?: string; role?: string; password?: string },
+    data: { name?: string; email?: string; isActive?: boolean; role?: string; password?: string },
   ) {
     const staff = await this.prisma.staffAccount.findUnique({
       where: { staff_id: staffId },
@@ -76,7 +75,7 @@ export class StaffService {
 
     const updateData: any = {};
     if (data.name !== undefined) updateData.name = data.name;
-    if (data.status !== undefined) updateData.status = data.status;
+    if (data.isActive !== undefined) updateData.isActive = data.isActive;
     if (data.role !== undefined) updateData.role = data.role;
 
     if (data.email !== undefined && data.email !== staff.email) {

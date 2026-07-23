@@ -1133,7 +1133,6 @@ export const StaffAccountScalarFieldEnum = {
   email: 'email',
   password: 'password',
   role: 'role',
-  status: 'status',
   isActive: 'isActive',
   createdAt: 'createdAt'
 } as const
@@ -1148,7 +1147,6 @@ export const StudentAccountScalarFieldEnum = {
   organization_name: 'organization_name',
   email: 'email',
   password: 'password',
-  status: 'status',
   isActive: 'isActive',
   createdAt: 'createdAt',
   imported_by: 'imported_by',
@@ -1338,8 +1336,7 @@ export const StaffAccountOrderByRelevanceFieldEnum = {
   organization_name: 'organization_name',
   email: 'email',
   password: 'password',
-  role: 'role',
-  status: 'status'
+  role: 'role'
 } as const
 
 export type StaffAccountOrderByRelevanceFieldEnum = (typeof StaffAccountOrderByRelevanceFieldEnum)[keyof typeof StaffAccountOrderByRelevanceFieldEnum]
@@ -1352,7 +1349,6 @@ export const StudentAccountOrderByRelevanceFieldEnum = {
   organization_name: 'organization_name',
   email: 'email',
   password: 'password',
-  status: 'status',
   imported_by: 'imported_by',
   import_batch_id: 'import_batch_id'
 } as const

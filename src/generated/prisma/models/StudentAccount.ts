@@ -31,7 +31,6 @@ export type StudentAccountMinAggregateOutputType = {
   organization_name: string | null
   email: string | null
   password: string | null
-  status: string | null
   isActive: boolean | null
   createdAt: Date | null
   imported_by: string | null
@@ -45,7 +44,6 @@ export type StudentAccountMaxAggregateOutputType = {
   organization_name: string | null
   email: string | null
   password: string | null
-  status: string | null
   isActive: boolean | null
   createdAt: Date | null
   imported_by: string | null
@@ -59,7 +57,6 @@ export type StudentAccountCountAggregateOutputType = {
   organization_name: number
   email: number
   password: number
-  status: number
   isActive: number
   createdAt: number
   imported_by: number
@@ -75,7 +72,6 @@ export type StudentAccountMinAggregateInputType = {
   organization_name?: true
   email?: true
   password?: true
-  status?: true
   isActive?: true
   createdAt?: true
   imported_by?: true
@@ -89,7 +85,6 @@ export type StudentAccountMaxAggregateInputType = {
   organization_name?: true
   email?: true
   password?: true
-  status?: true
   isActive?: true
   createdAt?: true
   imported_by?: true
@@ -103,7 +98,6 @@ export type StudentAccountCountAggregateInputType = {
   organization_name?: true
   email?: true
   password?: true
-  status?: true
   isActive?: true
   createdAt?: true
   imported_by?: true
@@ -190,7 +184,6 @@ export type StudentAccountGroupByOutputType = {
   organization_name: string
   email: string
   password: string
-  status: string
   isActive: boolean
   createdAt: Date
   imported_by: string | null
@@ -225,7 +218,6 @@ export type StudentAccountWhereInput = {
   organization_name?: Prisma.StringFilter<"StudentAccount"> | string
   email?: Prisma.StringFilter<"StudentAccount"> | string
   password?: Prisma.StringFilter<"StudentAccount"> | string
-  status?: Prisma.StringFilter<"StudentAccount"> | string
   isActive?: Prisma.BoolFilter<"StudentAccount"> | boolean
   createdAt?: Prisma.DateTimeFilter<"StudentAccount"> | Date | string
   imported_by?: Prisma.StringNullableFilter<"StudentAccount"> | string | null
@@ -242,7 +234,6 @@ export type StudentAccountOrderByWithRelationInput = {
   organization_name?: Prisma.SortOrder
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
-  status?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   imported_by?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -263,7 +254,6 @@ export type StudentAccountWhereUniqueInput = Prisma.AtLeast<{
   student_fullName?: Prisma.StringFilter<"StudentAccount"> | string
   organization_name?: Prisma.StringFilter<"StudentAccount"> | string
   password?: Prisma.StringFilter<"StudentAccount"> | string
-  status?: Prisma.StringFilter<"StudentAccount"> | string
   isActive?: Prisma.BoolFilter<"StudentAccount"> | boolean
   createdAt?: Prisma.DateTimeFilter<"StudentAccount"> | Date | string
   imported_by?: Prisma.StringNullableFilter<"StudentAccount"> | string | null
@@ -280,7 +270,6 @@ export type StudentAccountOrderByWithAggregationInput = {
   organization_name?: Prisma.SortOrder
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
-  status?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   imported_by?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -300,7 +289,6 @@ export type StudentAccountScalarWhereWithAggregatesInput = {
   organization_name?: Prisma.StringWithAggregatesFilter<"StudentAccount"> | string
   email?: Prisma.StringWithAggregatesFilter<"StudentAccount"> | string
   password?: Prisma.StringWithAggregatesFilter<"StudentAccount"> | string
-  status?: Prisma.StringWithAggregatesFilter<"StudentAccount"> | string
   isActive?: Prisma.BoolWithAggregatesFilter<"StudentAccount"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"StudentAccount"> | Date | string
   imported_by?: Prisma.StringNullableWithAggregatesFilter<"StudentAccount"> | string | null
@@ -313,7 +301,6 @@ export type StudentAccountCreateInput = {
   organization_name: string
   email: string
   password: string
-  status?: string
   isActive?: boolean
   createdAt?: Date | string
   imported_by?: string | null
@@ -329,7 +316,6 @@ export type StudentAccountUncheckedCreateInput = {
   organization_name: string
   email: string
   password: string
-  status?: string
   isActive?: boolean
   createdAt?: Date | string
   imported_by?: string | null
@@ -343,7 +329,6 @@ export type StudentAccountUpdateInput = {
   organization_name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   imported_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -359,7 +344,6 @@ export type StudentAccountUncheckedUpdateInput = {
   organization_name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   imported_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -374,7 +358,6 @@ export type StudentAccountCreateManyInput = {
   organization_name: string
   email: string
   password: string
-  status?: string
   isActive?: boolean
   createdAt?: Date | string
   imported_by?: string | null
@@ -387,7 +370,6 @@ export type StudentAccountUpdateManyMutationInput = {
   organization_name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   imported_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -400,7 +382,6 @@ export type StudentAccountUncheckedUpdateManyInput = {
   organization_name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   imported_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -430,7 +411,6 @@ export type StudentAccountCountOrderByAggregateInput = {
   organization_name?: Prisma.SortOrder
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
-  status?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   imported_by?: Prisma.SortOrder
@@ -444,7 +424,6 @@ export type StudentAccountMaxOrderByAggregateInput = {
   organization_name?: Prisma.SortOrder
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
-  status?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   imported_by?: Prisma.SortOrder
@@ -458,7 +437,6 @@ export type StudentAccountMinOrderByAggregateInput = {
   organization_name?: Prisma.SortOrder
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
-  status?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   imported_by?: Prisma.SortOrder
@@ -574,7 +552,6 @@ export type StudentAccountCreateWithoutOrganizationInput = {
   organization_name: string
   email: string
   password: string
-  status?: string
   isActive?: boolean
   createdAt?: Date | string
   imported_by?: string | null
@@ -588,7 +565,6 @@ export type StudentAccountUncheckedCreateWithoutOrganizationInput = {
   organization_name: string
   email: string
   password: string
-  status?: string
   isActive?: boolean
   createdAt?: Date | string
   imported_by?: string | null
@@ -632,7 +608,6 @@ export type StudentAccountScalarWhereInput = {
   organization_name?: Prisma.StringFilter<"StudentAccount"> | string
   email?: Prisma.StringFilter<"StudentAccount"> | string
   password?: Prisma.StringFilter<"StudentAccount"> | string
-  status?: Prisma.StringFilter<"StudentAccount"> | string
   isActive?: Prisma.BoolFilter<"StudentAccount"> | boolean
   createdAt?: Prisma.DateTimeFilter<"StudentAccount"> | Date | string
   imported_by?: Prisma.StringNullableFilter<"StudentAccount"> | string | null
@@ -645,7 +620,6 @@ export type StudentAccountCreateWithoutImport_batchInput = {
   organization_name: string
   email: string
   password: string
-  status?: string
   isActive?: boolean
   createdAt?: Date | string
   imported_by?: string | null
@@ -660,7 +634,6 @@ export type StudentAccountUncheckedCreateWithoutImport_batchInput = {
   organization_name: string
   email: string
   password: string
-  status?: string
   isActive?: boolean
   createdAt?: Date | string
   imported_by?: string | null
@@ -699,7 +672,6 @@ export type StudentAccountCreateWithoutCertificatesInput = {
   organization_name: string
   email: string
   password: string
-  status?: string
   isActive?: boolean
   createdAt?: Date | string
   imported_by?: string | null
@@ -714,7 +686,6 @@ export type StudentAccountUncheckedCreateWithoutCertificatesInput = {
   organization_name: string
   email: string
   password: string
-  status?: string
   isActive?: boolean
   createdAt?: Date | string
   imported_by?: string | null
@@ -743,7 +714,6 @@ export type StudentAccountUpdateWithoutCertificatesInput = {
   organization_name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   imported_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -758,7 +728,6 @@ export type StudentAccountUncheckedUpdateWithoutCertificatesInput = {
   organization_name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   imported_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -771,7 +740,6 @@ export type StudentAccountCreateManyOrganizationInput = {
   organization_name: string
   email: string
   password: string
-  status?: string
   isActive?: boolean
   createdAt?: Date | string
   imported_by?: string | null
@@ -784,7 +752,6 @@ export type StudentAccountUpdateWithoutOrganizationInput = {
   organization_name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   imported_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -798,7 +765,6 @@ export type StudentAccountUncheckedUpdateWithoutOrganizationInput = {
   organization_name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   imported_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -812,7 +778,6 @@ export type StudentAccountUncheckedUpdateManyWithoutOrganizationInput = {
   organization_name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   imported_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -826,7 +791,6 @@ export type StudentAccountCreateManyImport_batchInput = {
   organization_name: string
   email: string
   password: string
-  status?: string
   isActive?: boolean
   createdAt?: Date | string
   imported_by?: string | null
@@ -838,7 +802,6 @@ export type StudentAccountUpdateWithoutImport_batchInput = {
   organization_name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   imported_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -853,7 +816,6 @@ export type StudentAccountUncheckedUpdateWithoutImport_batchInput = {
   organization_name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   imported_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -867,7 +829,6 @@ export type StudentAccountUncheckedUpdateManyWithoutImport_batchInput = {
   organization_name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   imported_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -911,7 +872,6 @@ export type StudentAccountSelect<ExtArgs extends runtime.Types.Extensions.Intern
   organization_name?: boolean
   email?: boolean
   password?: boolean
-  status?: boolean
   isActive?: boolean
   createdAt?: boolean
   imported_by?: boolean
@@ -931,14 +891,13 @@ export type StudentAccountSelectScalar = {
   organization_name?: boolean
   email?: boolean
   password?: boolean
-  status?: boolean
   isActive?: boolean
   createdAt?: boolean
   imported_by?: boolean
   import_batch_id?: boolean
 }
 
-export type StudentAccountOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"student_id" | "organization_id" | "student_fullName" | "organization_name" | "email" | "password" | "status" | "isActive" | "createdAt" | "imported_by" | "import_batch_id", ExtArgs["result"]["studentAccount"]>
+export type StudentAccountOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"student_id" | "organization_id" | "student_fullName" | "organization_name" | "email" | "password" | "isActive" | "createdAt" | "imported_by" | "import_batch_id", ExtArgs["result"]["studentAccount"]>
 export type StudentAccountInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   certificates?: boolean | Prisma.StudentAccount$certificatesArgs<ExtArgs>
   organization?: boolean | Prisma.IssuingOrganizationDefaultArgs<ExtArgs>
@@ -960,7 +919,6 @@ export type $StudentAccountPayload<ExtArgs extends runtime.Types.Extensions.Inte
     organization_name: string
     email: string
     password: string
-    status: string
     isActive: boolean
     createdAt: Date
     imported_by: string | null
@@ -1343,7 +1301,6 @@ export interface StudentAccountFieldRefs {
   readonly organization_name: Prisma.FieldRef<"StudentAccount", 'String'>
   readonly email: Prisma.FieldRef<"StudentAccount", 'String'>
   readonly password: Prisma.FieldRef<"StudentAccount", 'String'>
-  readonly status: Prisma.FieldRef<"StudentAccount", 'String'>
   readonly isActive: Prisma.FieldRef<"StudentAccount", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"StudentAccount", 'DateTime'>
   readonly imported_by: Prisma.FieldRef<"StudentAccount", 'String'>
