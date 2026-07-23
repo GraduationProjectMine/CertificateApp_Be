@@ -14,34 +14,84 @@ export class BlockchainService implements OnModuleInit {
   private wallet: ethers.Wallet | null = null;
   private contract: ethers.Contract | null = null;
 
+  private isValidConfig(rpcUrl?: string, privateKey?: string, contractAddress?: string): boolean {
+    if (!rpcUrl || !privateKey || !contractAddress) return false;
+
+    const cleanUrl = rpcUrl.trim();
+    const cleanKey = privateKey.trim();
+    const cleanAddr = contractAddress.trim();
+
+    if (cleanUrl.includes('YOUR_ALCHEMY') || cleanUrl.includes('YOUR_KEY')) return false;
+    if (cleanKey.includes('YourRealWallet') || cleanKey.includes('YourWalletPrivateKey')) return false;
+    if (cleanAddr.includes('YourDeployed') || cleanAddr.includes('YourSepoliaContract')) return false;
+
+    const hexKey = cleanKey.startsWith('0x') ? cleanKey.slice(2) : cleanKey;
+    if (hexKey.length !== 64 || !/^[0-9a-fA-F]{64}$/.test(hexKey)) return false;
+
+    if (!/^0x[0-9a-fA-F]{40}$/.test(cleanAddr)) return false;
+
+    return true;
+  }
+
   onModuleInit() {
+    // 1. Try Sepolia configuration first
+    const sepoliaRpcUrl = process.env.SEPOLIA_RPC_URL;
+    const sepoliaPrivateKey = process.env.SEPOLIA_PRIVATE_KEY;
+    const sepoliaContractAddress = process.env.SEPOLIA_CONTRACT_ADDRESS;
+
+    if (this.isValidConfig(sepoliaRpcUrl, sepoliaPrivateKey, sepoliaContractAddress)) {
+      try {
+        const formattedKey = sepoliaPrivateKey!.trim().startsWith('0x')
+          ? sepoliaPrivateKey!.trim()
+          : `0x${sepoliaPrivateKey!.trim()}`;
+
+        this.provider = new ethers.JsonRpcProvider(sepoliaRpcUrl!.trim());
+        this.wallet = new ethers.Wallet(formattedKey, this.provider);
+        this.contract = new ethers.Contract(
+          sepoliaContractAddress!.trim(),
+          contractArtifact.abi,
+          this.wallet,
+        );
+        this.logger.log(
+          `BlockchainService initialized [SEPOLIA NETWORK]. Contract Address: ${sepoliaContractAddress}`,
+        );
+        return;
+      } catch (error) {
+        this.logger.warn(`Sepolia connection attempt failed: ${error.message}. Falling back to local configuration...`);
+      }
+    }
+
+    // 2. Fall back to local configuration
     const rpcUrl = process.env.BLOCKCHAIN_RPC_URL || process.env.RPC_URL;
     const privateKey =
       process.env.BLOCKCHAIN_PRIVATE_KEY || process.env.ADMIN_PRIVATE_KEY;
     const contractAddress =
       process.env.BLOCKCHAIN_CONTRACT_ADDRESS || process.env.CONTRACT_ADDRESS;
 
-    if (!rpcUrl || !privateKey || !contractAddress) {
+    if (!rpcUrl || !privateKey || !contractAddress || !this.isValidConfig(rpcUrl, privateKey, contractAddress)) {
       this.logger.warn(
-        'Warning: Blockchain environment variables are not fully configured. ' +
-          'Please set RPC_URL/BLOCKCHAIN_RPC_URL, ADMIN_PRIVATE_KEY/BLOCKCHAIN_PRIVATE_KEY, and CONTRACT_ADDRESS/BLOCKCHAIN_CONTRACT_ADDRESS in .env.',
+        'Warning: Blockchain environment variables are not fully configured or contain placeholders.',
       );
       return;
     }
 
     try {
-      this.provider = new ethers.JsonRpcProvider(rpcUrl);
-      this.wallet = new ethers.Wallet(privateKey, this.provider);
+      const formattedKey = privateKey.trim().startsWith('0x')
+        ? privateKey.trim()
+        : `0x${privateKey.trim()}`;
+
+      this.provider = new ethers.JsonRpcProvider(rpcUrl.trim());
+      this.wallet = new ethers.Wallet(formattedKey, this.provider);
       this.contract = new ethers.Contract(
-        contractAddress,
+        contractAddress.trim(),
         contractArtifact.abi,
         this.wallet,
       );
       this.logger.log(
-        `BlockchainService initialized successfully. Contract Address: ${contractAddress}`,
+        `BlockchainService initialized [LOCAL NETWORK]. Contract Address: ${contractAddress}`,
       );
     } catch (error) {
-      this.logger.error('Failed to initialize blockchain service:', error);
+      this.logger.error('Failed to initialize local blockchain service:', error);
     }
   }
 
