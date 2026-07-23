@@ -230,4 +230,25 @@ export class BlockchainService implements OnModuleInit {
       return null;
     }
   }
+
+  async authorizeIssuer(issuerAddress: string): Promise<string> {
+    const contract = this.ensureInitialized();
+    try {
+      this.logger.log(`Authorizing issuer address on blockchain: ${issuerAddress}`);
+      const tx = await contract.authorizeIssuer(issuerAddress);
+      const receipt = await tx.wait();
+      this.logger.log(
+        `Successfully authorized issuer ${issuerAddress}. Tx hash: ${receipt.hash}`,
+      );
+      return receipt.hash;
+    } catch (error) {
+      this.logger.error(
+        `Failed to authorize issuer address ${issuerAddress} on blockchain:`,
+        error,
+      );
+      throw new InternalServerErrorException(
+        `Failed to authorize issuer wallet on blockchain: ${error.message}`,
+      );
+    }
+  }
 }
