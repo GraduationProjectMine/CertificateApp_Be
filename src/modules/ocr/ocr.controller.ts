@@ -18,6 +18,8 @@ import { DiplomaParserService } from './diploma-parser.service';
 import { OcrResponseDto, DiplomaExtractionResponseDto } from './ocr.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
+import { IpfsService } from '../ipfs/ipfs.service';
+
 const SUPPORTED_LANGUAGES = {
   eng: 'English',
   vie: 'Vietnamese',
@@ -37,6 +39,7 @@ export class OcrController {
   constructor(
     private readonly ocrService: OcrService,
     private readonly diplomaParserService: DiplomaParserService,
+    private readonly ipfsService: IpfsService,
   ) {}
 
   @Get('supported-languages')
@@ -195,11 +198,25 @@ export class OcrController {
       ocrResult.extractedText,
     );
 
+    let ipfsInfo: { cid?: string; ipfsUrl?: string; sha3Hash?: string } = {};
+    try {
+      ipfsInfo = await this.ipfsService.storeFileToIpfs(
+        file.buffer,
+        file.originalname || `diploma_${Date.now()}`,
+        file.mimetype,
+      );
+    } catch {
+      // IPFS upload failure optional fallback for OCR preview
+    }
+
     return {
       data,
       accuracy: ocrResult.accuracy,
       rawText: ocrResult.extractedText,
       validationErrors: Object.keys(errors).length > 0 ? errors : undefined,
+      ipfs_cid: ipfsInfo.cid,
+      ipfs_url: ipfsInfo.ipfsUrl,
+      sha3_hash: ipfsInfo.sha3Hash,
     };
   }
 }

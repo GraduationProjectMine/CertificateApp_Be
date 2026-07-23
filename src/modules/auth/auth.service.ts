@@ -14,6 +14,8 @@ import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 import { MetaMaskRegisterDto } from './dto/metamask-register.dto';
 
+import { BlockchainService } from '../../core/blockchain/blockchain.service';
+
 const SALT_ROUNDS = 12;
 
 @Injectable()
@@ -23,6 +25,7 @@ export class AuthService {
     private readonly studentService: StudentService,
     private readonly issuerService: IssuerService,
     private readonly jwtService: JwtService,
+    private readonly blockchainService: BlockchainService,
   ) {}
 
   async generateTokens(payload: any) {
@@ -292,6 +295,16 @@ export class AuthService {
       email,
       walletAddress,
     );
+
+    // Automatically authorize this wallet address as an issuer on the blockchain smart contract
+    try {
+      if (this.blockchainService.isInitialized()) {
+        await this.blockchainService.authorizeIssuer(walletAddress);
+      }
+    } catch (err) {
+      // Log warning if blockchain authorization fails (e.g. node offline in dev)
+      console.warn(`Could not authorize wallet ${walletAddress} on blockchain:`, err);
+    }
 
     const randomPassword = crypto.randomUUID();
     const hashedPassword = await bcrypt.hash(randomPassword, SALT_ROUNDS);
