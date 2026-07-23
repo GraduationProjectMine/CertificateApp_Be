@@ -1134,6 +1134,7 @@ export const StaffAccountScalarFieldEnum = {
   password: 'password',
   role: 'role',
   status: 'status',
+  isActive: 'isActive',
   createdAt: 'createdAt'
 } as const
 
@@ -1148,6 +1149,7 @@ export const StudentAccountScalarFieldEnum = {
   email: 'email',
   password: 'password',
   status: 'status',
+  isActive: 'isActive',
   createdAt: 'createdAt',
   imported_by: 'imported_by',
   import_batch_id: 'import_batch_id'

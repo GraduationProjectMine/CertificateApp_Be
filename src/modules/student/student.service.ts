@@ -63,6 +63,7 @@ export class StudentService {
         organization_id,
         organization_name: orgName,
         status: 'ACTIVE',
+        isActive: true,
         import_batch_id,
         imported_by,
       },
@@ -145,6 +146,7 @@ export class StudentService {
             organization_id,
             organization_name,
             status: 'ACTIVE',
+            isActive: true,
             import_batch_id: batch.id,
             imported_by: userId,
           },
@@ -205,7 +207,7 @@ export class StudentService {
   async update(
     studentId: string,
     organizationId: string,
-    data: { name?: string; email?: string; status?: string; password?: string },
+    data: { name?: string; email?: string; status?: string; password?: string; isActive?: boolean },
   ) {
     const student = await this.prisma.studentAccount.findUnique({
       where: { student_id: studentId },
@@ -220,6 +222,10 @@ export class StudentService {
     const updateData: any = {};
     if (data.name !== undefined) updateData.student_fullName = data.name;
     if (data.status !== undefined) updateData.status = data.status;
+    if (data.isActive !== undefined) updateData.isActive = data.isActive;
+    if (data.status !== undefined && data.isActive === undefined) {
+      updateData.isActive = data.status === 'ACTIVE';
+    }
 
     if (data.email !== undefined && data.email !== student.email) {
       const existing = await this.prisma.studentAccount.findFirst({

@@ -38,6 +38,7 @@ model StaffAccount {
   password          String
   role              String              @default("STAFF")
   status            String              @default("ACTIVE")
+  isActive          Boolean             @default(true)
   createdAt         DateTime            @default(now())
   organization      IssuingOrganization @relation(fields: [organization_id], references: [organization_id])
 
@@ -53,6 +54,7 @@ model StudentAccount {
   email              String                   @unique
   password           String
   status             String                   @default("ACTIVE")
+  isActive           Boolean                  @default(true)
   createdAt          DateTime                 @default(now())
   imported_by        String?
   import_batch_id    String?

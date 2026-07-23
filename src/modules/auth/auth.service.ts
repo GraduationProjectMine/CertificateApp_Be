@@ -95,6 +95,10 @@ export class AuthService {
       throw new UnauthorizedException('Invalid email or password');
     }
 
+    if (!user.isActive) {
+      throw new UnauthorizedException('Tài khoản đã bị khóa hoặc không hoạt động.');
+    }
+
     let role: 'issuer' | 'staff' | 'student';
     let name: string;
     let id: string;
@@ -141,6 +145,10 @@ export class AuthService {
 
       if (!user) {
         throw new UnauthorizedException('User not found');
+      }
+
+      if (!user.isActive) {
+        throw new UnauthorizedException('Tài khoản đã bị khóa hoặc không hoạt động.');
       }
 
       let role: 'issuer' | 'staff' | 'student';
@@ -245,7 +253,7 @@ export class AuthService {
       );
     }
 
-    if (owner.status !== 'ACTIVE') {
+    if (owner.status !== 'ACTIVE' || !owner.isActive) {
       throw new UnauthorizedException('Tài khoản đã bị khóa hoặc không hoạt động.');
     }
 
