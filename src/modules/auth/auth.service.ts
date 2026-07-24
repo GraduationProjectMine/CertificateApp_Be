@@ -2,6 +2,7 @@ import {
   Injectable,
   UnauthorizedException,
   ConflictException,
+  ForbiddenException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
@@ -196,6 +197,16 @@ export class AuthService {
     return { message, tempToken };
   }
 
+  async generateAdminMetaMaskNonce(walletAddress: string) {
+    const nonce = crypto.randomUUID();
+    const message = `CertChain System Administration Portal\n\nSign this challenge message to authenticate as a System Administrator.\n\nWallet: ${walletAddress.toLowerCase()}\nNonce: ${nonce}`;
+    const tempToken = this.jwtService.sign(
+      { walletAddress: walletAddress.toLowerCase(), nonce, message, isAdmin: true },
+      { expiresIn: '5m' },
+    );
+    return { message, tempToken };
+  }
+
   async verifyMetaMaskSignature(
     walletAddress: string,
     signature: string,
@@ -272,6 +283,42 @@ export class AuthService {
       email: owner.email,
       name: owner.name,
       role: 'issuer',
+      accessToken,
+      refreshToken,
+    };
+  }
+
+  async loginAdminWithMetaMask(
+    walletAddress: string,
+    signature: string,
+    tempToken: string,
+  ): Promise<any> {
+    await this.verifyMetaMaskSignature(walletAddress, signature, tempToken);
+
+    const admin = await this.prisma.systemAdmin.findFirst({
+      where: {
+        walletAddress: { equals: walletAddress.toLowerCase() },
+      },
+    });
+
+    if (!admin) {
+      throw new ForbiddenException(
+        `Địa chỉ ví ${walletAddress} chưa được phân quyền Quản trị viên hệ thống (System Admin) trong cơ sở dữ liệu.`,
+      );
+    }
+
+    const { accessToken, refreshToken } = await this.generateTokens({
+      sub: admin.id,
+      email: admin.walletAddress,
+      name: admin.name || 'System Admin',
+      role: admin.role || 'super_admin',
+    });
+
+    return {
+      id: admin.id,
+      email: admin.walletAddress,
+      name: admin.name || 'System Admin',
+      role: admin.role || 'super_admin',
       accessToken,
       refreshToken,
     };

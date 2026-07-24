@@ -232,3 +232,17 @@ model AuditLog {
   @@index([targetId])
   @@map("audit_logs")
 }
+
+// =========================================
+// System Admin (Super Admin quản trị hệ thống)
+// =========================================
+model SystemAdmin {
+  id             String   @id @default(uuid())
+  walletAddress  String   @unique @map("wallet_address") @db.VarChar(255)
+  name           String?  @default("System Admin")
+  role           String   @default("super_admin")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  @@map("system_admins")
+}

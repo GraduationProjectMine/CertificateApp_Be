@@ -1,10 +1,4 @@
-import {
-  Controller,
-  ForbiddenException,
-  Get,
-  Req,
-  UseGuards,
-} from '@nestjs/common';
+import { Controller, ForbiddenException, Get, Req, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import type { Request } from 'express';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
@@ -23,11 +17,11 @@ export class MonitorController {
   })
   getOverview(@Req() req: Request) {
     const user = req.user as any;
-    if (user.role !== 'issuer' && user.role !== 'staff') {
+    if (user?.role !== 'super_admin') {
       throw new ForbiddenException(
-        'Only organization accounts can view infrastructure status',
+        'Only System Administrators (super_admin) can view infrastructure status',
       );
     }
-    return this.monitorService.getOverview(user.organization_id);
+    return this.monitorService.getOverview();
   }
 }

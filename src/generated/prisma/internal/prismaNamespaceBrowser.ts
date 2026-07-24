@@ -60,7 +60,8 @@ export const ModelName = {
   Certificate: 'Certificate',
   IssuanceBatch: 'IssuanceBatch',
   IssuanceBatchItem: 'IssuanceBatchItem',
-  AuditLog: 'AuditLog'
+  AuditLog: 'AuditLog',
+  SystemAdmin: 'SystemAdmin'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -254,6 +255,18 @@ export const AuditLogScalarFieldEnum = {
 export type AuditLogScalarFieldEnum = (typeof AuditLogScalarFieldEnum)[keyof typeof AuditLogScalarFieldEnum]
 
 
+export const SystemAdminScalarFieldEnum = {
+  id: 'id',
+  walletAddress: 'walletAddress',
+  name: 'name',
+  role: 'role',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SystemAdminScalarFieldEnum = (typeof SystemAdminScalarFieldEnum)[keyof typeof SystemAdminScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -443,4 +456,14 @@ export const AuditLogOrderByRelevanceFieldEnum = {
 } as const
 
 export type AuditLogOrderByRelevanceFieldEnum = (typeof AuditLogOrderByRelevanceFieldEnum)[keyof typeof AuditLogOrderByRelevanceFieldEnum]
+
+
+export const SystemAdminOrderByRelevanceFieldEnum = {
+  id: 'id',
+  walletAddress: 'walletAddress',
+  name: 'name',
+  role: 'role'
+} as const
+
+export type SystemAdminOrderByRelevanceFieldEnum = (typeof SystemAdminOrderByRelevanceFieldEnum)[keyof typeof SystemAdminOrderByRelevanceFieldEnum]
 

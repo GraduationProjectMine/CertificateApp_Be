@@ -11,7 +11,8 @@ export class MonitorService {
     private readonly ipfs: IpfsService,
   ) {}
 
-  async getOverview(organizationId: string) {
+  async getOverview(organizationId?: string) {
+    const whereCert = organizationId ? { organization_id: organizationId } : {};
     const [
       chain,
       ipfs,
@@ -25,7 +26,7 @@ export class MonitorService {
         this.ipfs.getHealth(),
         this.prisma.certificate.findMany({
           where: {
-            organization_id: organizationId,
+            ...whereCert,
             OR: [
               { tx_hash: { not: null } },
               { revoke_tx_hash: { not: null } },
@@ -49,20 +50,20 @@ export class MonitorService {
           },
         }),
         this.prisma.certificate.count({
-          where: { organization_id: organizationId, ipfs_cid: { not: null } },
+          where: { ...whereCert, ipfs_cid: { not: null } },
         }),
         this.prisma.certificate.count({
           where: {
-            organization_id: organizationId,
+            ...whereCert,
             status: { in: ['REVOKE_FAILED'] },
           },
         }),
         this.prisma.certificate.count({
-          where: { organization_id: organizationId, tx_hash: { not: null } },
+          where: { ...whereCert, tx_hash: { not: null } },
         }),
         this.prisma.certificate.count({
           where: {
-            organization_id: organizationId,
+            ...whereCert,
             revoke_tx_hash: { not: null },
           },
         }),
