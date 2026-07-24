@@ -9,17 +9,19 @@ import {
   Query,
   UseGuards,
   Req,
+  Res,
   ForbiddenException,
   HttpCode,
   HttpStatus,
 } from '@nestjs/common';
-import type { Request } from 'express';
+import type { Request, Response } from 'express';
 import {
   ApiTags,
   ApiOperation,
   ApiResponse,
   ApiBearerAuth,
   ApiQuery,
+  ApiBody,
 } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CertificateService } from './certificate.service';
@@ -27,6 +29,7 @@ import {
   CreateCertificateDto,
   RevokeCertificateDto,
   UpdateCertificateDto,
+  BatchApproveDto,
 } from './dto/certificate.dto';
 
 @ApiTags('certificates')
@@ -225,6 +228,35 @@ export class CertificateController {
       );
     }
     return this.certificateService.approve(id, user.organization_id, {
+      id: user.id,
+      name: user.name,
+    });
+  }
+
+  @Get('import/template')
+  @ApiOperation({ summary: 'Download CSV/Excel template for certificate import' })
+  async downloadTemplate(@Res() res: Response) {
+    const header = 'student_id,certificate_title,student_fullName,dob,placeOfBirth,gender,ethnicity,schoolName,examCohort,examBoard,issueLocation,issueDate,serialNumber,registryNumber\n"SV001","Cử nhân CNTT","Nguyễn Văn A","2002-05-15","Hà Nội","Nam","Kinh","ĐH Bách Khoa Hà Nội","2025","Hội đồng 1","Hà Nội","2025-06-15","BK-2025-001","001"\n';
+    res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+    res.setHeader('Content-Disposition', 'attachment; filename="certificate-import-template.csv"');
+    res.send(header);
+  }
+
+  @Post('batch-approve')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({
+    summary: '[Issuer] Batch approve multiple PENDING certificates',
+    description: 'Approve multiple certificates in batch. Each certificate still creates an individual blockchain transaction.',
+  })
+  @ApiBody({ type: BatchApproveDto })
+  async batchApprove(@Req() req: Request, @Body() dto: BatchApproveDto) {
+    const user = req.user as any;
+    if (user.role !== 'issuer') {
+      throw new ForbiddenException(
+        'Only issuing organization accounts can approve certificates',
+      );
+    }
+    return this.certificateService.batchApprove(dto.ids, user.organization_id, {
       id: user.id,
       name: user.name,
     });

@@ -312,6 +312,57 @@ export class CertificateService {
     return issued;
   }
 
+  async batchApprove(
+    ids: string[],
+    organizationId: string,
+    actor: { id: string; name: string },
+  ) {
+    const results: {
+      certificateId: string;
+      status: 'SUCCESS' | 'FAILED';
+      error?: string;
+    }[] = [];
+
+    for (const id of ids) {
+      try {
+        const cert = await this.prisma.certificate.findFirst({
+          where: { certificate_id: id, organization_id: organizationId },
+        });
+        if (!cert) {
+          results.push({ certificateId: id, status: 'FAILED', error: 'Certificate not found' });
+          continue;
+        }
+        if (cert.status !== 'PENDING') {
+          results.push({ certificateId: id, status: 'FAILED', error: `Invalid status: ${cert.status}. Only PENDING can be approved.` });
+          continue;
+        }
+        await this.approve(id, organizationId, { id: actor.id, name: actor.name });
+        results.push({ certificateId: id, status: 'SUCCESS' });
+      } catch (error) {
+        results.push({
+          certificateId: id,
+          status: 'FAILED',
+          error: error?.message || 'Unknown error',
+        });
+      }
+    }
+
+    const successCount = results.filter((r) => r.status === 'SUCCESS').length;
+    const failCount = results.filter((r) => r.status === 'FAILED').length;
+    await this.auditService.log({
+      organizationId,
+      actorId: actor.id,
+      actorName: actor.name,
+      action: 'BATCH_ISSUE_CERTIFICATE',
+      targetType: 'CERTIFICATE',
+      targetId: ids.join(','),
+      success: failCount === 0,
+      details: { total: ids.length, success: successCount, failed: failCount },
+    });
+
+    return { results, successCount, failCount, total: ids.length };
+  }
+
   async revoke(
     id: string,
     organizationId: string,

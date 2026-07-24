@@ -55,6 +55,16 @@ export type StaffAccount = Prisma.StaffAccountModel
  */
 export type StudentAccount = Prisma.StudentAccountModel
 /**
+ * Model Notification
+ * 
+ */
+export type Notification = Prisma.NotificationModel
+/**
+ * Model StudentImportBatch
+ * 
+ */
+export type StudentImportBatch = Prisma.StudentImportBatchModel
+/**
  * Model CertificateTemplate
  * 
  */

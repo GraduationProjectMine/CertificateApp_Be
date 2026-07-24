@@ -10,6 +10,7 @@ import { verifyMessage } from 'ethers';
 import { StaffService } from '../staff/staff.service';
 import { StudentService } from '../student/student.service';
 import { IssuerService } from '../issuer/issuer.service';
+import { PrismaService } from '../../core/prisma/prisma.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 import { MetaMaskRegisterDto } from './dto/metamask-register.dto';
@@ -24,9 +25,10 @@ export class AuthService {
     private readonly staffService: StaffService,
     private readonly studentService: StudentService,
     private readonly issuerService: IssuerService,
+    private readonly prisma: PrismaService,
     private readonly jwtService: JwtService,
     private readonly blockchainService: BlockchainService,
-  ) {}
+  ) { }
 
   async generateTokens(payload: any) {
     const accessToken = this.jwtService.sign(payload, { expiresIn: '10m' });
@@ -95,6 +97,10 @@ export class AuthService {
       throw new UnauthorizedException('Invalid email or password');
     }
 
+    if (!user.isActive) {
+      throw new UnauthorizedException('Tài khoản đã bị khóa hoặc không hoạt động.');
+    }
+
     let role: 'issuer' | 'staff' | 'student';
     let name: string;
     let id: string;
@@ -141,6 +147,10 @@ export class AuthService {
 
       if (!user) {
         throw new UnauthorizedException('User not found');
+      }
+
+      if (!user.isActive) {
+        throw new UnauthorizedException('Tài khoản đã bị khóa hoặc không hoạt động.');
       }
 
       let role: 'issuer' | 'staff' | 'student';
@@ -245,7 +255,7 @@ export class AuthService {
       );
     }
 
-    if (owner.status !== 'ACTIVE') {
+    if (!owner.isActive) {
       throw new UnauthorizedException('Tài khoản đã bị khóa hoặc không hoạt động.');
     }
 

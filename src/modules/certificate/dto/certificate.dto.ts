@@ -2,6 +2,9 @@ import {
   IsString,
   IsNotEmpty,
   IsOptional,
+  IsArray,
+  ArrayNotEmpty,
+  ArrayMaxSize,
   MaxLength,
   MinLength,
 } from 'class-validator';
@@ -15,6 +18,15 @@ export class CreateCertificateDto {
   @IsString()
   @IsNotEmpty()
   student_id: string;
+
+  @ApiProperty({
+    example: 'Nguyễn Văn A',
+    description: 'Full name of the student (optional, fetched from DB if omitted)',
+    required: false,
+  })
+  @IsString()
+  @IsOptional()
+  student_fullName?: string;
 
   @ApiProperty({
     example: 'uuid-of-template',
@@ -173,4 +185,16 @@ export class RevokeCertificateDto {
   @MinLength(5)
   @MaxLength(500)
   reason!: string;
+}
+
+export class BatchApproveDto {
+  @ApiProperty({
+    example: ['uuid-1', 'uuid-2'],
+    description: 'Array of certificate IDs to approve',
+  })
+  @IsArray()
+  @ArrayNotEmpty()
+  @ArrayMaxSize(200)
+  @IsString({ each: true })
+  ids!: string[];
 }

@@ -19,7 +19,7 @@ import { CreateIssuanceBatchDto } from './dto/batch.dto';
 @Controller('issuance-batches')
 @UseGuards(JwtAuthGuard)
 export class BatchesController {
-  constructor(private readonly batches: BatchesService) {}
+  constructor(private readonly batches: BatchesService) { }
 
   @Get()
   @ApiOperation({ summary: 'List issuance batches' })
@@ -37,13 +37,20 @@ export class BatchesController {
 
   @Post()
   @ApiOperation({
-    summary: 'Validate and issue certificates from imported rows',
+    summary: 'Import rows as DRAFT or issue certificates',
+    description: 'mode=DRAFT_ONLY (staff) creates drafts only. mode=FULL (issuer) creates and approves.',
   })
   create(@Req() req: Request, @Body() dto: CreateIssuanceBatchDto) {
     const user = req.user as any;
-    if (user.role !== 'issuer') {
+    const mode = dto.mode || 'FULL';
+    if (mode === 'FULL' && user.role !== 'issuer') {
       throw new ForbiddenException(
-        'Only issuing organization administrators can issue a batch',
+        'Only issuing organization administrators can issue a batch. Staff must use DRAFT_ONLY mode.',
+      );
+    }
+    if (user.role !== 'issuer' && user.role !== 'staff') {
+      throw new ForbiddenException(
+        'Only organization accounts can create batches',
       );
     }
     return this.batches.create(
@@ -51,6 +58,7 @@ export class BatchesController {
       { id: user.id, name: user.name },
       dto.name,
       dto.rows,
+      mode,
     );
   }
 
