@@ -67,3 +67,8 @@ export type IssuanceBatchItem = Prisma.IssuanceBatchItemModel
  * 
  */
 export type AuditLog = Prisma.AuditLogModel
+/**
+ * Model SystemAdmin
+ * 
+ */
+export type SystemAdmin = Prisma.SystemAdminModel

@@ -393,7 +393,8 @@ export const ModelName = {
   Certificate: 'Certificate',
   IssuanceBatch: 'IssuanceBatch',
   IssuanceBatchItem: 'IssuanceBatchItem',
-  AuditLog: 'AuditLog'
+  AuditLog: 'AuditLog',
+  SystemAdmin: 'SystemAdmin'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -409,7 +410,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "issuingOrganization" | "staffAccount" | "studentAccount" | "notification" | "studentImportBatch" | "certificateTemplate" | "certificate" | "issuanceBatch" | "issuanceBatchItem" | "auditLog"
+    modelProps: "issuingOrganization" | "staffAccount" | "studentAccount" | "notification" | "studentImportBatch" | "certificateTemplate" | "certificate" | "issuanceBatch" | "issuanceBatchItem" | "auditLog" | "systemAdmin"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1073,6 +1074,72 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    SystemAdmin: {
+      payload: Prisma.$SystemAdminPayload<ExtArgs>
+      fields: Prisma.SystemAdminFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SystemAdminFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SystemAdminPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SystemAdminFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SystemAdminPayload>
+        }
+        findFirst: {
+          args: Prisma.SystemAdminFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SystemAdminPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SystemAdminFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SystemAdminPayload>
+        }
+        findMany: {
+          args: Prisma.SystemAdminFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SystemAdminPayload>[]
+        }
+        create: {
+          args: Prisma.SystemAdminCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SystemAdminPayload>
+        }
+        createMany: {
+          args: Prisma.SystemAdminCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.SystemAdminDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SystemAdminPayload>
+        }
+        update: {
+          args: Prisma.SystemAdminUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SystemAdminPayload>
+        }
+        deleteMany: {
+          args: Prisma.SystemAdminDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SystemAdminUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.SystemAdminUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SystemAdminPayload>
+        }
+        aggregate: {
+          args: Prisma.SystemAdminAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSystemAdmin>
+        }
+        groupBy: {
+          args: Prisma.SystemAdminGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SystemAdminGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SystemAdminCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SystemAdminCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1287,6 +1354,18 @@ export const AuditLogScalarFieldEnum = {
 export type AuditLogScalarFieldEnum = (typeof AuditLogScalarFieldEnum)[keyof typeof AuditLogScalarFieldEnum]
 
 
+export const SystemAdminScalarFieldEnum = {
+  id: 'id',
+  walletAddress: 'walletAddress',
+  name: 'name',
+  role: 'role',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SystemAdminScalarFieldEnum = (typeof SystemAdminScalarFieldEnum)[keyof typeof SystemAdminScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -1478,6 +1557,16 @@ export const AuditLogOrderByRelevanceFieldEnum = {
 export type AuditLogOrderByRelevanceFieldEnum = (typeof AuditLogOrderByRelevanceFieldEnum)[keyof typeof AuditLogOrderByRelevanceFieldEnum]
 
 
+export const SystemAdminOrderByRelevanceFieldEnum = {
+  id: 'id',
+  walletAddress: 'walletAddress',
+  name: 'name',
+  role: 'role'
+} as const
+
+export type SystemAdminOrderByRelevanceFieldEnum = (typeof SystemAdminOrderByRelevanceFieldEnum)[keyof typeof SystemAdminOrderByRelevanceFieldEnum]
+
+
 
 /**
  * Field references
@@ -1652,6 +1741,7 @@ export type GlobalOmitConfig = {
   issuanceBatch?: Prisma.IssuanceBatchOmit
   issuanceBatchItem?: Prisma.IssuanceBatchItemOmit
   auditLog?: Prisma.AuditLogOmit
+  systemAdmin?: Prisma.SystemAdminOmit
 }
 
 /* Types for Logging */

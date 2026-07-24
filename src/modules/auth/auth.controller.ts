@@ -147,6 +147,20 @@ export class AuthController {
     return this.authService.generateMetaMaskNonce(dto.walletAddress);
   }
 
+  @Post('admin/nonce')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({
+    summary: 'Request a challenge nonce for System Administrator MetaMask authentication',
+  })
+  @ApiBody({ type: MetaMaskNonceDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Admin challenge message and temp token successfully generated',
+  })
+  async getAdminMetaMaskNonce(@Body() dto: MetaMaskNonceDto): Promise<any> {
+    return this.authService.generateAdminMetaMaskNonce(dto.walletAddress);
+  }
+
   @Post('metamask/login')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
@@ -173,6 +187,40 @@ export class AuthController {
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    });
+
+    const { refreshToken, ...responseBody } = authResult;
+    return responseBody;
+  }
+
+  @Post('admin/login')
+  @Post('admin/metamask/login')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({
+    summary: 'Authenticate System Administrator using MetaMask signature against SystemAdmin DB table',
+  })
+  @ApiBody({ type: MetaMaskLoginDto })
+  @ApiResponse({
+    status: 200,
+    description: 'System Admin successfully logged in',
+    type: AuthResponseDto,
+  })
+  @ApiResponse({ status: 403, description: 'Wallet address not authorized in SystemAdmin DB' })
+  async loginAdminWithMetaMask(
+    @Body() dto: MetaMaskLoginDto,
+    @Res({ passthrough: true }) res: express.Response,
+  ): Promise<any> {
+    const authResult = await this.authService.loginAdminWithMetaMask(
+      dto.walletAddress,
+      dto.signature,
+      dto.tempToken,
+    );
+
+    res.cookie('refreshToken', authResult.refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
     const { refreshToken, ...responseBody } = authResult;

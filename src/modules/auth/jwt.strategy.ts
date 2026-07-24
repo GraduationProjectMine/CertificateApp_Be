@@ -8,7 +8,7 @@ export interface JwtPayload {
   sub: string;
   email: string;
   name: string;
-  role: 'issuer' | 'staff' | 'student' | 'sysadmin';
+  role: 'issuer' | 'staff' | 'student' | 'super_admin';
   organization_id: string;
 }
 
@@ -27,7 +27,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   async validate(payload: JwtPayload) {
     payload.role = payload.role?.toLowerCase() as JwtPayload['role'];
-    if (payload.role === 'sysadmin') {
+    if (payload.role === 'super_admin') {
       return {
         id: payload.sub,
         email: payload.email,
