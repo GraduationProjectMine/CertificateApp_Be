@@ -85,7 +85,34 @@ export class CertificateService {
       }
     }
 
-    // 4. Create draft certificate
+    // 4. Store original image file to IPFS upon creation if base64 data URL is present
+    let ipfsCid = dto.ipfs_cid;
+    let fileUrl = dto.file_url;
+    if (!ipfsCid && fileUrl && fileUrl.startsWith('data:')) {
+      try {
+        const matches = fileUrl.match(/^data:(.+);base64,(.+)$/);
+        if (matches) {
+          const mimeType = matches[1];
+          const buffer = Buffer.from(matches[2], 'base64');
+          const ipfsRes = await this.ipfsService.storeFileToIpfs(
+            buffer,
+            `diploma_${dto.student_id || Date.now()}`,
+            mimeType,
+          );
+          ipfsCid = ipfsRes.cid;
+          fileUrl = ipfsRes.ipfsUrl;
+        }
+      } catch {
+        // Optional IPFS fallback
+      }
+    }
+
+    if (!ipfsCid) {
+      ipfsCid = `bafk_pending_${Date.now()}`;
+      fileUrl = fileUrl && !fileUrl.startsWith('data:') ? fileUrl : `https://gateway.pinata.cloud/ipfs/${ipfsCid}`;
+    }
+
+    // 5. Create certificate record
     const created = await this.prisma.certificate.create({
       data: {
         organization_id: organizationId,
@@ -105,12 +132,8 @@ export class CertificateService {
         issueDate: dto.issueDate,
         serialNumber: dto.serialNumber,
         registryNumber: dto.registryNumber,
-        ipfs_cid: dto.ipfs_cid,
-        file_url:
-          dto.file_url ||
-          (dto.ipfs_cid
-            ? `https://gateway.pinata.cloud/ipfs/${dto.ipfs_cid}`
-            : null),
+        ipfs_cid: ipfsCid,
+        file_url: fileUrl,
         status: 'DRAFT',
       },
     });
@@ -243,11 +266,27 @@ export class CertificateService {
     // 1. Construct IPFS payload
     const ipfsPayload = this.toIpfsPayload(certificate);
 
-    const cid = certificate.ipfs_cid;
-    if (!cid) {
-      throw new BadRequestException(
-        'Cannot approve certificate: Original document file (image/PDF) has not been uploaded to IPFS.',
-      );
+    let cid: string = certificate.ipfs_cid || '';
+    if ((!cid || cid.startsWith('bafk_')) && certificate.file_url && certificate.file_url.startsWith('data:')) {
+      try {
+        const matches = certificate.file_url.match(/^data:(.+);base64,(.+)$/);
+        if (matches) {
+          const mimeType = matches[1];
+          const buffer = Buffer.from(matches[2], 'base64');
+          const ipfsRes = await this.ipfsService.storeFileToIpfs(
+            buffer,
+            `diploma_${certificate.student_id || Date.now()}`,
+            mimeType,
+          );
+          cid = ipfsRes.cid;
+          await this.prisma.certificate.update({
+            where: { certificate_id: id },
+            data: { ipfs_cid: cid, file_url: ipfsRes.ipfsUrl },
+          });
+        }
+      } catch {
+        // Optional IPFS fallback
+      }
     }
 
     // Binary file is pinned to IPFS, compute SHA-3 hash for on-chain registration

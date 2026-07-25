@@ -4,14 +4,15 @@ import {
   Get,
   UseInterceptors,
   UploadedFile,
+  UploadedFiles,
   BadRequestException,
   Query,
   UseGuards,
   Req,
   ForbiddenException,
 } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiTags, ApiConsumes, ApiBody, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
+import { ApiTags, ApiConsumes, ApiBody, ApiResponse, ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 import type { Request } from 'express';
 import { OcrService } from './ocr.service';
 import { DiplomaParserService } from './diploma-parser.service';
@@ -198,25 +199,87 @@ export class OcrController {
       ocrResult.extractedText,
     );
 
-    let ipfsInfo: { cid?: string; ipfsUrl?: string; sha3Hash?: string } = {};
-    try {
-      ipfsInfo = await this.ipfsService.storeFileToIpfs(
-        file.buffer,
-        file.originalname || `diploma_${Date.now()}`,
-        file.mimetype,
-      );
-    } catch {
-      // IPFS upload failure optional fallback for OCR preview
-    }
-
     return {
       data,
       accuracy: ocrResult.accuracy,
       rawText: ocrResult.extractedText,
       validationErrors: Object.keys(errors).length > 0 ? errors : undefined,
-      ipfs_cid: ipfsInfo.cid,
-      ipfs_url: ipfsInfo.ipfsUrl,
-      sha3_hash: ipfsInfo.sha3Hash,
+    };
+  }
+
+  @Post('extract-diplomas-batch')
+  @UseInterceptors(FilesInterceptor('files', 20))
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        files: {
+          type: 'array',
+          items: {
+            type: 'string',
+            format: 'binary',
+          },
+          description: 'Up to 20 diploma image files to extract data from',
+        },
+        language: {
+          type: 'string',
+          description: 'Language code (default: vie for Vietnamese)',
+          default: 'vie',
+        },
+      },
+      required: ['files'],
+    },
+  })
+  @ApiOperation({ summary: 'Extract data from multiple diploma images in batch' })
+  async extractDiplomasBatch(
+    @Req() req: Request,
+    @UploadedFiles() files: Array<Express.Multer.File>,
+    @Query('language') language: string = 'vie',
+  ) {
+    const user = req.user as any;
+    if (user.role !== 'issuer' && user.role !== 'staff') {
+      throw new ForbiddenException('Only issuing organization accounts and staff can use OCR');
+    }
+
+    if (!files || files.length === 0) {
+      throw new BadRequestException('No image files uploaded');
+    }
+
+    const results = await Promise.all(
+      files.map(async (file, idx) => {
+        try {
+          const ocrResult = await this.ocrService.extractTextFromImage(
+            file.buffer,
+            language,
+          );
+          const { data, errors } = this.diplomaParserService.parse(
+            ocrResult.extractedText,
+          );
+
+          return {
+            rowNumber: idx + 1,
+            fileName: file.originalname,
+            data,
+            accuracy: ocrResult.accuracy,
+            rawText: ocrResult.extractedText,
+            validationErrors: Object.keys(errors).length > 0 ? errors : undefined,
+          };
+        } catch (err: any) {
+          return {
+            rowNumber: idx + 1,
+            fileName: file.originalname,
+            error: err.message || 'OCR scan failed',
+            data: {},
+            accuracy: 0,
+          };
+        }
+      }),
+    );
+
+    return {
+      total: results.length,
+      results,
     };
   }
 }
