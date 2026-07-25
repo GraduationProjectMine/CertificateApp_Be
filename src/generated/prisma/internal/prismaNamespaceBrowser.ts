@@ -58,6 +58,7 @@ export const ModelName = {
   StudentImportBatch: 'StudentImportBatch',
   CertificateTemplate: 'CertificateTemplate',
   Certificate: 'Certificate',
+  OnlineCertificate: 'OnlineCertificate',
   IssuanceBatch: 'IssuanceBatch',
   IssuanceBatchItem: 'IssuanceBatchItem',
   AuditLog: 'AuditLog',
@@ -203,6 +204,27 @@ export const CertificateScalarFieldEnum = {
 } as const
 
 export type CertificateScalarFieldEnum = (typeof CertificateScalarFieldEnum)[keyof typeof CertificateScalarFieldEnum]
+
+
+export const OnlineCertificateScalarFieldEnum = {
+  certificate_id: 'certificate_id',
+  organization_id: 'organization_id',
+  student_id: 'student_id',
+  template_id: 'template_id',
+  certificate_title: 'certificate_title',
+  student_fullName: 'student_fullName',
+  serialNumber: 'serialNumber',
+  registryNumber: 'registryNumber',
+  ipfs_cid: 'ipfs_cid',
+  file_url: 'file_url',
+  tx_hash: 'tx_hash',
+  block_number: 'block_number',
+  gas_used: 'gas_used',
+  status: 'status',
+  issuedAt: 'issuedAt'
+} as const
+
+export type OnlineCertificateScalarFieldEnum = (typeof OnlineCertificateScalarFieldEnum)[keyof typeof OnlineCertificateScalarFieldEnum]
 
 
 export const IssuanceBatchScalarFieldEnum = {
@@ -418,6 +440,25 @@ export const CertificateOrderByRelevanceFieldEnum = {
 } as const
 
 export type CertificateOrderByRelevanceFieldEnum = (typeof CertificateOrderByRelevanceFieldEnum)[keyof typeof CertificateOrderByRelevanceFieldEnum]
+
+
+export const OnlineCertificateOrderByRelevanceFieldEnum = {
+  certificate_id: 'certificate_id',
+  organization_id: 'organization_id',
+  student_id: 'student_id',
+  template_id: 'template_id',
+  certificate_title: 'certificate_title',
+  student_fullName: 'student_fullName',
+  serialNumber: 'serialNumber',
+  registryNumber: 'registryNumber',
+  ipfs_cid: 'ipfs_cid',
+  file_url: 'file_url',
+  tx_hash: 'tx_hash',
+  gas_used: 'gas_used',
+  status: 'status'
+} as const
+
+export type OnlineCertificateOrderByRelevanceFieldEnum = (typeof OnlineCertificateOrderByRelevanceFieldEnum)[keyof typeof OnlineCertificateOrderByRelevanceFieldEnum]
 
 
 export const IssuanceBatchOrderByRelevanceFieldEnum = {

@@ -20,6 +20,7 @@ model IssuingOrganization {
   staff_accounts      StaffAccount[]
   student_accounts    StudentAccount[]
   certificates        Certificate[]
+  online_certificates OnlineCertificate[]
   templates           CertificateTemplate[]
   issuance_batches    IssuanceBatch[]
   audit_logs          AuditLog[]
@@ -60,6 +61,7 @@ model StudentAccount {
   imported_by        String?
   import_batch_id    String?
   certificates       Certificate[]
+  online_certificates OnlineCertificate[]
   organization       IssuingOrganization      @relation(fields: [organization_id], references: [organization_id])
   import_batch       StudentImportBatch?      @relation(fields: [import_batch_id], references: [id])
 
@@ -120,6 +122,7 @@ model CertificateTemplate {
 
   organization    IssuingOrganization @relation(fields: [organization_id], references: [organization_id])
   certificates    Certificate[]
+  online_certificates OnlineCertificate[]
 
   @@index([organization_id])
   @@map("certificate_templates")
@@ -171,6 +174,37 @@ model Certificate {
   @@index([revokedById])
   @@map("certificate")
 }
+
+// =========================================
+// Online Certificate (Văn bằng số / Bằng từ mẫu)
+// =========================================
+model OnlineCertificate {
+  certificate_id    String   @id @default(uuid())
+  organization_id   String
+  student_id        String?
+  template_id       String?
+  certificate_title String
+  student_fullName  String
+  serialNumber      String?
+  registryNumber    String?
+  ipfs_cid          String?
+  file_url          String?
+  tx_hash           String?
+  block_number      Int?
+  gas_used          String?
+  status            String   @default("ISSUED")
+  issuedAt          DateTime @default(now())
+
+  organization IssuingOrganization  @relation(fields: [organization_id], references: [organization_id])
+  student      StudentAccount?      @relation(fields: [student_id], references: [student_id])
+  template     CertificateTemplate? @relation(fields: [template_id], references: [id])
+
+  @@index([organization_id])
+  @@index([student_id])
+  @@index([template_id])
+  @@map("online_certificates")
+}
+
 
 model IssuanceBatch {
   id              String   @id @default(uuid())

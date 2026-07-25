@@ -53,6 +53,11 @@ export type CertificateTemplate = Prisma.CertificateTemplateModel
  */
 export type Certificate = Prisma.CertificateModel
 /**
+ * Model OnlineCertificate
+ * 
+ */
+export type OnlineCertificate = Prisma.OnlineCertificateModel
+/**
  * Model IssuanceBatch
  * 
  */

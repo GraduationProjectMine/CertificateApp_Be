@@ -30,6 +30,7 @@ import {
   RevokeCertificateDto,
   UpdateCertificateDto,
   BatchApproveDto,
+  TemplateBatchIssueDto,
 } from './dto/certificate.dto';
 
 @ApiTags('certificates')
@@ -132,6 +133,19 @@ export class CertificateController {
       Number(page) || 1,
       Number(limit) || 20,
     );
+  }
+
+  @Get('online')
+  @ApiOperation({
+    summary: 'Get all online certificates issued via templates',
+    description: 'Retrieve a list of online certificates in the online_certificates table.',
+  })
+  async findAllOnline(@Req() req: Request) {
+    const user = req.user as any;
+    if (user.role === 'student') {
+      return this.certificateService.findAllOnlineCertificates({ student_id: user.id });
+    }
+    return this.certificateService.findAllOnlineCertificates({ organization_id: user.organization_id });
   }
 
   /**
@@ -329,4 +343,53 @@ export class CertificateController {
     }
     return this.certificateService.delete(id, user.organization_id);
   }
+
+  @Post('template-issue/single')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({
+    summary: '[Issuer] Direct single certificate issue from Template Generator',
+    description: 'Generates JSON payload, pins JSON to IPFS, and registers certificate on Blockchain.',
+  })
+  async issueFromTemplateSingle(
+    @Req() req: Request,
+    @Body() dto: CreateCertificateDto,
+  ) {
+    const user = req.user as any;
+    if (user.role !== 'issuer') {
+      throw new ForbiddenException(
+        'Only issuing organization administrators can issue certificates',
+      );
+    }
+    return this.certificateService.issueFromTemplateSingle(
+      user.organization_id,
+      dto,
+      { id: user.id, name: user.name },
+    );
+  }
+
+  @Post('template-issue/batch')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({
+    summary: '[Issuer] Direct batch certificate issue from Template Generator',
+    description: 'Batch issues certificates from Template Generator, pinning JSON for each to IPFS and registering on Blockchain.',
+  })
+  async issueFromTemplateBatch(
+    @Req() req: Request,
+    @Body() dto: TemplateBatchIssueDto,
+  ) {
+    const user = req.user as any;
+    if (user.role !== 'issuer') {
+      throw new ForbiddenException(
+        'Only issuing organization administrators can issue certificates',
+      );
+    }
+    return this.certificateService.issueFromTemplateBatch(
+      user.organization_id,
+      dto.rows,
+      { id: user.id, name: user.name },
+      dto.template_id,
+    );
+  }
 }
+
+

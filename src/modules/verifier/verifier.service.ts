@@ -20,11 +20,17 @@ export class VerifierService {
       );
     }
 
+    const sTrim = serialNumber.trim();
+    const rTrim = registryNumber.trim();
+
     // 1. Fetch certificate from database
     const certificate = await this.prisma.certificate.findFirst({
       where: {
-        serialNumber: serialNumber.trim(),
-        registryNumber: registryNumber.trim(),
+        OR: [
+          { serialNumber: sTrim, registryNumber: rTrim },
+          { serialNumber: sTrim.toUpperCase(), registryNumber: rTrim.toUpperCase() },
+          { serialNumber: sTrim.toLowerCase(), registryNumber: rTrim.toLowerCase() },
+        ],
       },
       include: {
         organization: true,
@@ -32,6 +38,19 @@ export class VerifierService {
     });
 
     if (!certificate) {
+      // Fallback: Check online_certificates table
+      const onlineCert = await this.prisma.onlineCertificate.findFirst({
+        where: {
+          OR: [
+            { serialNumber: sTrim, registryNumber: rTrim },
+            { serialNumber: sTrim.toUpperCase(), registryNumber: rTrim.toUpperCase() },
+            { serialNumber: sTrim.toLowerCase(), registryNumber: rTrim.toLowerCase() },
+          ],
+        },
+      });
+      if (onlineCert) {
+        return this.verifyOnlineCertificate(sTrim, rTrim);
+      }
       throw new NotFoundException(
         'Certificate not found with the provided serial and registry numbers.',
       );
@@ -80,10 +99,14 @@ export class VerifierService {
           sha3Hash: onChainResult.sha3Hash,
         };
 
-        // Verification check: exists, is not revoked, and CID matches what we have in database
+        const cidMatches = !certificate.ipfs_cid || 
+                           !onChainResult.cid || 
+                           certificate.ipfs_cid.includes(onChainResult.cid) || 
+                           onChainResult.cid.includes(certificate.ipfs_cid);
+
         isBlockchainValid = onChainResult.exists && 
                             !onChainResult.isRevoked && 
-                            onChainResult.cid === certificate.ipfs_cid;
+                            cidMatches;
       } catch (error) {
         this.logger.error(`Blockchain verification failed for hash ${calculatedSha3Hash}:`, error);
         isBlockchainValid = false;
@@ -164,9 +187,146 @@ export class VerifierService {
     });
 
     if (!certificate) {
+      const onlineCert = await this.prisma.onlineCertificate.findUnique({
+        where: {
+          certificate_id: id,
+        },
+      });
+      if (onlineCert) {
+        return this.verifyOnlineCertificate(onlineCert.serialNumber || '', onlineCert.registryNumber || '');
+      }
       throw new NotFoundException('Certificate not found.');
     }
 
     return this.verifyCertificate(certificate.serialNumber || '', certificate.registryNumber || '');
   }
+
+  async verifyOnlineCertificate(serialNumber: string, registryNumber: string) {
+    if (!serialNumber || !registryNumber) {
+      throw new BadRequestException(
+        'Both serial number (So hieu) and registry number (So vao so cap bang) are required',
+      );
+    }
+
+    const sTrim = serialNumber.trim();
+    const rTrim = registryNumber.trim();
+
+    // 1. Fetch online certificate from database
+    const certificate = await this.prisma.onlineCertificate.findFirst({
+      where: {
+        OR: [
+          { serialNumber: sTrim, registryNumber: rTrim },
+          { serialNumber: sTrim.toUpperCase(), registryNumber: rTrim.toUpperCase() },
+          { serialNumber: sTrim.toLowerCase(), registryNumber: rTrim.toLowerCase() },
+        ],
+      },
+      include: {
+        organization: true,
+      },
+    });
+
+    if (!certificate) {
+      throw new NotFoundException(
+        'Online certificate not found with the provided serial and registry numbers.',
+      );
+    }
+
+    // 2. Construct IPFS payload for Online Certificate
+    const ipfsPayload = {
+      documentTitle: certificate.certificate_title,
+      fullName: certificate.student_fullName,
+      serialNumber: certificate.serialNumber ?? '',
+      registryNumber: certificate.registryNumber ?? '',
+    };
+
+    const calculatedSha3Hash = this.ipfsService.calculateOnlineCertSha3Hash(ipfsPayload);
+
+    // 3. Query Blockchain
+    let blockchainData: any = null;
+    let isBlockchainValid = false;
+
+    if (this.blockchainService.isInitialized()) {
+      try {
+        const onChainResult = await this.blockchainService.getCertificate(calculatedSha3Hash);
+        
+        blockchainData = {
+          exists: onChainResult.exists,
+          isRevoked: onChainResult.isRevoked,
+          issuer: onChainResult.issuer,
+          timestamp: onChainResult.timestamp,
+          signature: onChainResult.signature,
+          cid: onChainResult.cid,
+          sha3Hash: onChainResult.sha3Hash,
+        };
+
+        const cidMatches = !certificate.ipfs_cid || 
+                           !onChainResult.cid || 
+                           certificate.ipfs_cid.includes(onChainResult.cid) || 
+                           onChainResult.cid.includes(certificate.ipfs_cid);
+
+        isBlockchainValid = onChainResult.exists && 
+                            !onChainResult.isRevoked && 
+                            cidMatches;
+      } catch (error) {
+        this.logger.error(`Blockchain verification failed for online cert hash ${calculatedSha3Hash}:`, error);
+        isBlockchainValid = false;
+      }
+    }
+
+    const cid = blockchainData?.cid || certificate.ipfs_cid;
+    const fileUrl =
+      certificate.file_url ||
+      (cid ? `https://gateway.pinata.cloud/ipfs/${cid}` : null);
+    const ipfsData: any = { fileUrl, cid };
+
+    const isValid = isBlockchainValid && certificate.status === 'ISSUED';
+
+    return {
+      isValid,
+      isOnlineCertificate: true,
+      status: certificate.status,
+      blockchain: blockchainData,
+      ipfsData,
+      ipfsFetchSuccess: !!cid,
+      certificateDetails: {
+        certificateId: certificate.certificate_id,
+        certificateTitle: certificate.certificate_title,
+        studentFullName: certificate.student_fullName,
+        dob: null,
+        placeOfBirth: null,
+        gender: null,
+        ethnicity: null,
+        schoolName: null,
+        examCohort: null,
+        examBoard: null,
+        issueLocation: null,
+        issueDate: null,
+        serialNumber: certificate.serialNumber,
+        registryNumber: certificate.registryNumber,
+        fileUrl,
+        organizationName: certificate.organization?.organization_name || 'CertiChain Organization',
+        organizationId: certificate.organization_id,
+        txHash: certificate.tx_hash,
+        issuedAt: certificate.issuedAt,
+        revokedAt: null,
+        revokeReason: null,
+        revokeTransactionHash: null,
+      },
+    };
+  }
+
+  async getOnlineCertificateById(id: string) {
+    const certificate = await this.prisma.onlineCertificate.findUnique({
+      where: {
+        certificate_id: id,
+      },
+    });
+
+    if (!certificate) {
+      throw new NotFoundException('Online certificate not found.');
+    }
+
+    return this.verifyOnlineCertificate(certificate.serialNumber || '', certificate.registryNumber || '');
+  }
 }
+

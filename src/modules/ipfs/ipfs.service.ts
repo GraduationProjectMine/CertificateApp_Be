@@ -1,6 +1,6 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { createHash } from 'crypto';
-import { StoreCertificateDto, StoreCertificateResponseDto } from './ipfs.dto';
+import { StoreCertificateDto, StoreCertificateResponseDto, StoreOnlineCertificateDto } from './ipfs.dto';
 
 @Injectable()
 export class IpfsService {
@@ -246,4 +246,104 @@ export class IpfsService {
       );
     }
   }
+
+  /**
+   * Hashes the online certificate data using SHA-3 (sha3-256) for template-issued certificates.
+   */
+  calculateOnlineCertSha3Hash(data: StoreOnlineCertificateDto): string {
+    const sortedData = {
+      documentTitle: data.documentTitle || 'CHỨNG NHẬN / VĂN BẰNG',
+      fullName: data.fullName || '',
+      serialNumber: data.serialNumber || '',
+      registryNumber: data.registryNumber || '',
+    };
+
+    const serialized = JSON.stringify(sortedData);
+    return createHash('sha3-256').update(serialized).digest('hex');
+  }
+
+  /**
+   * Stores the online certificate JSON payload to IPFS.
+   */
+  async storeOnlineCertToIpfs(
+    data: StoreOnlineCertificateDto,
+  ): Promise<StoreCertificateResponseDto> {
+    const sha3Hash = this.calculateOnlineCertSha3Hash(data);
+
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+    };
+
+    const pinataJwt = process.env.PINATA_JWT;
+    const pinataApiKey = process.env.PINATA_API_KEY;
+    const pinataApiSecret = process.env.PINATA_API_SECRET;
+
+    if (pinataJwt) {
+      headers['Authorization'] = `Bearer ${pinataJwt}`;
+    } else if (pinataApiKey && pinataApiSecret) {
+      headers['pinata_api_key'] = pinataApiKey;
+      headers['pinata_secret_api_key'] = pinataApiSecret;
+    } else {
+      throw new InternalServerErrorException(
+        'Pinata credentials are not configured in environment variables (.env).',
+      );
+    }
+
+    const payload = {
+      pinataContent: {
+        documentTitle: data.documentTitle || 'CHỨNG NHẬN / VĂN BẰNG',
+        fullName: data.fullName || '',
+        serialNumber: data.serialNumber || '',
+        registryNumber: data.registryNumber || '',
+        template_id: data.template_id || null,
+        sha3Hash,
+      },
+      pinataMetadata: {
+        name: `online_cert_${data.registryNumber || 'unnamed'}_${data.serialNumber || 'unnamed'}`,
+        keyvalues: {
+          fullName: data.fullName || '',
+          registryNumber: data.registryNumber || '',
+          serialNumber: data.serialNumber || '',
+          sha3Hash: sha3Hash,
+          isOnlineCert: 'true',
+        },
+      },
+      pinataOptions: {
+        cidVersion: 1,
+      },
+    };
+
+    try {
+      const response = await fetch(
+        'https://api.pinata.cloud/pinning/pinJSONToIPFS',
+        {
+          method: 'POST',
+          headers,
+          body: JSON.stringify(payload),
+        },
+      );
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(
+          `Pinata API response error: status ${response.status} - ${errorText}`,
+        );
+      }
+
+      const responseData = (await response.json()) as { IpfsHash: string };
+      const cid = responseData.IpfsHash;
+
+      return {
+        cid,
+        ipfsUrl: `https://gateway.pinata.cloud/ipfs/${cid}`,
+        sha3Hash,
+        data: data as any,
+      };
+    } catch (error) {
+      throw new InternalServerErrorException(
+        `Failed to store online certificate JSON to IPFS: ${error.message}`,
+      );
+    }
+  }
 }
+
