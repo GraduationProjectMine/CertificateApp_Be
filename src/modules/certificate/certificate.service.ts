@@ -4,11 +4,13 @@ import {
   ForbiddenException,
   BadRequestException,
 } from '@nestjs/common';
+import * as bcrypt from 'bcrypt';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import {
   CreateCertificateDto,
   UpdateCertificateDto,
 } from './dto/certificate.dto';
+
 import { IpfsService } from '../ipfs/ipfs.service';
 import { BlockchainService } from '../../core/blockchain/blockchain.service';
 import { AuditService } from '../audit/audit.service';
@@ -577,4 +579,217 @@ export class CertificateService {
 
     return { message: 'Certificate draft deleted successfully' };
   }
+
+  /**
+   * Directly issue a single certificate from Template Generator.
+   * Uploads metadata JSON file to IPFS via Pinata and registers certificate on-chain.
+   */
+  async issueFromTemplateSingle(
+    organizationId: string,
+    dto: CreateCertificateDto,
+    actor?: { id: string; name?: string },
+  ) {
+    // 1. Fetch organization
+    const organization = await this.prisma.issuingOrganization.findUnique({
+      where: { organization_id: organizationId },
+    });
+    if (!organization) {
+      throw new NotFoundException('Issuing organization not found');
+    }
+
+    // 2. Resolve student_id if provided (no auto-creation of StudentAccount)
+    const studentId = dto.student_id?.trim() || null;
+    const studentFullName = dto.student_fullName || 'Sinh viên';
+
+    // 3. Validate template if provided
+    if (dto.template_id) {
+      const template = await this.prisma.certificateTemplate.findUnique({
+        where: { id: dto.template_id },
+      });
+      if (!template) {
+        throw new NotFoundException('Certificate template not found');
+      }
+    }
+
+    // 4. Construct IPFS payload for Online Certificate
+    const ipfsPayload = {
+      documentTitle: dto.certificate_title || 'CHỨNG NHẬN / VĂN BẰNG',
+      fullName: studentFullName,
+      serialNumber: dto.serialNumber ?? '',
+      registryNumber: dto.registryNumber ?? '',
+      template_id: dto.template_id,
+    };
+
+    // 5. Store clean Online Certificate JSON payload to IPFS
+    const ipfsRes = await this.ipfsService.storeOnlineCertToIpfs(ipfsPayload);
+    const cid = ipfsRes.cid;
+    const fileUrl = ipfsRes.ipfsUrl;
+    const sha3Hash = ipfsRes.sha3Hash;
+
+    // 6. Sign SHA-3 and register on blockchain
+    let transactionHash: string | null = null;
+    let blockNumber: number | null = null;
+    let gasUsed: string | null = null;
+
+    if (this.blockchainService.isInitialized()) {
+      try {
+        const signature = await this.blockchainService.signHash(sha3Hash);
+        const onChainResult = await this.blockchainService.registerCertificate(
+          sha3Hash,
+          cid,
+          signature,
+        );
+        transactionHash = onChainResult.transactionHash;
+        blockNumber = onChainResult.blockNumber;
+        gasUsed = onChainResult.gasUsed;
+      } catch (error: any) {
+        throw new BadRequestException(
+          `Failed to register certificate on-chain: ${error.message}`,
+        );
+      }
+    } else {
+      throw new BadRequestException(
+        'Blockchain service is not initialized. Please verify your environment variables (.env).',
+      );
+    }
+
+    // 7. Create ISSUED OnlineCertificate record in online_certificates table
+    const created = await this.prisma.onlineCertificate.create({
+      data: {
+        organization_id: organizationId,
+        student_id: studentId,
+        template_id: dto.template_id,
+        certificate_title: dto.certificate_title || 'CHỨNG NHẬN / VĂN BẰNG',
+        student_fullName: studentFullName,
+        serialNumber: dto.serialNumber,
+        registryNumber: dto.registryNumber,
+        ipfs_cid: cid,
+        file_url: fileUrl,
+        tx_hash: transactionHash,
+        block_number: blockNumber,
+        gas_used: gasUsed,
+        status: 'ISSUED',
+        issuedAt: new Date(),
+      },
+    });
+
+    if (actor) {
+      await this.auditService.log({
+        organizationId,
+        actorId: actor.id,
+        actorName: actor.name,
+        action: 'TEMPLATE_ISSUE_ONLINE_CERTIFICATE',
+        targetType: 'ONLINE_CERTIFICATE',
+        targetId: created.certificate_id,
+        success: true,
+        details: { transactionHash, blockNumber, cid },
+      });
+    }
+
+    return created;
+  }
+
+  /**
+   * Find online certificates by organization or student
+   */
+  async findAllOnlineCertificates(query: { organization_id?: string; student_id?: string }) {
+    const where: any = {};
+    if (query.organization_id) where.organization_id = query.organization_id;
+    if (query.student_id) where.student_id = query.student_id;
+    return this.prisma.onlineCertificate.findMany({
+      where,
+      orderBy: { issuedAt: 'desc' },
+      include: {
+        organization: true,
+        student: true,
+        template: true,
+      },
+    });
+  }
+
+  /**
+   * Find one online certificate by ID
+   */
+  async findOneOnlineCertificate(id: string) {
+    const cert = await this.prisma.onlineCertificate.findUnique({
+      where: { certificate_id: id },
+      include: {
+        organization: true,
+        student: true,
+        template: true,
+      },
+    });
+    if (!cert) throw new NotFoundException('Online certificate not found');
+    return cert;
+  }
+
+
+  /**
+   * Batch issue certificates directly from Template Generator.
+   */
+  async issueFromTemplateBatch(
+    organizationId: string,
+    rows: CreateCertificateDto[],
+    actor: { id: string; name: string },
+    template_id?: string,
+  ) {
+    const results: Array<{
+      index: number;
+      student_fullName: string;
+      certificate_id?: string;
+      status: 'SUCCESS' | 'FAILED';
+      cid?: string;
+      file_url?: string;
+      tx_hash?: string;
+      error?: string;
+    }> = [];
+
+    for (let i = 0; i < rows.length; i++) {
+      const row = { ...rows[i] };
+      if (template_id) row.template_id = template_id;
+      try {
+        const cert = await this.issueFromTemplateSingle(organizationId, row, actor);
+        results.push({
+          index: i + 1,
+          student_fullName: cert.student_fullName,
+          certificate_id: cert.certificate_id,
+          status: 'SUCCESS',
+          cid: cert.ipfs_cid || undefined,
+          file_url: cert.file_url || undefined,
+          tx_hash: cert.tx_hash || undefined,
+        });
+      } catch (err: any) {
+        results.push({
+          index: i + 1,
+          student_fullName: row.student_fullName || `Bản ghi ${i + 1}`,
+          status: 'FAILED',
+          error: err.message || 'Cấp phát thất bại',
+        });
+      }
+    }
+
+    const successCount = results.filter((r) => r.status === 'SUCCESS').length;
+    const failCount = results.filter((r) => r.status === 'FAILED').length;
+
+    if (actor) {
+      await this.auditService.log({
+        organizationId,
+        actorId: actor.id,
+        actorName: actor.name,
+        action: 'TEMPLATE_BATCH_ISSUE_CERTIFICATE',
+        targetType: 'CERTIFICATE_BATCH',
+        targetId: `batch_${Date.now()}`,
+        success: failCount === 0,
+        details: { total: rows.length, successCount, failCount },
+      });
+    }
+
+    return {
+      total: rows.length,
+      successCount,
+      failCount,
+      results,
+    };
+  }
 }
+

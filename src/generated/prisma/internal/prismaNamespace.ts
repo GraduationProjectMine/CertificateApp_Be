@@ -391,6 +391,7 @@ export const ModelName = {
   StudentImportBatch: 'StudentImportBatch',
   CertificateTemplate: 'CertificateTemplate',
   Certificate: 'Certificate',
+  OnlineCertificate: 'OnlineCertificate',
   IssuanceBatch: 'IssuanceBatch',
   IssuanceBatchItem: 'IssuanceBatchItem',
   AuditLog: 'AuditLog',
@@ -410,7 +411,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "issuingOrganization" | "staffAccount" | "studentAccount" | "notification" | "studentImportBatch" | "certificateTemplate" | "certificate" | "issuanceBatch" | "issuanceBatchItem" | "auditLog" | "systemAdmin"
+    modelProps: "issuingOrganization" | "staffAccount" | "studentAccount" | "notification" | "studentImportBatch" | "certificateTemplate" | "certificate" | "onlineCertificate" | "issuanceBatch" | "issuanceBatchItem" | "auditLog" | "systemAdmin"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -876,6 +877,72 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    OnlineCertificate: {
+      payload: Prisma.$OnlineCertificatePayload<ExtArgs>
+      fields: Prisma.OnlineCertificateFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.OnlineCertificateFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnlineCertificatePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.OnlineCertificateFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnlineCertificatePayload>
+        }
+        findFirst: {
+          args: Prisma.OnlineCertificateFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnlineCertificatePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.OnlineCertificateFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnlineCertificatePayload>
+        }
+        findMany: {
+          args: Prisma.OnlineCertificateFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnlineCertificatePayload>[]
+        }
+        create: {
+          args: Prisma.OnlineCertificateCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnlineCertificatePayload>
+        }
+        createMany: {
+          args: Prisma.OnlineCertificateCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.OnlineCertificateDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnlineCertificatePayload>
+        }
+        update: {
+          args: Prisma.OnlineCertificateUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnlineCertificatePayload>
+        }
+        deleteMany: {
+          args: Prisma.OnlineCertificateDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.OnlineCertificateUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.OnlineCertificateUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnlineCertificatePayload>
+        }
+        aggregate: {
+          args: Prisma.OnlineCertificateAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateOnlineCertificate>
+        }
+        groupBy: {
+          args: Prisma.OnlineCertificateGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OnlineCertificateGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.OnlineCertificateCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OnlineCertificateCountAggregateOutputType> | number
+        }
+      }
+    }
     IssuanceBatch: {
       payload: Prisma.$IssuanceBatchPayload<ExtArgs>
       fields: Prisma.IssuanceBatchFieldRefs
@@ -1304,6 +1371,27 @@ export const CertificateScalarFieldEnum = {
 export type CertificateScalarFieldEnum = (typeof CertificateScalarFieldEnum)[keyof typeof CertificateScalarFieldEnum]
 
 
+export const OnlineCertificateScalarFieldEnum = {
+  certificate_id: 'certificate_id',
+  organization_id: 'organization_id',
+  student_id: 'student_id',
+  template_id: 'template_id',
+  certificate_title: 'certificate_title',
+  student_fullName: 'student_fullName',
+  serialNumber: 'serialNumber',
+  registryNumber: 'registryNumber',
+  ipfs_cid: 'ipfs_cid',
+  file_url: 'file_url',
+  tx_hash: 'tx_hash',
+  block_number: 'block_number',
+  gas_used: 'gas_used',
+  status: 'status',
+  issuedAt: 'issuedAt'
+} as const
+
+export type OnlineCertificateScalarFieldEnum = (typeof OnlineCertificateScalarFieldEnum)[keyof typeof OnlineCertificateScalarFieldEnum]
+
+
 export const IssuanceBatchScalarFieldEnum = {
   id: 'id',
   organization_id: 'organization_id',
@@ -1517,6 +1605,25 @@ export const CertificateOrderByRelevanceFieldEnum = {
 } as const
 
 export type CertificateOrderByRelevanceFieldEnum = (typeof CertificateOrderByRelevanceFieldEnum)[keyof typeof CertificateOrderByRelevanceFieldEnum]
+
+
+export const OnlineCertificateOrderByRelevanceFieldEnum = {
+  certificate_id: 'certificate_id',
+  organization_id: 'organization_id',
+  student_id: 'student_id',
+  template_id: 'template_id',
+  certificate_title: 'certificate_title',
+  student_fullName: 'student_fullName',
+  serialNumber: 'serialNumber',
+  registryNumber: 'registryNumber',
+  ipfs_cid: 'ipfs_cid',
+  file_url: 'file_url',
+  tx_hash: 'tx_hash',
+  gas_used: 'gas_used',
+  status: 'status'
+} as const
+
+export type OnlineCertificateOrderByRelevanceFieldEnum = (typeof OnlineCertificateOrderByRelevanceFieldEnum)[keyof typeof OnlineCertificateOrderByRelevanceFieldEnum]
 
 
 export const IssuanceBatchOrderByRelevanceFieldEnum = {
@@ -1738,6 +1845,7 @@ export type GlobalOmitConfig = {
   studentImportBatch?: Prisma.StudentImportBatchOmit
   certificateTemplate?: Prisma.CertificateTemplateOmit
   certificate?: Prisma.CertificateOmit
+  onlineCertificate?: Prisma.OnlineCertificateOmit
   issuanceBatch?: Prisma.IssuanceBatchOmit
   issuanceBatchItem?: Prisma.IssuanceBatchItemOmit
   auditLog?: Prisma.AuditLogOmit

@@ -201,6 +201,7 @@ export type IssuingOrganizationWhereInput = {
   staff_accounts?: Prisma.StaffAccountListRelationFilter
   student_accounts?: Prisma.StudentAccountListRelationFilter
   certificates?: Prisma.CertificateListRelationFilter
+  online_certificates?: Prisma.OnlineCertificateListRelationFilter
   templates?: Prisma.CertificateTemplateListRelationFilter
   issuance_batches?: Prisma.IssuanceBatchListRelationFilter
   audit_logs?: Prisma.AuditLogListRelationFilter
@@ -219,6 +220,7 @@ export type IssuingOrganizationOrderByWithRelationInput = {
   staff_accounts?: Prisma.StaffAccountOrderByRelationAggregateInput
   student_accounts?: Prisma.StudentAccountOrderByRelationAggregateInput
   certificates?: Prisma.CertificateOrderByRelationAggregateInput
+  online_certificates?: Prisma.OnlineCertificateOrderByRelationAggregateInput
   templates?: Prisma.CertificateTemplateOrderByRelationAggregateInput
   issuance_batches?: Prisma.IssuanceBatchOrderByRelationAggregateInput
   audit_logs?: Prisma.AuditLogOrderByRelationAggregateInput
@@ -241,6 +243,7 @@ export type IssuingOrganizationWhereUniqueInput = Prisma.AtLeast<{
   staff_accounts?: Prisma.StaffAccountListRelationFilter
   student_accounts?: Prisma.StudentAccountListRelationFilter
   certificates?: Prisma.CertificateListRelationFilter
+  online_certificates?: Prisma.OnlineCertificateListRelationFilter
   templates?: Prisma.CertificateTemplateListRelationFilter
   issuance_batches?: Prisma.IssuanceBatchListRelationFilter
   audit_logs?: Prisma.AuditLogListRelationFilter
@@ -285,6 +288,7 @@ export type IssuingOrganizationCreateInput = {
   staff_accounts?: Prisma.StaffAccountCreateNestedManyWithoutOrganizationInput
   student_accounts?: Prisma.StudentAccountCreateNestedManyWithoutOrganizationInput
   certificates?: Prisma.CertificateCreateNestedManyWithoutOrganizationInput
+  online_certificates?: Prisma.OnlineCertificateCreateNestedManyWithoutOrganizationInput
   templates?: Prisma.CertificateTemplateCreateNestedManyWithoutOrganizationInput
   issuance_batches?: Prisma.IssuanceBatchCreateNestedManyWithoutOrganizationInput
   audit_logs?: Prisma.AuditLogCreateNestedManyWithoutOrganizationInput
@@ -303,6 +307,7 @@ export type IssuingOrganizationUncheckedCreateInput = {
   staff_accounts?: Prisma.StaffAccountUncheckedCreateNestedManyWithoutOrganizationInput
   student_accounts?: Prisma.StudentAccountUncheckedCreateNestedManyWithoutOrganizationInput
   certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutOrganizationInput
+  online_certificates?: Prisma.OnlineCertificateUncheckedCreateNestedManyWithoutOrganizationInput
   templates?: Prisma.CertificateTemplateUncheckedCreateNestedManyWithoutOrganizationInput
   issuance_batches?: Prisma.IssuanceBatchUncheckedCreateNestedManyWithoutOrganizationInput
   audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutOrganizationInput
@@ -321,6 +326,7 @@ export type IssuingOrganizationUpdateInput = {
   staff_accounts?: Prisma.StaffAccountUpdateManyWithoutOrganizationNestedInput
   student_accounts?: Prisma.StudentAccountUpdateManyWithoutOrganizationNestedInput
   certificates?: Prisma.CertificateUpdateManyWithoutOrganizationNestedInput
+  online_certificates?: Prisma.OnlineCertificateUpdateManyWithoutOrganizationNestedInput
   templates?: Prisma.CertificateTemplateUpdateManyWithoutOrganizationNestedInput
   issuance_batches?: Prisma.IssuanceBatchUpdateManyWithoutOrganizationNestedInput
   audit_logs?: Prisma.AuditLogUpdateManyWithoutOrganizationNestedInput
@@ -339,6 +345,7 @@ export type IssuingOrganizationUncheckedUpdateInput = {
   staff_accounts?: Prisma.StaffAccountUncheckedUpdateManyWithoutOrganizationNestedInput
   student_accounts?: Prisma.StudentAccountUncheckedUpdateManyWithoutOrganizationNestedInput
   certificates?: Prisma.CertificateUncheckedUpdateManyWithoutOrganizationNestedInput
+  online_certificates?: Prisma.OnlineCertificateUncheckedUpdateManyWithoutOrganizationNestedInput
   templates?: Prisma.CertificateTemplateUncheckedUpdateManyWithoutOrganizationNestedInput
   issuance_batches?: Prisma.IssuanceBatchUncheckedUpdateManyWithoutOrganizationNestedInput
   audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutOrganizationNestedInput
@@ -517,6 +524,20 @@ export type IssuingOrganizationUpdateOneRequiredWithoutCertificatesNestedInput =
   update?: Prisma.XOR<Prisma.XOR<Prisma.IssuingOrganizationUpdateToOneWithWhereWithoutCertificatesInput, Prisma.IssuingOrganizationUpdateWithoutCertificatesInput>, Prisma.IssuingOrganizationUncheckedUpdateWithoutCertificatesInput>
 }
 
+export type IssuingOrganizationCreateNestedOneWithoutOnline_certificatesInput = {
+  create?: Prisma.XOR<Prisma.IssuingOrganizationCreateWithoutOnline_certificatesInput, Prisma.IssuingOrganizationUncheckedCreateWithoutOnline_certificatesInput>
+  connectOrCreate?: Prisma.IssuingOrganizationCreateOrConnectWithoutOnline_certificatesInput
+  connect?: Prisma.IssuingOrganizationWhereUniqueInput
+}
+
+export type IssuingOrganizationUpdateOneRequiredWithoutOnline_certificatesNestedInput = {
+  create?: Prisma.XOR<Prisma.IssuingOrganizationCreateWithoutOnline_certificatesInput, Prisma.IssuingOrganizationUncheckedCreateWithoutOnline_certificatesInput>
+  connectOrCreate?: Prisma.IssuingOrganizationCreateOrConnectWithoutOnline_certificatesInput
+  upsert?: Prisma.IssuingOrganizationUpsertWithoutOnline_certificatesInput
+  connect?: Prisma.IssuingOrganizationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.IssuingOrganizationUpdateToOneWithWhereWithoutOnline_certificatesInput, Prisma.IssuingOrganizationUpdateWithoutOnline_certificatesInput>, Prisma.IssuingOrganizationUncheckedUpdateWithoutOnline_certificatesInput>
+}
+
 export type IssuingOrganizationCreateNestedOneWithoutIssuance_batchesInput = {
   create?: Prisma.XOR<Prisma.IssuingOrganizationCreateWithoutIssuance_batchesInput, Prisma.IssuingOrganizationUncheckedCreateWithoutIssuance_batchesInput>
   connectOrCreate?: Prisma.IssuingOrganizationCreateOrConnectWithoutIssuance_batchesInput
@@ -555,6 +576,7 @@ export type IssuingOrganizationCreateWithoutStaff_accountsInput = {
   created_at?: Date | string
   student_accounts?: Prisma.StudentAccountCreateNestedManyWithoutOrganizationInput
   certificates?: Prisma.CertificateCreateNestedManyWithoutOrganizationInput
+  online_certificates?: Prisma.OnlineCertificateCreateNestedManyWithoutOrganizationInput
   templates?: Prisma.CertificateTemplateCreateNestedManyWithoutOrganizationInput
   issuance_batches?: Prisma.IssuanceBatchCreateNestedManyWithoutOrganizationInput
   audit_logs?: Prisma.AuditLogCreateNestedManyWithoutOrganizationInput
@@ -572,6 +594,7 @@ export type IssuingOrganizationUncheckedCreateWithoutStaff_accountsInput = {
   created_at?: Date | string
   student_accounts?: Prisma.StudentAccountUncheckedCreateNestedManyWithoutOrganizationInput
   certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutOrganizationInput
+  online_certificates?: Prisma.OnlineCertificateUncheckedCreateNestedManyWithoutOrganizationInput
   templates?: Prisma.CertificateTemplateUncheckedCreateNestedManyWithoutOrganizationInput
   issuance_batches?: Prisma.IssuanceBatchUncheckedCreateNestedManyWithoutOrganizationInput
   audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutOrganizationInput
@@ -605,6 +628,7 @@ export type IssuingOrganizationUpdateWithoutStaff_accountsInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   student_accounts?: Prisma.StudentAccountUpdateManyWithoutOrganizationNestedInput
   certificates?: Prisma.CertificateUpdateManyWithoutOrganizationNestedInput
+  online_certificates?: Prisma.OnlineCertificateUpdateManyWithoutOrganizationNestedInput
   templates?: Prisma.CertificateTemplateUpdateManyWithoutOrganizationNestedInput
   issuance_batches?: Prisma.IssuanceBatchUpdateManyWithoutOrganizationNestedInput
   audit_logs?: Prisma.AuditLogUpdateManyWithoutOrganizationNestedInput
@@ -622,6 +646,7 @@ export type IssuingOrganizationUncheckedUpdateWithoutStaff_accountsInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   student_accounts?: Prisma.StudentAccountUncheckedUpdateManyWithoutOrganizationNestedInput
   certificates?: Prisma.CertificateUncheckedUpdateManyWithoutOrganizationNestedInput
+  online_certificates?: Prisma.OnlineCertificateUncheckedUpdateManyWithoutOrganizationNestedInput
   templates?: Prisma.CertificateTemplateUncheckedUpdateManyWithoutOrganizationNestedInput
   issuance_batches?: Prisma.IssuanceBatchUncheckedUpdateManyWithoutOrganizationNestedInput
   audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutOrganizationNestedInput
@@ -639,6 +664,7 @@ export type IssuingOrganizationCreateWithoutStudent_accountsInput = {
   created_at?: Date | string
   staff_accounts?: Prisma.StaffAccountCreateNestedManyWithoutOrganizationInput
   certificates?: Prisma.CertificateCreateNestedManyWithoutOrganizationInput
+  online_certificates?: Prisma.OnlineCertificateCreateNestedManyWithoutOrganizationInput
   templates?: Prisma.CertificateTemplateCreateNestedManyWithoutOrganizationInput
   issuance_batches?: Prisma.IssuanceBatchCreateNestedManyWithoutOrganizationInput
   audit_logs?: Prisma.AuditLogCreateNestedManyWithoutOrganizationInput
@@ -656,6 +682,7 @@ export type IssuingOrganizationUncheckedCreateWithoutStudent_accountsInput = {
   created_at?: Date | string
   staff_accounts?: Prisma.StaffAccountUncheckedCreateNestedManyWithoutOrganizationInput
   certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutOrganizationInput
+  online_certificates?: Prisma.OnlineCertificateUncheckedCreateNestedManyWithoutOrganizationInput
   templates?: Prisma.CertificateTemplateUncheckedCreateNestedManyWithoutOrganizationInput
   issuance_batches?: Prisma.IssuanceBatchUncheckedCreateNestedManyWithoutOrganizationInput
   audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutOrganizationInput
@@ -689,6 +716,7 @@ export type IssuingOrganizationUpdateWithoutStudent_accountsInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   staff_accounts?: Prisma.StaffAccountUpdateManyWithoutOrganizationNestedInput
   certificates?: Prisma.CertificateUpdateManyWithoutOrganizationNestedInput
+  online_certificates?: Prisma.OnlineCertificateUpdateManyWithoutOrganizationNestedInput
   templates?: Prisma.CertificateTemplateUpdateManyWithoutOrganizationNestedInput
   issuance_batches?: Prisma.IssuanceBatchUpdateManyWithoutOrganizationNestedInput
   audit_logs?: Prisma.AuditLogUpdateManyWithoutOrganizationNestedInput
@@ -706,6 +734,7 @@ export type IssuingOrganizationUncheckedUpdateWithoutStudent_accountsInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   staff_accounts?: Prisma.StaffAccountUncheckedUpdateManyWithoutOrganizationNestedInput
   certificates?: Prisma.CertificateUncheckedUpdateManyWithoutOrganizationNestedInput
+  online_certificates?: Prisma.OnlineCertificateUncheckedUpdateManyWithoutOrganizationNestedInput
   templates?: Prisma.CertificateTemplateUncheckedUpdateManyWithoutOrganizationNestedInput
   issuance_batches?: Prisma.IssuanceBatchUncheckedUpdateManyWithoutOrganizationNestedInput
   audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutOrganizationNestedInput
@@ -724,6 +753,7 @@ export type IssuingOrganizationCreateWithoutNotificationsInput = {
   staff_accounts?: Prisma.StaffAccountCreateNestedManyWithoutOrganizationInput
   student_accounts?: Prisma.StudentAccountCreateNestedManyWithoutOrganizationInput
   certificates?: Prisma.CertificateCreateNestedManyWithoutOrganizationInput
+  online_certificates?: Prisma.OnlineCertificateCreateNestedManyWithoutOrganizationInput
   templates?: Prisma.CertificateTemplateCreateNestedManyWithoutOrganizationInput
   issuance_batches?: Prisma.IssuanceBatchCreateNestedManyWithoutOrganizationInput
   audit_logs?: Prisma.AuditLogCreateNestedManyWithoutOrganizationInput
@@ -741,6 +771,7 @@ export type IssuingOrganizationUncheckedCreateWithoutNotificationsInput = {
   staff_accounts?: Prisma.StaffAccountUncheckedCreateNestedManyWithoutOrganizationInput
   student_accounts?: Prisma.StudentAccountUncheckedCreateNestedManyWithoutOrganizationInput
   certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutOrganizationInput
+  online_certificates?: Prisma.OnlineCertificateUncheckedCreateNestedManyWithoutOrganizationInput
   templates?: Prisma.CertificateTemplateUncheckedCreateNestedManyWithoutOrganizationInput
   issuance_batches?: Prisma.IssuanceBatchUncheckedCreateNestedManyWithoutOrganizationInput
   audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutOrganizationInput
@@ -774,6 +805,7 @@ export type IssuingOrganizationUpdateWithoutNotificationsInput = {
   staff_accounts?: Prisma.StaffAccountUpdateManyWithoutOrganizationNestedInput
   student_accounts?: Prisma.StudentAccountUpdateManyWithoutOrganizationNestedInput
   certificates?: Prisma.CertificateUpdateManyWithoutOrganizationNestedInput
+  online_certificates?: Prisma.OnlineCertificateUpdateManyWithoutOrganizationNestedInput
   templates?: Prisma.CertificateTemplateUpdateManyWithoutOrganizationNestedInput
   issuance_batches?: Prisma.IssuanceBatchUpdateManyWithoutOrganizationNestedInput
   audit_logs?: Prisma.AuditLogUpdateManyWithoutOrganizationNestedInput
@@ -791,6 +823,7 @@ export type IssuingOrganizationUncheckedUpdateWithoutNotificationsInput = {
   staff_accounts?: Prisma.StaffAccountUncheckedUpdateManyWithoutOrganizationNestedInput
   student_accounts?: Prisma.StudentAccountUncheckedUpdateManyWithoutOrganizationNestedInput
   certificates?: Prisma.CertificateUncheckedUpdateManyWithoutOrganizationNestedInput
+  online_certificates?: Prisma.OnlineCertificateUncheckedUpdateManyWithoutOrganizationNestedInput
   templates?: Prisma.CertificateTemplateUncheckedUpdateManyWithoutOrganizationNestedInput
   issuance_batches?: Prisma.IssuanceBatchUncheckedUpdateManyWithoutOrganizationNestedInput
   audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutOrganizationNestedInput
@@ -808,6 +841,7 @@ export type IssuingOrganizationCreateWithoutStudent_import_batchesInput = {
   staff_accounts?: Prisma.StaffAccountCreateNestedManyWithoutOrganizationInput
   student_accounts?: Prisma.StudentAccountCreateNestedManyWithoutOrganizationInput
   certificates?: Prisma.CertificateCreateNestedManyWithoutOrganizationInput
+  online_certificates?: Prisma.OnlineCertificateCreateNestedManyWithoutOrganizationInput
   templates?: Prisma.CertificateTemplateCreateNestedManyWithoutOrganizationInput
   issuance_batches?: Prisma.IssuanceBatchCreateNestedManyWithoutOrganizationInput
   audit_logs?: Prisma.AuditLogCreateNestedManyWithoutOrganizationInput
@@ -825,6 +859,7 @@ export type IssuingOrganizationUncheckedCreateWithoutStudent_import_batchesInput
   staff_accounts?: Prisma.StaffAccountUncheckedCreateNestedManyWithoutOrganizationInput
   student_accounts?: Prisma.StudentAccountUncheckedCreateNestedManyWithoutOrganizationInput
   certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutOrganizationInput
+  online_certificates?: Prisma.OnlineCertificateUncheckedCreateNestedManyWithoutOrganizationInput
   templates?: Prisma.CertificateTemplateUncheckedCreateNestedManyWithoutOrganizationInput
   issuance_batches?: Prisma.IssuanceBatchUncheckedCreateNestedManyWithoutOrganizationInput
   audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutOrganizationInput
@@ -858,6 +893,7 @@ export type IssuingOrganizationUpdateWithoutStudent_import_batchesInput = {
   staff_accounts?: Prisma.StaffAccountUpdateManyWithoutOrganizationNestedInput
   student_accounts?: Prisma.StudentAccountUpdateManyWithoutOrganizationNestedInput
   certificates?: Prisma.CertificateUpdateManyWithoutOrganizationNestedInput
+  online_certificates?: Prisma.OnlineCertificateUpdateManyWithoutOrganizationNestedInput
   templates?: Prisma.CertificateTemplateUpdateManyWithoutOrganizationNestedInput
   issuance_batches?: Prisma.IssuanceBatchUpdateManyWithoutOrganizationNestedInput
   audit_logs?: Prisma.AuditLogUpdateManyWithoutOrganizationNestedInput
@@ -875,6 +911,7 @@ export type IssuingOrganizationUncheckedUpdateWithoutStudent_import_batchesInput
   staff_accounts?: Prisma.StaffAccountUncheckedUpdateManyWithoutOrganizationNestedInput
   student_accounts?: Prisma.StudentAccountUncheckedUpdateManyWithoutOrganizationNestedInput
   certificates?: Prisma.CertificateUncheckedUpdateManyWithoutOrganizationNestedInput
+  online_certificates?: Prisma.OnlineCertificateUncheckedUpdateManyWithoutOrganizationNestedInput
   templates?: Prisma.CertificateTemplateUncheckedUpdateManyWithoutOrganizationNestedInput
   issuance_batches?: Prisma.IssuanceBatchUncheckedUpdateManyWithoutOrganizationNestedInput
   audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutOrganizationNestedInput
@@ -892,6 +929,7 @@ export type IssuingOrganizationCreateWithoutTemplatesInput = {
   staff_accounts?: Prisma.StaffAccountCreateNestedManyWithoutOrganizationInput
   student_accounts?: Prisma.StudentAccountCreateNestedManyWithoutOrganizationInput
   certificates?: Prisma.CertificateCreateNestedManyWithoutOrganizationInput
+  online_certificates?: Prisma.OnlineCertificateCreateNestedManyWithoutOrganizationInput
   issuance_batches?: Prisma.IssuanceBatchCreateNestedManyWithoutOrganizationInput
   audit_logs?: Prisma.AuditLogCreateNestedManyWithoutOrganizationInput
   student_import_batches?: Prisma.StudentImportBatchCreateNestedManyWithoutOrganizationInput
@@ -909,6 +947,7 @@ export type IssuingOrganizationUncheckedCreateWithoutTemplatesInput = {
   staff_accounts?: Prisma.StaffAccountUncheckedCreateNestedManyWithoutOrganizationInput
   student_accounts?: Prisma.StudentAccountUncheckedCreateNestedManyWithoutOrganizationInput
   certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutOrganizationInput
+  online_certificates?: Prisma.OnlineCertificateUncheckedCreateNestedManyWithoutOrganizationInput
   issuance_batches?: Prisma.IssuanceBatchUncheckedCreateNestedManyWithoutOrganizationInput
   audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutOrganizationInput
   student_import_batches?: Prisma.StudentImportBatchUncheckedCreateNestedManyWithoutOrganizationInput
@@ -942,6 +981,7 @@ export type IssuingOrganizationUpdateWithoutTemplatesInput = {
   staff_accounts?: Prisma.StaffAccountUpdateManyWithoutOrganizationNestedInput
   student_accounts?: Prisma.StudentAccountUpdateManyWithoutOrganizationNestedInput
   certificates?: Prisma.CertificateUpdateManyWithoutOrganizationNestedInput
+  online_certificates?: Prisma.OnlineCertificateUpdateManyWithoutOrganizationNestedInput
   issuance_batches?: Prisma.IssuanceBatchUpdateManyWithoutOrganizationNestedInput
   audit_logs?: Prisma.AuditLogUpdateManyWithoutOrganizationNestedInput
   student_import_batches?: Prisma.StudentImportBatchUpdateManyWithoutOrganizationNestedInput
@@ -959,6 +999,7 @@ export type IssuingOrganizationUncheckedUpdateWithoutTemplatesInput = {
   staff_accounts?: Prisma.StaffAccountUncheckedUpdateManyWithoutOrganizationNestedInput
   student_accounts?: Prisma.StudentAccountUncheckedUpdateManyWithoutOrganizationNestedInput
   certificates?: Prisma.CertificateUncheckedUpdateManyWithoutOrganizationNestedInput
+  online_certificates?: Prisma.OnlineCertificateUncheckedUpdateManyWithoutOrganizationNestedInput
   issuance_batches?: Prisma.IssuanceBatchUncheckedUpdateManyWithoutOrganizationNestedInput
   audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutOrganizationNestedInput
   student_import_batches?: Prisma.StudentImportBatchUncheckedUpdateManyWithoutOrganizationNestedInput
@@ -975,6 +1016,7 @@ export type IssuingOrganizationCreateWithoutCertificatesInput = {
   created_at?: Date | string
   staff_accounts?: Prisma.StaffAccountCreateNestedManyWithoutOrganizationInput
   student_accounts?: Prisma.StudentAccountCreateNestedManyWithoutOrganizationInput
+  online_certificates?: Prisma.OnlineCertificateCreateNestedManyWithoutOrganizationInput
   templates?: Prisma.CertificateTemplateCreateNestedManyWithoutOrganizationInput
   issuance_batches?: Prisma.IssuanceBatchCreateNestedManyWithoutOrganizationInput
   audit_logs?: Prisma.AuditLogCreateNestedManyWithoutOrganizationInput
@@ -992,6 +1034,7 @@ export type IssuingOrganizationUncheckedCreateWithoutCertificatesInput = {
   created_at?: Date | string
   staff_accounts?: Prisma.StaffAccountUncheckedCreateNestedManyWithoutOrganizationInput
   student_accounts?: Prisma.StudentAccountUncheckedCreateNestedManyWithoutOrganizationInput
+  online_certificates?: Prisma.OnlineCertificateUncheckedCreateNestedManyWithoutOrganizationInput
   templates?: Prisma.CertificateTemplateUncheckedCreateNestedManyWithoutOrganizationInput
   issuance_batches?: Prisma.IssuanceBatchUncheckedCreateNestedManyWithoutOrganizationInput
   audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutOrganizationInput
@@ -1025,6 +1068,7 @@ export type IssuingOrganizationUpdateWithoutCertificatesInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   staff_accounts?: Prisma.StaffAccountUpdateManyWithoutOrganizationNestedInput
   student_accounts?: Prisma.StudentAccountUpdateManyWithoutOrganizationNestedInput
+  online_certificates?: Prisma.OnlineCertificateUpdateManyWithoutOrganizationNestedInput
   templates?: Prisma.CertificateTemplateUpdateManyWithoutOrganizationNestedInput
   issuance_batches?: Prisma.IssuanceBatchUpdateManyWithoutOrganizationNestedInput
   audit_logs?: Prisma.AuditLogUpdateManyWithoutOrganizationNestedInput
@@ -1042,6 +1086,95 @@ export type IssuingOrganizationUncheckedUpdateWithoutCertificatesInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   staff_accounts?: Prisma.StaffAccountUncheckedUpdateManyWithoutOrganizationNestedInput
   student_accounts?: Prisma.StudentAccountUncheckedUpdateManyWithoutOrganizationNestedInput
+  online_certificates?: Prisma.OnlineCertificateUncheckedUpdateManyWithoutOrganizationNestedInput
+  templates?: Prisma.CertificateTemplateUncheckedUpdateManyWithoutOrganizationNestedInput
+  issuance_batches?: Prisma.IssuanceBatchUncheckedUpdateManyWithoutOrganizationNestedInput
+  audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutOrganizationNestedInput
+  student_import_batches?: Prisma.StudentImportBatchUncheckedUpdateManyWithoutOrganizationNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutOrganizationNestedInput
+}
+
+export type IssuingOrganizationCreateWithoutOnline_certificatesInput = {
+  organization_id?: string
+  wallet_address?: string | null
+  organization_name: string
+  contact_email: string
+  logo_url?: string | null
+  is_verified?: boolean
+  created_at?: Date | string
+  staff_accounts?: Prisma.StaffAccountCreateNestedManyWithoutOrganizationInput
+  student_accounts?: Prisma.StudentAccountCreateNestedManyWithoutOrganizationInput
+  certificates?: Prisma.CertificateCreateNestedManyWithoutOrganizationInput
+  templates?: Prisma.CertificateTemplateCreateNestedManyWithoutOrganizationInput
+  issuance_batches?: Prisma.IssuanceBatchCreateNestedManyWithoutOrganizationInput
+  audit_logs?: Prisma.AuditLogCreateNestedManyWithoutOrganizationInput
+  student_import_batches?: Prisma.StudentImportBatchCreateNestedManyWithoutOrganizationInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutOrganizationInput
+}
+
+export type IssuingOrganizationUncheckedCreateWithoutOnline_certificatesInput = {
+  organization_id?: string
+  wallet_address?: string | null
+  organization_name: string
+  contact_email: string
+  logo_url?: string | null
+  is_verified?: boolean
+  created_at?: Date | string
+  staff_accounts?: Prisma.StaffAccountUncheckedCreateNestedManyWithoutOrganizationInput
+  student_accounts?: Prisma.StudentAccountUncheckedCreateNestedManyWithoutOrganizationInput
+  certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutOrganizationInput
+  templates?: Prisma.CertificateTemplateUncheckedCreateNestedManyWithoutOrganizationInput
+  issuance_batches?: Prisma.IssuanceBatchUncheckedCreateNestedManyWithoutOrganizationInput
+  audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutOrganizationInput
+  student_import_batches?: Prisma.StudentImportBatchUncheckedCreateNestedManyWithoutOrganizationInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutOrganizationInput
+}
+
+export type IssuingOrganizationCreateOrConnectWithoutOnline_certificatesInput = {
+  where: Prisma.IssuingOrganizationWhereUniqueInput
+  create: Prisma.XOR<Prisma.IssuingOrganizationCreateWithoutOnline_certificatesInput, Prisma.IssuingOrganizationUncheckedCreateWithoutOnline_certificatesInput>
+}
+
+export type IssuingOrganizationUpsertWithoutOnline_certificatesInput = {
+  update: Prisma.XOR<Prisma.IssuingOrganizationUpdateWithoutOnline_certificatesInput, Prisma.IssuingOrganizationUncheckedUpdateWithoutOnline_certificatesInput>
+  create: Prisma.XOR<Prisma.IssuingOrganizationCreateWithoutOnline_certificatesInput, Prisma.IssuingOrganizationUncheckedCreateWithoutOnline_certificatesInput>
+  where?: Prisma.IssuingOrganizationWhereInput
+}
+
+export type IssuingOrganizationUpdateToOneWithWhereWithoutOnline_certificatesInput = {
+  where?: Prisma.IssuingOrganizationWhereInput
+  data: Prisma.XOR<Prisma.IssuingOrganizationUpdateWithoutOnline_certificatesInput, Prisma.IssuingOrganizationUncheckedUpdateWithoutOnline_certificatesInput>
+}
+
+export type IssuingOrganizationUpdateWithoutOnline_certificatesInput = {
+  organization_id?: Prisma.StringFieldUpdateOperationsInput | string
+  wallet_address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  organization_name?: Prisma.StringFieldUpdateOperationsInput | string
+  contact_email?: Prisma.StringFieldUpdateOperationsInput | string
+  logo_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  staff_accounts?: Prisma.StaffAccountUpdateManyWithoutOrganizationNestedInput
+  student_accounts?: Prisma.StudentAccountUpdateManyWithoutOrganizationNestedInput
+  certificates?: Prisma.CertificateUpdateManyWithoutOrganizationNestedInput
+  templates?: Prisma.CertificateTemplateUpdateManyWithoutOrganizationNestedInput
+  issuance_batches?: Prisma.IssuanceBatchUpdateManyWithoutOrganizationNestedInput
+  audit_logs?: Prisma.AuditLogUpdateManyWithoutOrganizationNestedInput
+  student_import_batches?: Prisma.StudentImportBatchUpdateManyWithoutOrganizationNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutOrganizationNestedInput
+}
+
+export type IssuingOrganizationUncheckedUpdateWithoutOnline_certificatesInput = {
+  organization_id?: Prisma.StringFieldUpdateOperationsInput | string
+  wallet_address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  organization_name?: Prisma.StringFieldUpdateOperationsInput | string
+  contact_email?: Prisma.StringFieldUpdateOperationsInput | string
+  logo_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  staff_accounts?: Prisma.StaffAccountUncheckedUpdateManyWithoutOrganizationNestedInput
+  student_accounts?: Prisma.StudentAccountUncheckedUpdateManyWithoutOrganizationNestedInput
+  certificates?: Prisma.CertificateUncheckedUpdateManyWithoutOrganizationNestedInput
   templates?: Prisma.CertificateTemplateUncheckedUpdateManyWithoutOrganizationNestedInput
   issuance_batches?: Prisma.IssuanceBatchUncheckedUpdateManyWithoutOrganizationNestedInput
   audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutOrganizationNestedInput
@@ -1060,6 +1193,7 @@ export type IssuingOrganizationCreateWithoutIssuance_batchesInput = {
   staff_accounts?: Prisma.StaffAccountCreateNestedManyWithoutOrganizationInput
   student_accounts?: Prisma.StudentAccountCreateNestedManyWithoutOrganizationInput
   certificates?: Prisma.CertificateCreateNestedManyWithoutOrganizationInput
+  online_certificates?: Prisma.OnlineCertificateCreateNestedManyWithoutOrganizationInput
   templates?: Prisma.CertificateTemplateCreateNestedManyWithoutOrganizationInput
   audit_logs?: Prisma.AuditLogCreateNestedManyWithoutOrganizationInput
   student_import_batches?: Prisma.StudentImportBatchCreateNestedManyWithoutOrganizationInput
@@ -1077,6 +1211,7 @@ export type IssuingOrganizationUncheckedCreateWithoutIssuance_batchesInput = {
   staff_accounts?: Prisma.StaffAccountUncheckedCreateNestedManyWithoutOrganizationInput
   student_accounts?: Prisma.StudentAccountUncheckedCreateNestedManyWithoutOrganizationInput
   certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutOrganizationInput
+  online_certificates?: Prisma.OnlineCertificateUncheckedCreateNestedManyWithoutOrganizationInput
   templates?: Prisma.CertificateTemplateUncheckedCreateNestedManyWithoutOrganizationInput
   audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutOrganizationInput
   student_import_batches?: Prisma.StudentImportBatchUncheckedCreateNestedManyWithoutOrganizationInput
@@ -1110,6 +1245,7 @@ export type IssuingOrganizationUpdateWithoutIssuance_batchesInput = {
   staff_accounts?: Prisma.StaffAccountUpdateManyWithoutOrganizationNestedInput
   student_accounts?: Prisma.StudentAccountUpdateManyWithoutOrganizationNestedInput
   certificates?: Prisma.CertificateUpdateManyWithoutOrganizationNestedInput
+  online_certificates?: Prisma.OnlineCertificateUpdateManyWithoutOrganizationNestedInput
   templates?: Prisma.CertificateTemplateUpdateManyWithoutOrganizationNestedInput
   audit_logs?: Prisma.AuditLogUpdateManyWithoutOrganizationNestedInput
   student_import_batches?: Prisma.StudentImportBatchUpdateManyWithoutOrganizationNestedInput
@@ -1127,6 +1263,7 @@ export type IssuingOrganizationUncheckedUpdateWithoutIssuance_batchesInput = {
   staff_accounts?: Prisma.StaffAccountUncheckedUpdateManyWithoutOrganizationNestedInput
   student_accounts?: Prisma.StudentAccountUncheckedUpdateManyWithoutOrganizationNestedInput
   certificates?: Prisma.CertificateUncheckedUpdateManyWithoutOrganizationNestedInput
+  online_certificates?: Prisma.OnlineCertificateUncheckedUpdateManyWithoutOrganizationNestedInput
   templates?: Prisma.CertificateTemplateUncheckedUpdateManyWithoutOrganizationNestedInput
   audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutOrganizationNestedInput
   student_import_batches?: Prisma.StudentImportBatchUncheckedUpdateManyWithoutOrganizationNestedInput
@@ -1144,6 +1281,7 @@ export type IssuingOrganizationCreateWithoutAudit_logsInput = {
   staff_accounts?: Prisma.StaffAccountCreateNestedManyWithoutOrganizationInput
   student_accounts?: Prisma.StudentAccountCreateNestedManyWithoutOrganizationInput
   certificates?: Prisma.CertificateCreateNestedManyWithoutOrganizationInput
+  online_certificates?: Prisma.OnlineCertificateCreateNestedManyWithoutOrganizationInput
   templates?: Prisma.CertificateTemplateCreateNestedManyWithoutOrganizationInput
   issuance_batches?: Prisma.IssuanceBatchCreateNestedManyWithoutOrganizationInput
   student_import_batches?: Prisma.StudentImportBatchCreateNestedManyWithoutOrganizationInput
@@ -1161,6 +1299,7 @@ export type IssuingOrganizationUncheckedCreateWithoutAudit_logsInput = {
   staff_accounts?: Prisma.StaffAccountUncheckedCreateNestedManyWithoutOrganizationInput
   student_accounts?: Prisma.StudentAccountUncheckedCreateNestedManyWithoutOrganizationInput
   certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutOrganizationInput
+  online_certificates?: Prisma.OnlineCertificateUncheckedCreateNestedManyWithoutOrganizationInput
   templates?: Prisma.CertificateTemplateUncheckedCreateNestedManyWithoutOrganizationInput
   issuance_batches?: Prisma.IssuanceBatchUncheckedCreateNestedManyWithoutOrganizationInput
   student_import_batches?: Prisma.StudentImportBatchUncheckedCreateNestedManyWithoutOrganizationInput
@@ -1194,6 +1333,7 @@ export type IssuingOrganizationUpdateWithoutAudit_logsInput = {
   staff_accounts?: Prisma.StaffAccountUpdateManyWithoutOrganizationNestedInput
   student_accounts?: Prisma.StudentAccountUpdateManyWithoutOrganizationNestedInput
   certificates?: Prisma.CertificateUpdateManyWithoutOrganizationNestedInput
+  online_certificates?: Prisma.OnlineCertificateUpdateManyWithoutOrganizationNestedInput
   templates?: Prisma.CertificateTemplateUpdateManyWithoutOrganizationNestedInput
   issuance_batches?: Prisma.IssuanceBatchUpdateManyWithoutOrganizationNestedInput
   student_import_batches?: Prisma.StudentImportBatchUpdateManyWithoutOrganizationNestedInput
@@ -1211,6 +1351,7 @@ export type IssuingOrganizationUncheckedUpdateWithoutAudit_logsInput = {
   staff_accounts?: Prisma.StaffAccountUncheckedUpdateManyWithoutOrganizationNestedInput
   student_accounts?: Prisma.StudentAccountUncheckedUpdateManyWithoutOrganizationNestedInput
   certificates?: Prisma.CertificateUncheckedUpdateManyWithoutOrganizationNestedInput
+  online_certificates?: Prisma.OnlineCertificateUncheckedUpdateManyWithoutOrganizationNestedInput
   templates?: Prisma.CertificateTemplateUncheckedUpdateManyWithoutOrganizationNestedInput
   issuance_batches?: Prisma.IssuanceBatchUncheckedUpdateManyWithoutOrganizationNestedInput
   student_import_batches?: Prisma.StudentImportBatchUncheckedUpdateManyWithoutOrganizationNestedInput
@@ -1226,6 +1367,7 @@ export type IssuingOrganizationCountOutputType = {
   staff_accounts: number
   student_accounts: number
   certificates: number
+  online_certificates: number
   templates: number
   issuance_batches: number
   audit_logs: number
@@ -1237,6 +1379,7 @@ export type IssuingOrganizationCountOutputTypeSelect<ExtArgs extends runtime.Typ
   staff_accounts?: boolean | IssuingOrganizationCountOutputTypeCountStaff_accountsArgs
   student_accounts?: boolean | IssuingOrganizationCountOutputTypeCountStudent_accountsArgs
   certificates?: boolean | IssuingOrganizationCountOutputTypeCountCertificatesArgs
+  online_certificates?: boolean | IssuingOrganizationCountOutputTypeCountOnline_certificatesArgs
   templates?: boolean | IssuingOrganizationCountOutputTypeCountTemplatesArgs
   issuance_batches?: boolean | IssuingOrganizationCountOutputTypeCountIssuance_batchesArgs
   audit_logs?: boolean | IssuingOrganizationCountOutputTypeCountAudit_logsArgs
@@ -1273,6 +1416,13 @@ export type IssuingOrganizationCountOutputTypeCountStudent_accountsArgs<ExtArgs 
  */
 export type IssuingOrganizationCountOutputTypeCountCertificatesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.CertificateWhereInput
+}
+
+/**
+ * IssuingOrganizationCountOutputType without action
+ */
+export type IssuingOrganizationCountOutputTypeCountOnline_certificatesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OnlineCertificateWhereInput
 }
 
 /**
@@ -1322,6 +1472,7 @@ export type IssuingOrganizationSelect<ExtArgs extends runtime.Types.Extensions.I
   staff_accounts?: boolean | Prisma.IssuingOrganization$staff_accountsArgs<ExtArgs>
   student_accounts?: boolean | Prisma.IssuingOrganization$student_accountsArgs<ExtArgs>
   certificates?: boolean | Prisma.IssuingOrganization$certificatesArgs<ExtArgs>
+  online_certificates?: boolean | Prisma.IssuingOrganization$online_certificatesArgs<ExtArgs>
   templates?: boolean | Prisma.IssuingOrganization$templatesArgs<ExtArgs>
   issuance_batches?: boolean | Prisma.IssuingOrganization$issuance_batchesArgs<ExtArgs>
   audit_logs?: boolean | Prisma.IssuingOrganization$audit_logsArgs<ExtArgs>
@@ -1347,6 +1498,7 @@ export type IssuingOrganizationInclude<ExtArgs extends runtime.Types.Extensions.
   staff_accounts?: boolean | Prisma.IssuingOrganization$staff_accountsArgs<ExtArgs>
   student_accounts?: boolean | Prisma.IssuingOrganization$student_accountsArgs<ExtArgs>
   certificates?: boolean | Prisma.IssuingOrganization$certificatesArgs<ExtArgs>
+  online_certificates?: boolean | Prisma.IssuingOrganization$online_certificatesArgs<ExtArgs>
   templates?: boolean | Prisma.IssuingOrganization$templatesArgs<ExtArgs>
   issuance_batches?: boolean | Prisma.IssuingOrganization$issuance_batchesArgs<ExtArgs>
   audit_logs?: boolean | Prisma.IssuingOrganization$audit_logsArgs<ExtArgs>
@@ -1361,6 +1513,7 @@ export type $IssuingOrganizationPayload<ExtArgs extends runtime.Types.Extensions
     staff_accounts: Prisma.$StaffAccountPayload<ExtArgs>[]
     student_accounts: Prisma.$StudentAccountPayload<ExtArgs>[]
     certificates: Prisma.$CertificatePayload<ExtArgs>[]
+    online_certificates: Prisma.$OnlineCertificatePayload<ExtArgs>[]
     templates: Prisma.$CertificateTemplatePayload<ExtArgs>[]
     issuance_batches: Prisma.$IssuanceBatchPayload<ExtArgs>[]
     audit_logs: Prisma.$AuditLogPayload<ExtArgs>[]
@@ -1718,6 +1871,7 @@ export interface Prisma__IssuingOrganizationClient<T, Null = never, ExtArgs exte
   staff_accounts<T extends Prisma.IssuingOrganization$staff_accountsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.IssuingOrganization$staff_accountsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StaffAccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   student_accounts<T extends Prisma.IssuingOrganization$student_accountsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.IssuingOrganization$student_accountsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StudentAccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   certificates<T extends Prisma.IssuingOrganization$certificatesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.IssuingOrganization$certificatesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CertificatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  online_certificates<T extends Prisma.IssuingOrganization$online_certificatesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.IssuingOrganization$online_certificatesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OnlineCertificatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   templates<T extends Prisma.IssuingOrganization$templatesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.IssuingOrganization$templatesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CertificateTemplatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   issuance_batches<T extends Prisma.IssuingOrganization$issuance_batchesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.IssuingOrganization$issuance_batchesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$IssuanceBatchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   audit_logs<T extends Prisma.IssuingOrganization$audit_logsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.IssuingOrganization$audit_logsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -2176,6 +2330,30 @@ export type IssuingOrganization$certificatesArgs<ExtArgs extends runtime.Types.E
   take?: number
   skip?: number
   distinct?: Prisma.CertificateScalarFieldEnum | Prisma.CertificateScalarFieldEnum[]
+}
+
+/**
+ * IssuingOrganization.online_certificates
+ */
+export type IssuingOrganization$online_certificatesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the OnlineCertificate
+   */
+  select?: Prisma.OnlineCertificateSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the OnlineCertificate
+   */
+  omit?: Prisma.OnlineCertificateOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OnlineCertificateInclude<ExtArgs> | null
+  where?: Prisma.OnlineCertificateWhereInput
+  orderBy?: Prisma.OnlineCertificateOrderByWithRelationInput | Prisma.OnlineCertificateOrderByWithRelationInput[]
+  cursor?: Prisma.OnlineCertificateWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.OnlineCertificateScalarFieldEnum | Prisma.OnlineCertificateScalarFieldEnum[]
 }
 
 /**

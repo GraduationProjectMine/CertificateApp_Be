@@ -198,3 +198,24 @@ export class BatchApproveDto {
   @IsString({ each: true })
   ids!: string[];
 }
+
+export class TemplateBatchIssueDto {
+  @ApiProperty({
+    type: [CreateCertificateDto],
+    description: 'Array of certificate records to issue from template',
+  })
+  @IsArray()
+  @ArrayNotEmpty()
+  @ArrayMaxSize(200)
+  rows!: CreateCertificateDto[];
+
+  @ApiProperty({
+    example: 'uuid-of-template',
+    description: 'Optional ID of the template applied',
+    required: false,
+  })
+  @IsString()
+  @IsOptional()
+  template_id?: string;
+}
+

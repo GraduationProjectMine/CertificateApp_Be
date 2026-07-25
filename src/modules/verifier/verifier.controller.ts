@@ -45,4 +45,28 @@ export class VerifierController {
   async getCertificateById(@Param('id') id: string) {
     return this.verifierService.getCertificateById(id);
   }
+
+  @Get('verify-online')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({
+    summary: 'Verify an online certificate (issued via template) using serial and registry numbers',
+    description: 'Publicly verify if an online certificate matches blockchain and IPFS.',
+  })
+  async verifyOnline(@Query() query: VerifyQueryDto) {
+    return this.verifierService.verifyOnlineCertificate(
+      query.serialNumber,
+      query.registryNumber,
+    );
+  }
+
+  @Get('online-certificate/:id')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({
+    summary: 'Get online certificate details by ID publicly',
+    description: 'Retrieve online certificate details and validation state by UUID.',
+  })
+  async getOnlineCertificateById(@Param('id') id: string) {
+    return this.verifierService.getOnlineCertificateById(id);
+  }
 }
+
