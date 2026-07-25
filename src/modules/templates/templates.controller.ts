@@ -1,10 +1,11 @@
 import {
   Controller, Get, Post, Put, Delete,
   Body, Param, Query, UseGuards, Req, ForbiddenException,
-  HttpCode, HttpStatus,
+  HttpCode, HttpStatus, UseInterceptors, UploadedFile, BadRequestException,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import type { Request } from 'express';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiQuery, ApiConsumes, ApiBody } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { TemplatesService } from './templates.service';
 import { CreateTemplateDto } from './dto/create-template.dto';
@@ -90,5 +91,36 @@ export class TemplatesController {
       throw new ForbiddenException('Only issuer and staff can duplicate templates');
     }
     return this.templatesService.duplicate(id, user.organization_id);
+  }
+
+  @Post('import-data')
+  @HttpCode(HttpStatus.OK)
+  @UseInterceptors(FileInterceptor('file'))
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        file: {
+          type: 'string',
+          format: 'binary',
+          description: 'CSV or Excel (.xlsx, .xls) file containing certificate template data rows',
+        },
+      },
+    },
+  })
+  @ApiOperation({ summary: '[Issuer/Staff] Import CSV or Excel data file for certificate template loading' })
+  async importData(
+    @Req() req: Request,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    const user = req.user as any;
+    if (user.role !== 'issuer' && user.role !== 'staff') {
+      throw new ForbiddenException('Only issuer and staff can import data for templates');
+    }
+    if (!file) {
+      throw new BadRequestException('Please upload a CSV or Excel file');
+    }
+    return this.templatesService.parseAndMapImportFile(file.buffer, file.originalname);
   }
 }
