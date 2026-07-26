@@ -246,7 +246,7 @@ export class CertificateService {
     const cid = certificate.ipfs_cid;
     if (!cid) {
       throw new BadRequestException(
-        'Cannot approve certificate: Original document file (image/PDF) has not been uploaded to IPFS.',
+        'Cannot approve certificate without an IPFS document CID. Upload the diploma file first.',
       );
     }
 
