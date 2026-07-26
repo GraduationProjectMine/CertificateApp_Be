@@ -161,6 +161,24 @@ export class CreateCertificateDto {
   @IsString()
   @IsOptional()
   file_url?: string;
+
+  @ApiProperty({
+    example: 'SV001.pdf',
+    description: 'Original document filename from a bulk package upload',
+    required: false,
+  })
+  @IsString()
+  @IsOptional()
+  document_file?: string;
+
+  @ApiProperty({
+    example: 'sha3-256-hex',
+    description: 'SHA-3 hash of the binary document',
+    required: false,
+  })
+  @IsString()
+  @IsOptional()
+  document_sha3?: string;
 }
 
 export class UpdateCertificateDto {

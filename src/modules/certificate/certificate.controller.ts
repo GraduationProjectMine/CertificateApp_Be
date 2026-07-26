@@ -250,7 +250,7 @@ export class CertificateController {
   @Get('import/template')
   @ApiOperation({ summary: 'Download CSV/Excel template for certificate import' })
   async downloadTemplate(@Res() res: Response) {
-    const header = 'student_id,certificate_title,student_fullName,dob,placeOfBirth,gender,ethnicity,schoolName,examCohort,examBoard,issueLocation,issueDate,serialNumber,registryNumber\n"SV001","Cử nhân CNTT","Nguyễn Văn A","2002-05-15","Hà Nội","Nam","Kinh","ĐH Bách Khoa Hà Nội","2025","Hội đồng 1","Hà Nội","2025-06-15","BK-2025-001","001"\n';
+    const header = 'student_id,certificate_title,student_fullName,dob,placeOfBirth,gender,ethnicity,schoolName,examCohort,examBoard,issueLocation,issueDate,serialNumber,registryNumber,ipfs_cid,document_file\n"SV001","Cử nhân CNTT","Nguyễn Văn A","2002-05-15","Hà Nội","Nam","Kinh","ĐH Bách Khoa Hà Nội","2025","Hội đồng 1","Hà Nội","2025-06-15","BK-2025-001","001","","SV001.pdf"\n';
     res.setHeader('Content-Type', 'text/csv; charset=utf-8');
     res.setHeader('Content-Disposition', 'attachment; filename="certificate-import-template.csv"');
     res.send(header);
