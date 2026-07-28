@@ -1,11 +1,16 @@
 import {
   Controller,
   Post,
+  Get,
   Body,
+  Query,
+  Param,
   HttpCode,
   HttpStatus,
   Res,
   Req,
+  UseGuards,
+  ForbiddenException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';
@@ -17,11 +22,27 @@ import { AuthResponseDto } from './dto/auth-response.dto';
 import { MetaMaskNonceDto } from './dto/metamask-nonce.dto';
 import { MetaMaskLoginDto } from './dto/metamask-login.dto';
 import { MetaMaskRegisterDto } from './dto/metamask-register.dto';
+import { ActivationService } from '../student/activation.service';
+import { JwtAuthGuard } from './jwt-auth.guard';
+import { IsString, MinLength } from 'class-validator';
+
+class ActivateAccountDto {
+  @IsString()
+  token: string;
+  @IsString()
+  @MinLength(8)
+  password: string;
+  @IsString()
+  confirmPassword: string;
+}
 
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly activationService: ActivationService,
+  ) {}
 
   @Post('register')
   @HttpCode(HttpStatus.CREATED)
@@ -254,5 +275,41 @@ export class AuthController {
 
     const { refreshToken, ...responseBody } = authResult;
     return responseBody;
+  }
+
+  // ─────────────────────────────────────────────────────
+  // C1: Claim / Activation Flow
+  // ─────────────────────────────────────────────────────
+
+  @Get('activate/verify')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: '[Public] Verify an activation token before showing the form' })
+  async verifyActivationToken(@Query('token') token: string) {
+    return this.activationService.verifyToken(token);
+  }
+
+  @Post('activate')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: '[Public] Activate student account with token + new password' })
+  async activateAccount(@Body() body: ActivateAccountDto) {
+    await this.activationService.activateAccount(
+      body.token,
+      body.password,
+      body.confirmPassword,
+    );
+    return { message: 'Tài khoản đã được kích hoạt thành công. Bạn có thể đăng nhập.' };
+  }
+
+  @Post('resend-activation/:studentId')
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: '[Issuer/Staff] Resend activation email to a student' })
+  async resendActivation(@Req() req: express.Request, @Param('studentId') studentId: string) {
+    const user = (req as any).user;
+    if (user.role !== 'issuer' && user.role !== 'staff') {
+      throw new ForbiddenException('Only issuers/staff can resend activation emails');
+    }
+    await this.activationService.resendActivation(studentId, user.organization_id);
+    return { message: 'Activation email resent successfully' };
   }
 }

@@ -54,6 +54,9 @@ export const ModelName = {
   IssuingOrganization: 'IssuingOrganization',
   StaffAccount: 'StaffAccount',
   StudentAccount: 'StudentAccount',
+  ActivationToken: 'ActivationToken',
+  CredentialShare: 'CredentialShare',
+  DisputeRequest: 'DisputeRequest',
   Notification: 'Notification',
   StudentImportBatch: 'StudentImportBatch',
   CertificateTemplate: 'CertificateTemplate',
@@ -117,12 +120,59 @@ export const StudentAccountScalarFieldEnum = {
   email: 'email',
   password: 'password',
   isActive: 'isActive',
+  isActivated: 'isActivated',
+  notif_email_pref: 'notif_email_pref',
   createdAt: 'createdAt',
   imported_by: 'imported_by',
   import_batch_id: 'import_batch_id'
 } as const
 
 export type StudentAccountScalarFieldEnum = (typeof StudentAccountScalarFieldEnum)[keyof typeof StudentAccountScalarFieldEnum]
+
+
+export const ActivationTokenScalarFieldEnum = {
+  id: 'id',
+  student_id: 'student_id',
+  token: 'token',
+  used: 'used',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt'
+} as const
+
+export type ActivationTokenScalarFieldEnum = (typeof ActivationTokenScalarFieldEnum)[keyof typeof ActivationTokenScalarFieldEnum]
+
+
+export const CredentialShareScalarFieldEnum = {
+  id: 'id',
+  student_id: 'student_id',
+  certificate_id: 'certificate_id',
+  share_token: 'share_token',
+  scope: 'scope',
+  expires_at: 'expires_at',
+  revoked: 'revoked',
+  verify_count: 'verify_count',
+  createdAt: 'createdAt'
+} as const
+
+export type CredentialShareScalarFieldEnum = (typeof CredentialShareScalarFieldEnum)[keyof typeof CredentialShareScalarFieldEnum]
+
+
+export const DisputeRequestScalarFieldEnum = {
+  id: 'id',
+  student_id: 'student_id',
+  certificate_id: 'certificate_id',
+  reason: 'reason',
+  details: 'details',
+  status: 'status',
+  reviewer_id: 'reviewer_id',
+  reviewer_note: 'reviewer_note',
+  resolved_at: 'resolved_at',
+  new_cert_id: 'new_cert_id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DisputeRequestScalarFieldEnum = (typeof DisputeRequestScalarFieldEnum)[keyof typeof DisputeRequestScalarFieldEnum]
 
 
 export const NotificationScalarFieldEnum = {
@@ -132,7 +182,10 @@ export const NotificationScalarFieldEnum = {
   title: 'title',
   message: 'message',
   type: 'type',
+  event_type: 'event_type',
   related_id: 'related_id',
+  deep_link: 'deep_link',
+  email_sent: 'email_sent',
   is_read: 'is_read',
   createdAt: 'createdAt'
 } as const
@@ -195,6 +248,8 @@ export const CertificateScalarFieldEnum = {
   block_number: 'block_number',
   gas_used: 'gas_used',
   status: 'status',
+  version: 'version',
+  superseded_by: 'superseded_by',
   issuedAt: 'issuedAt',
   revokedAt: 'revokedAt',
   revokedById: 'revokedById',
@@ -297,19 +352,19 @@ export const SortOrder = {
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
-export const JsonNullValueInput = {
-  JsonNull: JsonNull
-} as const
-
-export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
-
-
 export const NullableJsonNullValueInput = {
   DbNull: DbNull,
   JsonNull: JsonNull
 } as const
 
 export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const NullsOrder = {
@@ -358,28 +413,13 @@ export const StudentAccountOrderByRelevanceFieldEnum = {
 export type StudentAccountOrderByRelevanceFieldEnum = (typeof StudentAccountOrderByRelevanceFieldEnum)[keyof typeof StudentAccountOrderByRelevanceFieldEnum]
 
 
-export const NotificationOrderByRelevanceFieldEnum = {
+export const ActivationTokenOrderByRelevanceFieldEnum = {
   id: 'id',
   student_id: 'student_id',
-  organization_id: 'organization_id',
-  title: 'title',
-  message: 'message',
-  type: 'type',
-  related_id: 'related_id'
+  token: 'token'
 } as const
 
-export type NotificationOrderByRelevanceFieldEnum = (typeof NotificationOrderByRelevanceFieldEnum)[keyof typeof NotificationOrderByRelevanceFieldEnum]
-
-
-export const StudentImportBatchOrderByRelevanceFieldEnum = {
-  id: 'id',
-  organization_id: 'organization_id',
-  created_by_id: 'created_by_id',
-  created_by_name: 'created_by_name',
-  file_name: 'file_name'
-} as const
-
-export type StudentImportBatchOrderByRelevanceFieldEnum = (typeof StudentImportBatchOrderByRelevanceFieldEnum)[keyof typeof StudentImportBatchOrderByRelevanceFieldEnum]
+export type ActivationTokenOrderByRelevanceFieldEnum = (typeof ActivationTokenOrderByRelevanceFieldEnum)[keyof typeof ActivationTokenOrderByRelevanceFieldEnum]
 
 
 export const JsonNullValueFilter = {
@@ -397,6 +437,57 @@ export const QueryMode = {
 } as const
 
 export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+export const CredentialShareOrderByRelevanceFieldEnum = {
+  id: 'id',
+  student_id: 'student_id',
+  certificate_id: 'certificate_id',
+  share_token: 'share_token'
+} as const
+
+export type CredentialShareOrderByRelevanceFieldEnum = (typeof CredentialShareOrderByRelevanceFieldEnum)[keyof typeof CredentialShareOrderByRelevanceFieldEnum]
+
+
+export const DisputeRequestOrderByRelevanceFieldEnum = {
+  id: 'id',
+  student_id: 'student_id',
+  certificate_id: 'certificate_id',
+  reason: 'reason',
+  details: 'details',
+  status: 'status',
+  reviewer_id: 'reviewer_id',
+  reviewer_note: 'reviewer_note',
+  new_cert_id: 'new_cert_id'
+} as const
+
+export type DisputeRequestOrderByRelevanceFieldEnum = (typeof DisputeRequestOrderByRelevanceFieldEnum)[keyof typeof DisputeRequestOrderByRelevanceFieldEnum]
+
+
+export const NotificationOrderByRelevanceFieldEnum = {
+  id: 'id',
+  student_id: 'student_id',
+  organization_id: 'organization_id',
+  title: 'title',
+  message: 'message',
+  type: 'type',
+  event_type: 'event_type',
+  related_id: 'related_id',
+  deep_link: 'deep_link'
+} as const
+
+export type NotificationOrderByRelevanceFieldEnum = (typeof NotificationOrderByRelevanceFieldEnum)[keyof typeof NotificationOrderByRelevanceFieldEnum]
+
+
+export const StudentImportBatchOrderByRelevanceFieldEnum = {
+  id: 'id',
+  organization_id: 'organization_id',
+  created_by_id: 'created_by_id',
+  created_by_name: 'created_by_name',
+  file_name: 'file_name'
+} as const
+
+export type StudentImportBatchOrderByRelevanceFieldEnum = (typeof StudentImportBatchOrderByRelevanceFieldEnum)[keyof typeof StudentImportBatchOrderByRelevanceFieldEnum]
 
 
 export const CertificateTemplateOrderByRelevanceFieldEnum = {
@@ -434,6 +525,7 @@ export const CertificateOrderByRelevanceFieldEnum = {
   tx_hash: 'tx_hash',
   gas_used: 'gas_used',
   status: 'status',
+  superseded_by: 'superseded_by',
   revokedById: 'revokedById',
   revokeReason: 'revokeReason',
   revoke_tx_hash: 'revoke_tx_hash'

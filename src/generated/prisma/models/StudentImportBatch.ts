@@ -538,14 +538,6 @@ export type StudentImportBatchUpdateOneWithoutStudentsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.StudentImportBatchUpdateToOneWithWhereWithoutStudentsInput, Prisma.StudentImportBatchUpdateWithoutStudentsInput>, Prisma.StudentImportBatchUncheckedUpdateWithoutStudentsInput>
 }
 
-export type IntFieldUpdateOperationsInput = {
-  set?: number
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
 export type StudentImportBatchCreateWithoutOrganizationInput = {
   id?: string
   created_by_id: string

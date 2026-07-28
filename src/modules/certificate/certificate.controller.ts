@@ -390,6 +390,34 @@ export class CertificateController {
       dto.template_id,
     );
   }
+
+  // ─────────────────────────────────────────────────────────────────
+  // C2: True Wallet — Portable Export Endpoints
+  // ─────────────────────────────────────────────────────────────────
+
+  @Get(':id/vc-json')
+  @ApiOperation({
+    summary: '[Student] Download W3C VC 2.0 JSON-LD for a certificate',
+  })
+  async getVcJson(@Req() req: Request) {
+    const user = req.user as any;
+    if (user.role !== 'student') {
+      throw new ForbiddenException('Only students can export VC credentials');
+    }
+    const certId = (req as any).params.id;
+    return this.certificateService.generateW3CCredential(certId, user.sub);
+  }
+
+  @Get(':id/badge-json')
+  @ApiOperation({
+    summary: '[Student] Download Open Badges 3.0 JSON-LD for a certificate',
+  })
+  async getBadgeJson(@Req() req: Request) {
+    const user = req.user as any;
+    if (user.role !== 'student') {
+      throw new ForbiddenException('Only students can export badge credentials');
+    }
+    const certId = (req as any).params.id;
+    return this.certificateService.generateOpenBadge3(certId, user.sub);
+  }
 }
-
-

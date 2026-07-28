@@ -55,6 +55,21 @@ export type StaffAccount = Prisma.StaffAccountModel
  */
 export type StudentAccount = Prisma.StudentAccountModel
 /**
+ * Model ActivationToken
+ * 
+ */
+export type ActivationToken = Prisma.ActivationTokenModel
+/**
+ * Model CredentialShare
+ * 
+ */
+export type CredentialShare = Prisma.CredentialShareModel
+/**
+ * Model DisputeRequest
+ * 
+ */
+export type DisputeRequest = Prisma.DisputeRequestModel
+/**
  * Model Notification
  * 
  */

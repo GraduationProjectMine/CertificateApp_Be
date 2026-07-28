@@ -791,5 +791,121 @@ export class CertificateService {
       results,
     };
   }
+
+  /**
+   * C2: Generate W3C Verifiable Credential 2.0 JSON-LD
+   */
+  async generateW3CCredential(certificateId: string, studentId: string) {
+    const cert = await this.prisma.certificate.findUnique({
+      where: { certificate_id: certificateId },
+    });
+    if (!cert) throw new NotFoundException('Certificate not found');
+    if (cert.student_id !== studentId)
+      throw new ForbiddenException('Access denied');
+
+    const verifyUrl = `${process.env.FRONTEND_URL || 'http://localhost:3000'}/verify/${certificateId}`;
+
+    return {
+      '@context': [
+        'https://www.w3.org/ns/credentials/v2',
+        'https://w3id.org/security/suites/ed25519-2020/v1',
+      ],
+      id: `urn:uuid:${cert.certificate_id}`,
+      type: ['VerifiableCredential', 'AcademicAward'],
+      issuer: {
+        id: `did:web:certichain.io:org:${cert.organization_id}`,
+        name: cert.organization_name,
+      },
+      validFrom: cert.issuedAt.toISOString(),
+      credentialSubject: {
+        id: `did:web:certichain.io:student:${cert.student_id}`,
+        name: cert.student_fullName,
+        achievement: {
+          type: ['Achievement'],
+          name: cert.certificate_title,
+          description: `Văn bằng/chứng chỉ được cấp bởi ${cert.organization_name}`,
+          criteria: { narrative: `Hoàn thành yêu cầu để được cấp ${cert.certificate_title}` },
+        },
+        ...(cert.dob ? { birthDate: cert.dob } : {}),
+        ...(cert.serialNumber ? { serialNumber: cert.serialNumber } : {}),
+        ...(cert.registryNumber ? { registryNumber: cert.registryNumber } : {}),
+        ...(cert.issueDate ? { issueDate: cert.issueDate } : {}),
+        ...(cert.schoolName ? { institution: cert.schoolName } : {}),
+      },
+      evidence: [
+        {
+          type: ['DocumentVerification'],
+          verificationMethod: 'blockchain',
+          txHash: cert.tx_hash,
+          ipfsCid: cert.ipfs_cid,
+          verifyUrl,
+        },
+      ],
+      proof: {
+        type: 'Ed25519Signature2020',
+        created: cert.issuedAt.toISOString(),
+        verificationMethod: `did:web:certichain.io:org:${cert.organization_id}#key-1`,
+        proofPurpose: 'assertionMethod',
+        proofValue: cert.tx_hash || 'PENDING_BLOCKCHAIN_PROOF',
+      },
+    };
+  }
+
+  /**
+   * C2: Generate Open Badges 3.0 JSON-LD
+   */
+  async generateOpenBadge3(certificateId: string, studentId: string) {
+    const cert = await this.prisma.certificate.findUnique({
+      where: { certificate_id: certificateId },
+    });
+    if (!cert) throw new NotFoundException('Certificate not found');
+    if (cert.student_id !== studentId)
+      throw new ForbiddenException('Access denied');
+
+    const issuerId = `${process.env.FRONTEND_URL || 'http://localhost:3000'}/issuers/${cert.organization_id}`;
+    const badgeId = `${process.env.FRONTEND_URL || 'http://localhost:3000'}/badges/${cert.certificate_id}`;
+    const assertionId = `${process.env.FRONTEND_URL || 'http://localhost:3000'}/assertions/${cert.certificate_id}`;
+
+    return {
+      '@context': [
+        'https://www.w3.org/ns/credentials/v2',
+        'https://purl.imsglobal.org/spec/ob/v3p0/context-3.0.3.json',
+      ],
+      id: assertionId,
+      type: ['VerifiableCredential', 'OpenBadgeCredential'],
+      issuer: {
+        id: issuerId,
+        type: ['Profile'],
+        name: cert.organization_name,
+        url: process.env.FRONTEND_URL || 'http://localhost:3000',
+      },
+      issuanceDate: cert.issuedAt.toISOString(),
+      name: cert.certificate_title,
+      credentialSubject: {
+        type: ['AchievementSubject'],
+        name: cert.student_fullName,
+        achievement: {
+          id: badgeId,
+          type: ['Achievement'],
+          name: cert.certificate_title,
+          description: `Văn bằng/chứng chỉ được cấp bởi ${cert.organization_name}`,
+          criteria: { narrative: `Hoàn thành yêu cầu để được cấp ${cert.certificate_title}` },
+          issuer: { id: issuerId, type: ['Profile'], name: cert.organization_name },
+          image: cert.file_url
+            ? { id: cert.file_url, type: 'Image' }
+            : undefined,
+        },
+      },
+      evidence: cert.ipfs_cid
+        ? [
+            {
+              type: ['Evidence'],
+              id: `https://gateway.pinata.cloud/ipfs/${cert.ipfs_cid}`,
+              name: 'IPFS Stored Document',
+            },
+          ]
+        : [],
+    };
+  }
 }
 

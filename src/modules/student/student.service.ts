@@ -8,6 +8,8 @@ import { PrismaService } from '../../core/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
 import * as crypto from 'crypto';
 
+import { ActivationService } from './activation.service';
+
 const SALT_ROUNDS = 12;
 
 function parseCsv(text: string): { name: string; email: string }[] {
@@ -36,7 +38,10 @@ function parseCsv(text: string): { name: string; email: string }[] {
 
 @Injectable()
 export class StudentService {
-  constructor(private readonly prisma: PrismaService) { }
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly activationService: ActivationService,
+  ) { }
 
   async create(
     student_fullName: string,
@@ -93,7 +98,7 @@ export class StudentService {
       },
     });
 
-    const results: { row: number; name: string; email: string; status: string; error?: string; student_id?: string; password?: string }[] = [];
+    const results: { row: number; name: string; email: string; status: string; error?: string; student_id?: string; invite_sent?: boolean }[] = [];
     let success = 0;
     let failed = 0;
 
@@ -132,8 +137,9 @@ export class StudentService {
         continue;
       }
 
-      const rawPassword = crypto.randomUUID().slice(0, 12) + 'Aa1';
-      const hashedPassword = await bcrypt.hash(rawPassword, SALT_ROUNDS);
+      // Generate random dummy password (will be replaced by student upon activation)
+      const placeholderPassword = crypto.randomUUID();
+      const hashedPassword = await bcrypt.hash(placeholderPassword, SALT_ROUNDS);
 
       try {
         const student = await this.prisma.studentAccount.create({
@@ -145,8 +151,13 @@ export class StudentService {
             organization_name,
             import_batch_id: batch.id,
             imported_by: userId,
+            isActivated: false,
           },
         });
+
+        // Generate activation token and send email invite
+        const token = await this.activationService.generateActivationToken(student.student_id);
+        await this.activationService.sendActivationEmail(email, name, token, organization_name);
 
         emailSet.add(email.toLowerCase());
         success++;
@@ -156,7 +167,7 @@ export class StudentService {
           email,
           status: 'success',
           student_id: student.student_id,
-          password: rawPassword,
+          invite_sent: true,
         });
       } catch (err: any) {
         failed++;

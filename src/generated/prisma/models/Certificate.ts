@@ -28,11 +28,13 @@ export type AggregateCertificate = {
 
 export type CertificateAvgAggregateOutputType = {
   block_number: number | null
+  version: number | null
   revoke_block_number: number | null
 }
 
 export type CertificateSumAggregateOutputType = {
   block_number: number | null
+  version: number | null
   revoke_block_number: number | null
 }
 
@@ -61,6 +63,8 @@ export type CertificateMinAggregateOutputType = {
   block_number: number | null
   gas_used: string | null
   status: string | null
+  version: number | null
+  superseded_by: string | null
   issuedAt: Date | null
   revokedAt: Date | null
   revokedById: string | null
@@ -94,6 +98,8 @@ export type CertificateMaxAggregateOutputType = {
   block_number: number | null
   gas_used: string | null
   status: string | null
+  version: number | null
+  superseded_by: string | null
   issuedAt: Date | null
   revokedAt: Date | null
   revokedById: string | null
@@ -127,6 +133,8 @@ export type CertificateCountAggregateOutputType = {
   block_number: number
   gas_used: number
   status: number
+  version: number
+  superseded_by: number
   issuedAt: number
   revokedAt: number
   revokedById: number
@@ -139,11 +147,13 @@ export type CertificateCountAggregateOutputType = {
 
 export type CertificateAvgAggregateInputType = {
   block_number?: true
+  version?: true
   revoke_block_number?: true
 }
 
 export type CertificateSumAggregateInputType = {
   block_number?: true
+  version?: true
   revoke_block_number?: true
 }
 
@@ -172,6 +182,8 @@ export type CertificateMinAggregateInputType = {
   block_number?: true
   gas_used?: true
   status?: true
+  version?: true
+  superseded_by?: true
   issuedAt?: true
   revokedAt?: true
   revokedById?: true
@@ -205,6 +217,8 @@ export type CertificateMaxAggregateInputType = {
   block_number?: true
   gas_used?: true
   status?: true
+  version?: true
+  superseded_by?: true
   issuedAt?: true
   revokedAt?: true
   revokedById?: true
@@ -238,6 +252,8 @@ export type CertificateCountAggregateInputType = {
   block_number?: true
   gas_used?: true
   status?: true
+  version?: true
+  superseded_by?: true
   issuedAt?: true
   revokedAt?: true
   revokedById?: true
@@ -358,6 +374,8 @@ export type CertificateGroupByOutputType = {
   block_number: number | null
   gas_used: string | null
   status: string
+  version: number
+  superseded_by: string | null
   issuedAt: Date
   revokedAt: Date | null
   revokedById: string | null
@@ -414,6 +432,8 @@ export type CertificateWhereInput = {
   block_number?: Prisma.IntNullableFilter<"Certificate"> | number | null
   gas_used?: Prisma.StringNullableFilter<"Certificate"> | string | null
   status?: Prisma.StringFilter<"Certificate"> | string
+  version?: Prisma.IntFilter<"Certificate"> | number
+  superseded_by?: Prisma.StringNullableFilter<"Certificate"> | string | null
   issuedAt?: Prisma.DateTimeFilter<"Certificate"> | Date | string
   revokedAt?: Prisma.DateTimeNullableFilter<"Certificate"> | Date | string | null
   revokedById?: Prisma.StringNullableFilter<"Certificate"> | string | null
@@ -450,6 +470,8 @@ export type CertificateOrderByWithRelationInput = {
   block_number?: Prisma.SortOrderInput | Prisma.SortOrder
   gas_used?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
+  version?: Prisma.SortOrder
+  superseded_by?: Prisma.SortOrderInput | Prisma.SortOrder
   issuedAt?: Prisma.SortOrder
   revokedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   revokedById?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -490,6 +512,8 @@ export type CertificateWhereUniqueInput = Prisma.AtLeast<{
   block_number?: Prisma.IntNullableFilter<"Certificate"> | number | null
   gas_used?: Prisma.StringNullableFilter<"Certificate"> | string | null
   status?: Prisma.StringFilter<"Certificate"> | string
+  version?: Prisma.IntFilter<"Certificate"> | number
+  superseded_by?: Prisma.StringNullableFilter<"Certificate"> | string | null
   issuedAt?: Prisma.DateTimeFilter<"Certificate"> | Date | string
   revokedAt?: Prisma.DateTimeNullableFilter<"Certificate"> | Date | string | null
   revokedById?: Prisma.StringNullableFilter<"Certificate"> | string | null
@@ -526,6 +550,8 @@ export type CertificateOrderByWithAggregationInput = {
   block_number?: Prisma.SortOrderInput | Prisma.SortOrder
   gas_used?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
+  version?: Prisma.SortOrder
+  superseded_by?: Prisma.SortOrderInput | Prisma.SortOrder
   issuedAt?: Prisma.SortOrder
   revokedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   revokedById?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -567,6 +593,8 @@ export type CertificateScalarWhereWithAggregatesInput = {
   block_number?: Prisma.IntNullableWithAggregatesFilter<"Certificate"> | number | null
   gas_used?: Prisma.StringNullableWithAggregatesFilter<"Certificate"> | string | null
   status?: Prisma.StringWithAggregatesFilter<"Certificate"> | string
+  version?: Prisma.IntWithAggregatesFilter<"Certificate"> | number
+  superseded_by?: Prisma.StringNullableWithAggregatesFilter<"Certificate"> | string | null
   issuedAt?: Prisma.DateTimeWithAggregatesFilter<"Certificate"> | Date | string
   revokedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Certificate"> | Date | string | null
   revokedById?: Prisma.StringNullableWithAggregatesFilter<"Certificate"> | string | null
@@ -597,6 +625,8 @@ export type CertificateCreateInput = {
   block_number?: number | null
   gas_used?: string | null
   status?: string
+  version?: number
+  superseded_by?: string | null
   issuedAt?: Date | string
   revokedAt?: Date | string | null
   revokedById?: string | null
@@ -633,6 +663,8 @@ export type CertificateUncheckedCreateInput = {
   block_number?: number | null
   gas_used?: string | null
   status?: string
+  version?: number
+  superseded_by?: string | null
   issuedAt?: Date | string
   revokedAt?: Date | string | null
   revokedById?: string | null
@@ -663,6 +695,8 @@ export type CertificateUpdateInput = {
   block_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   gas_used?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  superseded_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   issuedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   revokedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -699,6 +733,8 @@ export type CertificateUncheckedUpdateInput = {
   block_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   gas_used?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  superseded_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   issuedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   revokedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -732,6 +768,8 @@ export type CertificateCreateManyInput = {
   block_number?: number | null
   gas_used?: string | null
   status?: string
+  version?: number
+  superseded_by?: string | null
   issuedAt?: Date | string
   revokedAt?: Date | string | null
   revokedById?: string | null
@@ -762,6 +800,8 @@ export type CertificateUpdateManyMutationInput = {
   block_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   gas_used?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  superseded_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   issuedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   revokedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -795,6 +835,8 @@ export type CertificateUncheckedUpdateManyInput = {
   block_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   gas_used?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  superseded_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   issuedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   revokedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -844,6 +886,8 @@ export type CertificateCountOrderByAggregateInput = {
   block_number?: Prisma.SortOrder
   gas_used?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  version?: Prisma.SortOrder
+  superseded_by?: Prisma.SortOrder
   issuedAt?: Prisma.SortOrder
   revokedAt?: Prisma.SortOrder
   revokedById?: Prisma.SortOrder
@@ -854,6 +898,7 @@ export type CertificateCountOrderByAggregateInput = {
 
 export type CertificateAvgOrderByAggregateInput = {
   block_number?: Prisma.SortOrder
+  version?: Prisma.SortOrder
   revoke_block_number?: Prisma.SortOrder
 }
 
@@ -882,6 +927,8 @@ export type CertificateMaxOrderByAggregateInput = {
   block_number?: Prisma.SortOrder
   gas_used?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  version?: Prisma.SortOrder
+  superseded_by?: Prisma.SortOrder
   issuedAt?: Prisma.SortOrder
   revokedAt?: Prisma.SortOrder
   revokedById?: Prisma.SortOrder
@@ -915,6 +962,8 @@ export type CertificateMinOrderByAggregateInput = {
   block_number?: Prisma.SortOrder
   gas_used?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  version?: Prisma.SortOrder
+  superseded_by?: Prisma.SortOrder
   issuedAt?: Prisma.SortOrder
   revokedAt?: Prisma.SortOrder
   revokedById?: Prisma.SortOrder
@@ -925,6 +974,7 @@ export type CertificateMinOrderByAggregateInput = {
 
 export type CertificateSumOrderByAggregateInput = {
   block_number?: Prisma.SortOrder
+  version?: Prisma.SortOrder
   revoke_block_number?: Prisma.SortOrder
 }
 
@@ -1062,10 +1112,6 @@ export type NullableIntFieldUpdateOperationsInput = {
   divide?: number
 }
 
-export type NullableDateTimeFieldUpdateOperationsInput = {
-  set?: Date | string | null
-}
-
 export type CertificateCreateWithoutOrganizationInput = {
   certificate_id?: string
   certificate_title: string
@@ -1088,6 +1134,8 @@ export type CertificateCreateWithoutOrganizationInput = {
   block_number?: number | null
   gas_used?: string | null
   status?: string
+  version?: number
+  superseded_by?: string | null
   issuedAt?: Date | string
   revokedAt?: Date | string | null
   revokedById?: string | null
@@ -1122,6 +1170,8 @@ export type CertificateUncheckedCreateWithoutOrganizationInput = {
   block_number?: number | null
   gas_used?: string | null
   status?: string
+  version?: number
+  superseded_by?: string | null
   issuedAt?: Date | string
   revokedAt?: Date | string | null
   revokedById?: string | null
@@ -1184,6 +1234,8 @@ export type CertificateScalarWhereInput = {
   block_number?: Prisma.IntNullableFilter<"Certificate"> | number | null
   gas_used?: Prisma.StringNullableFilter<"Certificate"> | string | null
   status?: Prisma.StringFilter<"Certificate"> | string
+  version?: Prisma.IntFilter<"Certificate"> | number
+  superseded_by?: Prisma.StringNullableFilter<"Certificate"> | string | null
   issuedAt?: Prisma.DateTimeFilter<"Certificate"> | Date | string
   revokedAt?: Prisma.DateTimeNullableFilter<"Certificate"> | Date | string | null
   revokedById?: Prisma.StringNullableFilter<"Certificate"> | string | null
@@ -1214,6 +1266,8 @@ export type CertificateCreateWithoutStudentInput = {
   block_number?: number | null
   gas_used?: string | null
   status?: string
+  version?: number
+  superseded_by?: string | null
   issuedAt?: Date | string
   revokedAt?: Date | string | null
   revokedById?: string | null
@@ -1248,6 +1302,8 @@ export type CertificateUncheckedCreateWithoutStudentInput = {
   block_number?: number | null
   gas_used?: string | null
   status?: string
+  version?: number
+  superseded_by?: string | null
   issuedAt?: Date | string
   revokedAt?: Date | string | null
   revokedById?: string | null
@@ -1304,6 +1360,8 @@ export type CertificateCreateWithoutTemplateInput = {
   block_number?: number | null
   gas_used?: string | null
   status?: string
+  version?: number
+  superseded_by?: string | null
   issuedAt?: Date | string
   revokedAt?: Date | string | null
   revokedById?: string | null
@@ -1338,6 +1396,8 @@ export type CertificateUncheckedCreateWithoutTemplateInput = {
   block_number?: number | null
   gas_used?: string | null
   status?: string
+  version?: number
+  superseded_by?: string | null
   issuedAt?: Date | string
   revokedAt?: Date | string | null
   revokedById?: string | null
@@ -1396,6 +1456,8 @@ export type CertificateCreateManyOrganizationInput = {
   block_number?: number | null
   gas_used?: string | null
   status?: string
+  version?: number
+  superseded_by?: string | null
   issuedAt?: Date | string
   revokedAt?: Date | string | null
   revokedById?: string | null
@@ -1426,6 +1488,8 @@ export type CertificateUpdateWithoutOrganizationInput = {
   block_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   gas_used?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  superseded_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   issuedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   revokedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1460,6 +1524,8 @@ export type CertificateUncheckedUpdateWithoutOrganizationInput = {
   block_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   gas_used?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  superseded_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   issuedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   revokedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1492,6 +1558,8 @@ export type CertificateUncheckedUpdateManyWithoutOrganizationInput = {
   block_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   gas_used?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  superseded_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   issuedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   revokedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1524,6 +1592,8 @@ export type CertificateCreateManyStudentInput = {
   block_number?: number | null
   gas_used?: string | null
   status?: string
+  version?: number
+  superseded_by?: string | null
   issuedAt?: Date | string
   revokedAt?: Date | string | null
   revokedById?: string | null
@@ -1554,6 +1624,8 @@ export type CertificateUpdateWithoutStudentInput = {
   block_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   gas_used?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  superseded_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   issuedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   revokedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1588,6 +1660,8 @@ export type CertificateUncheckedUpdateWithoutStudentInput = {
   block_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   gas_used?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  superseded_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   issuedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   revokedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1620,6 +1694,8 @@ export type CertificateUncheckedUpdateManyWithoutStudentInput = {
   block_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   gas_used?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  superseded_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   issuedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   revokedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1652,6 +1728,8 @@ export type CertificateCreateManyTemplateInput = {
   block_number?: number | null
   gas_used?: string | null
   status?: string
+  version?: number
+  superseded_by?: string | null
   issuedAt?: Date | string
   revokedAt?: Date | string | null
   revokedById?: string | null
@@ -1682,6 +1760,8 @@ export type CertificateUpdateWithoutTemplateInput = {
   block_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   gas_used?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  superseded_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   issuedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   revokedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1716,6 +1796,8 @@ export type CertificateUncheckedUpdateWithoutTemplateInput = {
   block_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   gas_used?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  superseded_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   issuedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   revokedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1748,6 +1830,8 @@ export type CertificateUncheckedUpdateManyWithoutTemplateInput = {
   block_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   gas_used?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  superseded_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   issuedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   revokedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1783,6 +1867,8 @@ export type CertificateSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   block_number?: boolean
   gas_used?: boolean
   status?: boolean
+  version?: boolean
+  superseded_by?: boolean
   issuedAt?: boolean
   revokedAt?: boolean
   revokedById?: boolean
@@ -1821,6 +1907,8 @@ export type CertificateSelectScalar = {
   block_number?: boolean
   gas_used?: boolean
   status?: boolean
+  version?: boolean
+  superseded_by?: boolean
   issuedAt?: boolean
   revokedAt?: boolean
   revokedById?: boolean
@@ -1829,7 +1917,7 @@ export type CertificateSelectScalar = {
   revoke_block_number?: boolean
 }
 
-export type CertificateOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"certificate_id" | "organization_id" | "student_id" | "template_id" | "certificate_title" | "organization_name" | "student_fullName" | "dob" | "placeOfBirth" | "gender" | "ethnicity" | "schoolName" | "examCohort" | "examBoard" | "issueLocation" | "issueDate" | "serialNumber" | "registryNumber" | "ipfs_cid" | "file_url" | "tx_hash" | "block_number" | "gas_used" | "status" | "issuedAt" | "revokedAt" | "revokedById" | "revokeReason" | "revoke_tx_hash" | "revoke_block_number", ExtArgs["result"]["certificate"]>
+export type CertificateOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"certificate_id" | "organization_id" | "student_id" | "template_id" | "certificate_title" | "organization_name" | "student_fullName" | "dob" | "placeOfBirth" | "gender" | "ethnicity" | "schoolName" | "examCohort" | "examBoard" | "issueLocation" | "issueDate" | "serialNumber" | "registryNumber" | "ipfs_cid" | "file_url" | "tx_hash" | "block_number" | "gas_used" | "status" | "version" | "superseded_by" | "issuedAt" | "revokedAt" | "revokedById" | "revokeReason" | "revoke_tx_hash" | "revoke_block_number", ExtArgs["result"]["certificate"]>
 export type CertificateInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   organization?: boolean | Prisma.IssuingOrganizationDefaultArgs<ExtArgs>
   student?: boolean | Prisma.StudentAccountDefaultArgs<ExtArgs>
@@ -1868,6 +1956,8 @@ export type $CertificatePayload<ExtArgs extends runtime.Types.Extensions.Interna
     block_number: number | null
     gas_used: string | null
     status: string
+    version: number
+    superseded_by: string | null
     issuedAt: Date
     revokedAt: Date | null
     revokedById: string | null
@@ -2270,6 +2360,8 @@ export interface CertificateFieldRefs {
   readonly block_number: Prisma.FieldRef<"Certificate", 'Int'>
   readonly gas_used: Prisma.FieldRef<"Certificate", 'String'>
   readonly status: Prisma.FieldRef<"Certificate", 'String'>
+  readonly version: Prisma.FieldRef<"Certificate", 'Int'>
+  readonly superseded_by: Prisma.FieldRef<"Certificate", 'String'>
   readonly issuedAt: Prisma.FieldRef<"Certificate", 'DateTime'>
   readonly revokedAt: Prisma.FieldRef<"Certificate", 'DateTime'>
   readonly revokedById: Prisma.FieldRef<"Certificate", 'String'>

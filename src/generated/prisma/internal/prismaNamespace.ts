@@ -80,12 +80,12 @@ export type PrismaVersion = {
 }
 
 /**
- * Prisma Client JS version: 7.8.0
- * Query Engine version: 3c6e192761c0362d496ed980de936e2f3cebcd3a
+ * Prisma Client JS version: 7.9.1
+ * Query Engine version: e922089b7d7502aff4249d5da3420f6fa55fc6ad
  */
 export const prismaVersion: PrismaVersion = {
-  client: "7.8.0",
-  engine: "3c6e192761c0362d496ed980de936e2f3cebcd3a"
+  client: "7.9.1",
+  engine: "e922089b7d7502aff4249d5da3420f6fa55fc6ad"
 }
 
 /**
@@ -156,6 +156,19 @@ export type Subset<T, U> = {
 };
 
 /**
+ * Resolved type of the argument passed to the `PrismaClient` constructor.
+ *
+ * When called without a narrower options type (the common case), this resolves
+ * to `PrismaClientOptions` directly, which produces a clear TypeScript error
+ * message (`not assignable to parameter of type 'PrismaClientOptions'`) when
+ * the argument is missing or incomplete. When the user supplies a narrower
+ * options type (e.g. via a literal), it falls back to `Subset` to keep
+ * filtering out unknown properties.
+ */
+export type PrismaClientConstructorArgs<Options extends PrismaClientOptions> =
+  [PrismaClientOptions] extends [Options] ? PrismaClientOptions : Subset<Options, PrismaClientOptions>;
+
+/**
  * SelectSubset
  * @desc From `T` pick properties that exist in `U`. Simple version of Intersection.
  * Additionally, it validates, if both select and include are present. If the case, it errors.
@@ -187,7 +200,7 @@ type Without<T, U> = { [P in Exclude<keyof T, keyof U>]?: never };
 export type XOR<T, U> =
   T extends object ?
   U extends object ?
-    (Without<T, U> & U) | (Without<U, T> & T)
+    ((Without<T, U> & U) | (Without<U, T> & T)) & object
   : U : T
 
 
@@ -387,6 +400,9 @@ export const ModelName = {
   IssuingOrganization: 'IssuingOrganization',
   StaffAccount: 'StaffAccount',
   StudentAccount: 'StudentAccount',
+  ActivationToken: 'ActivationToken',
+  CredentialShare: 'CredentialShare',
+  DisputeRequest: 'DisputeRequest',
   Notification: 'Notification',
   StudentImportBatch: 'StudentImportBatch',
   CertificateTemplate: 'CertificateTemplate',
@@ -411,7 +427,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "issuingOrganization" | "staffAccount" | "studentAccount" | "notification" | "studentImportBatch" | "certificateTemplate" | "certificate" | "onlineCertificate" | "issuanceBatch" | "issuanceBatchItem" | "auditLog" | "systemAdmin"
+    modelProps: "issuingOrganization" | "staffAccount" | "studentAccount" | "activationToken" | "credentialShare" | "disputeRequest" | "notification" | "studentImportBatch" | "certificateTemplate" | "certificate" | "onlineCertificate" | "issuanceBatch" | "issuanceBatchItem" | "auditLog" | "systemAdmin"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -610,6 +626,204 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.StudentAccountCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.StudentAccountCountAggregateOutputType> | number
+        }
+      }
+    }
+    ActivationToken: {
+      payload: Prisma.$ActivationTokenPayload<ExtArgs>
+      fields: Prisma.ActivationTokenFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ActivationTokenFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActivationTokenPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ActivationTokenFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActivationTokenPayload>
+        }
+        findFirst: {
+          args: Prisma.ActivationTokenFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActivationTokenPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ActivationTokenFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActivationTokenPayload>
+        }
+        findMany: {
+          args: Prisma.ActivationTokenFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActivationTokenPayload>[]
+        }
+        create: {
+          args: Prisma.ActivationTokenCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActivationTokenPayload>
+        }
+        createMany: {
+          args: Prisma.ActivationTokenCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.ActivationTokenDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActivationTokenPayload>
+        }
+        update: {
+          args: Prisma.ActivationTokenUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActivationTokenPayload>
+        }
+        deleteMany: {
+          args: Prisma.ActivationTokenDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ActivationTokenUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.ActivationTokenUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActivationTokenPayload>
+        }
+        aggregate: {
+          args: Prisma.ActivationTokenAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateActivationToken>
+        }
+        groupBy: {
+          args: Prisma.ActivationTokenGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ActivationTokenGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ActivationTokenCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ActivationTokenCountAggregateOutputType> | number
+        }
+      }
+    }
+    CredentialShare: {
+      payload: Prisma.$CredentialSharePayload<ExtArgs>
+      fields: Prisma.CredentialShareFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CredentialShareFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CredentialSharePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CredentialShareFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CredentialSharePayload>
+        }
+        findFirst: {
+          args: Prisma.CredentialShareFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CredentialSharePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CredentialShareFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CredentialSharePayload>
+        }
+        findMany: {
+          args: Prisma.CredentialShareFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CredentialSharePayload>[]
+        }
+        create: {
+          args: Prisma.CredentialShareCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CredentialSharePayload>
+        }
+        createMany: {
+          args: Prisma.CredentialShareCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.CredentialShareDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CredentialSharePayload>
+        }
+        update: {
+          args: Prisma.CredentialShareUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CredentialSharePayload>
+        }
+        deleteMany: {
+          args: Prisma.CredentialShareDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CredentialShareUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.CredentialShareUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CredentialSharePayload>
+        }
+        aggregate: {
+          args: Prisma.CredentialShareAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCredentialShare>
+        }
+        groupBy: {
+          args: Prisma.CredentialShareGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CredentialShareGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CredentialShareCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CredentialShareCountAggregateOutputType> | number
+        }
+      }
+    }
+    DisputeRequest: {
+      payload: Prisma.$DisputeRequestPayload<ExtArgs>
+      fields: Prisma.DisputeRequestFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.DisputeRequestFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DisputeRequestPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.DisputeRequestFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DisputeRequestPayload>
+        }
+        findFirst: {
+          args: Prisma.DisputeRequestFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DisputeRequestPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.DisputeRequestFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DisputeRequestPayload>
+        }
+        findMany: {
+          args: Prisma.DisputeRequestFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DisputeRequestPayload>[]
+        }
+        create: {
+          args: Prisma.DisputeRequestCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DisputeRequestPayload>
+        }
+        createMany: {
+          args: Prisma.DisputeRequestCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.DisputeRequestDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DisputeRequestPayload>
+        }
+        update: {
+          args: Prisma.DisputeRequestUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DisputeRequestPayload>
+        }
+        deleteMany: {
+          args: Prisma.DisputeRequestDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.DisputeRequestUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.DisputeRequestUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DisputeRequestPayload>
+        }
+        aggregate: {
+          args: Prisma.DisputeRequestAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDisputeRequest>
+        }
+        groupBy: {
+          args: Prisma.DisputeRequestGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DisputeRequestGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.DisputeRequestCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DisputeRequestCountAggregateOutputType> | number
         }
       }
     }
@@ -1282,12 +1496,59 @@ export const StudentAccountScalarFieldEnum = {
   email: 'email',
   password: 'password',
   isActive: 'isActive',
+  isActivated: 'isActivated',
+  notif_email_pref: 'notif_email_pref',
   createdAt: 'createdAt',
   imported_by: 'imported_by',
   import_batch_id: 'import_batch_id'
 } as const
 
 export type StudentAccountScalarFieldEnum = (typeof StudentAccountScalarFieldEnum)[keyof typeof StudentAccountScalarFieldEnum]
+
+
+export const ActivationTokenScalarFieldEnum = {
+  id: 'id',
+  student_id: 'student_id',
+  token: 'token',
+  used: 'used',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt'
+} as const
+
+export type ActivationTokenScalarFieldEnum = (typeof ActivationTokenScalarFieldEnum)[keyof typeof ActivationTokenScalarFieldEnum]
+
+
+export const CredentialShareScalarFieldEnum = {
+  id: 'id',
+  student_id: 'student_id',
+  certificate_id: 'certificate_id',
+  share_token: 'share_token',
+  scope: 'scope',
+  expires_at: 'expires_at',
+  revoked: 'revoked',
+  verify_count: 'verify_count',
+  createdAt: 'createdAt'
+} as const
+
+export type CredentialShareScalarFieldEnum = (typeof CredentialShareScalarFieldEnum)[keyof typeof CredentialShareScalarFieldEnum]
+
+
+export const DisputeRequestScalarFieldEnum = {
+  id: 'id',
+  student_id: 'student_id',
+  certificate_id: 'certificate_id',
+  reason: 'reason',
+  details: 'details',
+  status: 'status',
+  reviewer_id: 'reviewer_id',
+  reviewer_note: 'reviewer_note',
+  resolved_at: 'resolved_at',
+  new_cert_id: 'new_cert_id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DisputeRequestScalarFieldEnum = (typeof DisputeRequestScalarFieldEnum)[keyof typeof DisputeRequestScalarFieldEnum]
 
 
 export const NotificationScalarFieldEnum = {
@@ -1297,7 +1558,10 @@ export const NotificationScalarFieldEnum = {
   title: 'title',
   message: 'message',
   type: 'type',
+  event_type: 'event_type',
   related_id: 'related_id',
+  deep_link: 'deep_link',
+  email_sent: 'email_sent',
   is_read: 'is_read',
   createdAt: 'createdAt'
 } as const
@@ -1360,6 +1624,8 @@ export const CertificateScalarFieldEnum = {
   block_number: 'block_number',
   gas_used: 'gas_used',
   status: 'status',
+  version: 'version',
+  superseded_by: 'superseded_by',
   issuedAt: 'issuedAt',
   revokedAt: 'revokedAt',
   revokedById: 'revokedById',
@@ -1462,19 +1728,19 @@ export const SortOrder = {
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
-export const JsonNullValueInput = {
-  JsonNull: JsonNull
-} as const
-
-export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
-
-
 export const NullableJsonNullValueInput = {
   DbNull: DbNull,
   JsonNull: JsonNull
 } as const
 
 export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const NullsOrder = {
@@ -1523,28 +1789,13 @@ export const StudentAccountOrderByRelevanceFieldEnum = {
 export type StudentAccountOrderByRelevanceFieldEnum = (typeof StudentAccountOrderByRelevanceFieldEnum)[keyof typeof StudentAccountOrderByRelevanceFieldEnum]
 
 
-export const NotificationOrderByRelevanceFieldEnum = {
+export const ActivationTokenOrderByRelevanceFieldEnum = {
   id: 'id',
   student_id: 'student_id',
-  organization_id: 'organization_id',
-  title: 'title',
-  message: 'message',
-  type: 'type',
-  related_id: 'related_id'
+  token: 'token'
 } as const
 
-export type NotificationOrderByRelevanceFieldEnum = (typeof NotificationOrderByRelevanceFieldEnum)[keyof typeof NotificationOrderByRelevanceFieldEnum]
-
-
-export const StudentImportBatchOrderByRelevanceFieldEnum = {
-  id: 'id',
-  organization_id: 'organization_id',
-  created_by_id: 'created_by_id',
-  created_by_name: 'created_by_name',
-  file_name: 'file_name'
-} as const
-
-export type StudentImportBatchOrderByRelevanceFieldEnum = (typeof StudentImportBatchOrderByRelevanceFieldEnum)[keyof typeof StudentImportBatchOrderByRelevanceFieldEnum]
+export type ActivationTokenOrderByRelevanceFieldEnum = (typeof ActivationTokenOrderByRelevanceFieldEnum)[keyof typeof ActivationTokenOrderByRelevanceFieldEnum]
 
 
 export const JsonNullValueFilter = {
@@ -1562,6 +1813,57 @@ export const QueryMode = {
 } as const
 
 export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+export const CredentialShareOrderByRelevanceFieldEnum = {
+  id: 'id',
+  student_id: 'student_id',
+  certificate_id: 'certificate_id',
+  share_token: 'share_token'
+} as const
+
+export type CredentialShareOrderByRelevanceFieldEnum = (typeof CredentialShareOrderByRelevanceFieldEnum)[keyof typeof CredentialShareOrderByRelevanceFieldEnum]
+
+
+export const DisputeRequestOrderByRelevanceFieldEnum = {
+  id: 'id',
+  student_id: 'student_id',
+  certificate_id: 'certificate_id',
+  reason: 'reason',
+  details: 'details',
+  status: 'status',
+  reviewer_id: 'reviewer_id',
+  reviewer_note: 'reviewer_note',
+  new_cert_id: 'new_cert_id'
+} as const
+
+export type DisputeRequestOrderByRelevanceFieldEnum = (typeof DisputeRequestOrderByRelevanceFieldEnum)[keyof typeof DisputeRequestOrderByRelevanceFieldEnum]
+
+
+export const NotificationOrderByRelevanceFieldEnum = {
+  id: 'id',
+  student_id: 'student_id',
+  organization_id: 'organization_id',
+  title: 'title',
+  message: 'message',
+  type: 'type',
+  event_type: 'event_type',
+  related_id: 'related_id',
+  deep_link: 'deep_link'
+} as const
+
+export type NotificationOrderByRelevanceFieldEnum = (typeof NotificationOrderByRelevanceFieldEnum)[keyof typeof NotificationOrderByRelevanceFieldEnum]
+
+
+export const StudentImportBatchOrderByRelevanceFieldEnum = {
+  id: 'id',
+  organization_id: 'organization_id',
+  created_by_id: 'created_by_id',
+  created_by_name: 'created_by_name',
+  file_name: 'file_name'
+} as const
+
+export type StudentImportBatchOrderByRelevanceFieldEnum = (typeof StudentImportBatchOrderByRelevanceFieldEnum)[keyof typeof StudentImportBatchOrderByRelevanceFieldEnum]
 
 
 export const CertificateTemplateOrderByRelevanceFieldEnum = {
@@ -1599,6 +1901,7 @@ export const CertificateOrderByRelevanceFieldEnum = {
   tx_hash: 'tx_hash',
   gas_used: 'gas_used',
   status: 'status',
+  superseded_by: 'superseded_by',
   revokedById: 'revokedById',
   revokeReason: 'revokeReason',
   revoke_tx_hash: 'revoke_tx_hash'
@@ -1702,13 +2005,6 @@ export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel
 
 
 /**
- * Reference to a field of type 'Int'
- */
-export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
-    
-
-
-/**
  * Reference to a field of type 'Json'
  */
 export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
@@ -1719,6 +2015,13 @@ export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'J
  * Reference to a field of type 'QueryMode'
  */
 export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
+
+
+/**
+ * Reference to a field of type 'Int'
+ */
+export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
     
 
 
@@ -1738,19 +2041,10 @@ export type BatchPayload = {
 export const defineExtension = runtime.Extensions.defineExtension as unknown as runtime.Types.Extensions.ExtendsHook<"define", TypeMapCb, runtime.Types.Extensions.DefaultArgs>
 export type DefaultPrismaClient = PrismaClient
 export type ErrorFormat = 'pretty' | 'colorless' | 'minimal'
-export type PrismaClientOptions = ({
-  /**
-   * Instance of a Driver Adapter, e.g., like one provided by `@prisma/adapter-pg`.
-   */
-  adapter: runtime.SqlDriverAdapterFactory
-  accelerateUrl?: never
-} | {
-  /**
-   * Prisma Accelerate URL allowing the client to connect through Accelerate instead of a direct database.
-   */
-  accelerateUrl: string
-  adapter?: never
-}) & {
+/**
+ * Options common to all variants of `PrismaClientOptions`, regardless of whether you connect to your database through a driver adapter or through Prisma Accelerate.
+ */
+export interface PrismaClientBaseOptions {
   /**
    * @default "colorless"
    */
@@ -1837,10 +2131,63 @@ export type PrismaClientOptions = ({
    */
   queryPlanCacheMaxSize?: number
 }
+
+/**
+ * `PrismaClient` options for connecting to your database through Prisma Accelerate instead of a driver adapter.
+ * 
+ * Learn more: https://pris.ly/d/accelerate
+ */
+export interface PrismaClientOptionsWithAccelerateUrl extends PrismaClientBaseOptions {
+  /**
+   * The Prisma Accelerate connection URL. Use this option to connect to your database through Prisma Accelerate instead of using a driver adapter to connect directly.
+   * 
+   * Learn more: https://pris.ly/d/accelerate
+   */
+  accelerateUrl: string
+  adapter?: never
+}
+
+/**
+ * `PrismaClient` options for connecting to your database through a driver adapter. This is the common case in Prisma 7.
+ * 
+ * Learn more: https://pris.ly/d/driver-adapters
+ */
+export interface PrismaClientOptionsWithAdapter extends PrismaClientBaseOptions {
+  /**
+   * A driver adapter that PrismaClient uses to connect to your database, such as the ones provided by `@prisma/adapter-pg`, `@prisma/adapter-libsql`, `@prisma/adapter-planetscale`, etc.
+   * 
+   * A driver adapter is **required** unless you connect to your database through Prisma Accelerate (in which case use `accelerateUrl` instead).
+   * 
+   * Learn more: https://pris.ly/d/driver-adapters
+   * 
+   * @example
+   * ```ts
+   * import { PrismaPg } from '@prisma/adapter-pg'
+   * import { PrismaClient } from './generated/prisma/client'
+   * 
+   * const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL })
+   * const prisma = new PrismaClient({ adapter })
+   * ```
+   */
+  adapter: runtime.SqlDriverAdapterFactory
+  accelerateUrl?: never
+}
+
+/**
+ * Options passed to the `PrismaClient` constructor.
+ * 
+ * A driver adapter (or, alternatively, a Prisma Accelerate URL) is **required**. See {@link PrismaClientOptionsWithAdapter} and {@link PrismaClientOptionsWithAccelerateUrl} for the two variants. All other properties live in {@link PrismaClientBaseOptions} and are optional.
+ * 
+ * Learn more about driver adapters: https://pris.ly/d/driver-adapters
+ */
+export type PrismaClientOptions = PrismaClientOptionsWithAccelerateUrl | PrismaClientOptionsWithAdapter
 export type GlobalOmitConfig = {
   issuingOrganization?: Prisma.IssuingOrganizationOmit
   staffAccount?: Prisma.StaffAccountOmit
   studentAccount?: Prisma.StudentAccountOmit
+  activationToken?: Prisma.ActivationTokenOmit
+  credentialShare?: Prisma.CredentialShareOmit
+  disputeRequest?: Prisma.DisputeRequestOmit
   notification?: Prisma.NotificationOmit
   studentImportBatch?: Prisma.StudentImportBatchOmit
   certificateTemplate?: Prisma.CertificateTemplateOmit

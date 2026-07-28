@@ -102,6 +102,13 @@ export class AuthService {
       throw new UnauthorizedException('Tài khoản đã bị khóa hoặc không hoạt động.');
     }
 
+    // Students must activate via email invite before logging in
+    if (existingStudent && !(existingStudent as any).isActivated) {
+      throw new UnauthorizedException(
+        'Tài khoản của bạn chưa được kích hoạt. Vui lòng kiểm tra email để nhận link kích hoạt.',
+      );
+    }
+
     let role: 'issuer' | 'staff' | 'student';
     let name: string;
     let id: string;

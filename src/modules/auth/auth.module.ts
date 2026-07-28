@@ -7,7 +7,7 @@ import { JwtStrategy } from './jwt.strategy';
 import { IssuerModule } from '../issuer/issuer.module';
 import { StudentModule } from '../student/student.module';
 import { StaffModule } from '../staff/staff.module';
-
+import { ActivationService } from '../student/activation.service';
 import { BlockchainModule } from '../../core/blockchain/blockchain.module';
 
 @Global()
@@ -24,7 +24,7 @@ import { BlockchainModule } from '../../core/blockchain/blockchain.module';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy],
+  providers: [AuthService, JwtStrategy, ActivationService],
   exports: [AuthService, JwtModule, PassportModule],
 })
 export class AuthModule {}

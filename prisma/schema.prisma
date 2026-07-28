@@ -53,35 +53,95 @@ model StudentAccount {
   student_id          String                   @id @default(uuid())
   organization_id     String
   student_fullName    String
-  organization_name  String
-  email              String                   @unique
-  password           String
-  isActive           Boolean                  @default(true)
-  createdAt          DateTime                 @default(now())
-  imported_by        String?
-  import_batch_id    String?
-  certificates       Certificate[]
+  organization_name   String
+  email               String                   @unique
+  password            String
+  isActive            Boolean                  @default(true)
+  isActivated         Boolean                  @default(false)
+  notif_email_pref    Boolean                  @default(true)
+  createdAt           DateTime                 @default(now())
+  imported_by         String?
+  import_batch_id     String?
+  certificates        Certificate[]
   online_certificates OnlineCertificate[]
-  organization       IssuingOrganization      @relation(fields: [organization_id], references: [organization_id])
-  import_batch       StudentImportBatch?      @relation(fields: [import_batch_id], references: [id])
+  activation_token    ActivationToken?
+  credential_shares   CredentialShare[]
+  dispute_requests    DisputeRequest[]
+  organization        IssuingOrganization      @relation(fields: [organization_id], references: [organization_id])
+  import_batch        StudentImportBatch?      @relation(fields: [import_batch_id], references: [id])
 
   @@index([organization_id])
   @@index([import_batch_id])
   @@map("student_accounts")
 }
 
+model ActivationToken {
+  id         String         @id @default(uuid())
+  student_id String         @unique
+  token      String         @unique
+  used       Boolean        @default(false)
+  expiresAt  DateTime
+  createdAt  DateTime       @default(now())
+  student    StudentAccount @relation(fields: [student_id], references: [student_id], onDelete: Cascade)
+
+  @@index([token])
+  @@map("activation_tokens")
+}
+
+model CredentialShare {
+  id             String         @id @default(uuid())
+  student_id     String
+  certificate_id String
+  share_token    String         @unique
+  scope          Json?
+  expires_at     DateTime?
+  revoked        Boolean        @default(false)
+  verify_count   Int            @default(0)
+  createdAt      DateTime       @default(now())
+  student        StudentAccount @relation(fields: [student_id], references: [student_id], onDelete: Cascade)
+
+  @@index([student_id])
+  @@index([share_token])
+  @@index([certificate_id])
+  @@map("credential_shares")
+}
+
+model DisputeRequest {
+  id             String         @id @default(uuid())
+  student_id     String
+  certificate_id String
+  reason         String
+  details        String?        @db.Text
+  status         String         @default("PENDING")
+  reviewer_id    String?
+  reviewer_note  String?        @db.Text
+  resolved_at    DateTime?
+  new_cert_id    String?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  student        StudentAccount @relation(fields: [student_id], references: [student_id], onDelete: Cascade)
+
+  @@index([student_id])
+  @@index([certificate_id])
+  @@index([status])
+  @@map("dispute_requests")
+}
+
 model Notification {
-  id              String               @id @default(uuid())
+  id              String              @id @default(uuid())
   student_id      String
   organization_id String
   title           String
-  message         String               @db.Text
-  type            String               @default("INFO") // INFO | CERT_ISSUED | CERT_REVOKED
-  related_id      String?              // certificate_id or other reference
-  is_read         Boolean              @default(false)
-  createdAt       DateTime             @default(now())
+  message         String              @db.Text
+  type            String              @default("INFO")
+  event_type      String?
+  related_id      String?
+  deep_link       String?
+  email_sent      Boolean             @default(false)
+  is_read         Boolean             @default(false)
+  createdAt       DateTime            @default(now())
 
-  organization   IssuingOrganization @relation(fields: [organization_id], references: [organization_id])
+  organization    IssuingOrganization @relation(fields: [organization_id], references: [organization_id])
 
   @@index([student_id, is_read])
   @@index([organization_id, createdAt])
@@ -155,7 +215,9 @@ model Certificate {
   tx_hash            String?
   block_number       Int?
   gas_used           String?
-  status             String   @default("DRAFT") // DRAFT | PENDING | ISSUED | REVOKED
+  status             String   @default("DRAFT") // DRAFT | PENDING | ISSUED | REVOKED | SUPERSEDED
+  version            Int      @default(1)
+  superseded_by      String?  // certificate_id of the newer version
   issuedAt           DateTime @default(now())
   revokedAt          DateTime?
   revokedById        String?
