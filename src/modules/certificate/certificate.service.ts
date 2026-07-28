@@ -91,27 +91,18 @@ export class CertificateService {
     let ipfsCid = dto.ipfs_cid;
     let fileUrl = dto.file_url;
     if (!ipfsCid && fileUrl && fileUrl.startsWith('data:')) {
-      try {
-        const matches = fileUrl.match(/^data:(.+);base64,(.+)$/);
-        if (matches) {
-          const mimeType = matches[1];
-          const buffer = Buffer.from(matches[2], 'base64');
-          const ipfsRes = await this.ipfsService.storeFileToIpfs(
-            buffer,
-            `diploma_${dto.student_id || Date.now()}`,
-            mimeType,
-          );
-          ipfsCid = ipfsRes.cid;
-          fileUrl = ipfsRes.ipfsUrl;
-        }
-      } catch {
-        // Optional IPFS fallback
+      const matches = fileUrl.match(/^data:(.+);base64,(.+)$/);
+      if (matches) {
+        const mimeType = matches[1];
+        const buffer = Buffer.from(matches[2], 'base64');
+        const ipfsRes = await this.ipfsService.storeFileToIpfs(
+          buffer,
+          `diploma_${dto.student_id || Date.now()}`,
+          mimeType,
+        );
+        ipfsCid = ipfsRes.cid;
+        fileUrl = ipfsRes.ipfsUrl;
       }
-    }
-
-    if (!ipfsCid) {
-      ipfsCid = `bafk_pending_${Date.now()}`;
-      fileUrl = fileUrl && !fileUrl.startsWith('data:') ? fileUrl : `https://gateway.pinata.cloud/ipfs/${ipfsCid}`;
     }
 
     // 5. Create certificate record
@@ -265,40 +256,37 @@ export class CertificateService {
       );
     }
 
-    // 1. Construct IPFS payload
+    // 1. Upload metadata JSON to IPFS (always)
     const ipfsPayload = this.toIpfsPayload(certificate);
+    const metadataRes = await this.ipfsService.storeToIpfs(ipfsPayload);
+    let cid = metadataRes.cid;
+    let fileUrl = metadataRes.ipfsUrl;
+    const sha3Hash = metadataRes.sha3Hash;
 
-    let cid: string = certificate.ipfs_cid || '';
-    if ((!cid || cid.startsWith('bafk_')) && certificate.file_url && certificate.file_url.startsWith('data:')) {
+    // 2. Upload binary image if still a data URL
+    if (certificate.file_url && certificate.file_url.startsWith('data:')) {
       try {
         const matches = certificate.file_url.match(/^data:(.+);base64,(.+)$/);
         if (matches) {
           const mimeType = matches[1];
           const buffer = Buffer.from(matches[2], 'base64');
-          const ipfsRes = await this.ipfsService.storeFileToIpfs(
+          const imgRes = await this.ipfsService.storeFileToIpfs(
             buffer,
             `diploma_${certificate.student_id || Date.now()}`,
             mimeType,
           );
-          cid = ipfsRes.cid;
-          await this.prisma.certificate.update({
-            where: { certificate_id: id },
-            data: { ipfs_cid: cid, file_url: ipfsRes.ipfsUrl },
-          });
+          fileUrl = imgRes.ipfsUrl;
         }
       } catch {
-        // Optional IPFS fallback
+        // Image upload is optional; metadata JSON is already on IPFS
       }
     }
 
-    // Binary file is pinned to IPFS, compute SHA-3 hash for on-chain registration
-    const sha3Hash = this.ipfsService.calculateSha3Hash(ipfsPayload);
-
+    // 3. Register on blockchain
     let transactionHash: string | null = null;
     let blockNumber: number | null = null;
     let gasUsed: string | null = null;
 
-    // 3. Register on blockchain
     if (this.blockchainService.isInitialized()) {
       try {
         const signature = await this.blockchainService.signHash(sha3Hash);
@@ -322,10 +310,6 @@ export class CertificateService {
     }
 
     // 4. Update the certificate status, cid, file_url, and transaction hash
-    const fileUrl =
-      certificate.file_url ||
-      (cid ? `https://gateway.pinata.cloud/ipfs/${cid}` : null);
-
     const issued = await this.prisma.certificate.update({
       where: { certificate_id: id },
       data: {
