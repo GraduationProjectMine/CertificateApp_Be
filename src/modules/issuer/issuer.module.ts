@@ -4,11 +4,13 @@ import { IssuerController } from './issuer.controller';
 import { IssuerService } from './issuer.service';
 import { StudentModule } from '../student/student.module';
 import { StaffModule } from '../staff/staff.module';
+import { CloudinaryModule } from '../cloudinary/cloudinary.module';
 
 @Module({
   imports: [
     StudentModule,
     StaffModule,
+    CloudinaryModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),
   ],
   controllers: [IssuerController],

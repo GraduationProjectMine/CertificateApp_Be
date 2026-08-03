@@ -2,6 +2,8 @@ import { Injectable, NotFoundException, BadRequestException, Logger } from '@nes
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { BlockchainService } from '../../core/blockchain/blockchain.service';
 import { IpfsService } from '../ipfs/ipfs.service';
+import { OcrService } from '../ocr/ocr.service';
+import { DiplomaParserService } from '../ocr/diploma-parser.service';
 
 @Injectable()
 export class VerifierService {
@@ -11,6 +13,8 @@ export class VerifierService {
     private readonly prisma: PrismaService,
     private readonly blockchainService: BlockchainService,
     private readonly ipfsService: IpfsService,
+    private readonly ocrService: OcrService,
+    private readonly diplomaParserService: DiplomaParserService,
   ) {}
 
   async verifyCertificate(serialNumber: string, registryNumber: string) {
@@ -170,6 +174,8 @@ export class VerifierService {
         fileUrl,
         organizationName: certificate.organization?.organization_name || certificate.organization_name,
         organizationId: certificate.organization_id,
+        organizationLogo: certificate.organization?.logo_url || null,
+        organizationWallet: certificate.organization?.wallet_address || null,
         txHash: certificate.tx_hash,
         issuedAt: certificate.issuedAt,
         revokedAt: certificate.revokedAt,
@@ -306,6 +312,8 @@ export class VerifierService {
         fileUrl,
         organizationName: certificate.organization?.organization_name || 'CertiChain Organization',
         organizationId: certificate.organization_id,
+        organizationLogo: certificate.organization?.logo_url || null,
+        organizationWallet: certificate.organization?.wallet_address || null,
         txHash: certificate.tx_hash,
         issuedAt: certificate.issuedAt,
         revokedAt: null,
@@ -327,6 +335,36 @@ export class VerifierService {
     }
 
     return this.verifyOnlineCertificate(certificate.serialNumber || '', certificate.registryNumber || '');
+  }
+
+  async scanDiplomaOcr(file: any) {
+    if (!file || !file.buffer) {
+      throw new BadRequestException('No diploma image file provided');
+    }
+    const ocrResult = await this.ocrService.extractTextFromImage(file.buffer, 'vie');
+    const parsed = this.diplomaParserService.parse(ocrResult.extractedText);
+
+    let serialNumber = parsed.data.serial_number;
+    let registryNumber = parsed.data.registry_number;
+
+    const rawText = ocrResult.extractedText;
+
+    if (!serialNumber) {
+      const serialMatch = rawText.match(/\b([A-Za-z]\d{5,10}|[A-Z]{1,2}\s*\d{6,8})\b/);
+      if (serialMatch) serialNumber = serialMatch[1].replace(/\s+/g, '');
+    }
+
+    if (!registryNumber) {
+      const regMatch = rawText.match(/\b(\d{4}\/\d{2,4}|\d{6,10})\b/);
+      if (regMatch) registryNumber = regMatch[1];
+    }
+
+    return {
+      serialNumber: serialNumber || null,
+      registryNumber: registryNumber || null,
+      accuracy: ocrResult.accuracy,
+      rawText: ocrResult.extractedText,
+    };
   }
 }
 

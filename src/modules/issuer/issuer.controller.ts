@@ -11,7 +11,11 @@ import {
   HttpStatus,
   Req,
   ForbiddenException,
+  UseInterceptors,
+  UploadedFile,
+  BadRequestException,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import type { Request } from 'express';
 import {
   ApiTags,
@@ -20,6 +24,7 @@ import {
   ApiBody,
   ApiBearerAuth,
   ApiProperty,
+  ApiConsumes,
 } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { StaffService } from '../staff/staff.service';
@@ -97,6 +102,49 @@ export class IssuerController {
     // Organization administrators should not self-verify or modify contract settings directly
     const { is_verified, ...allowedDto } = dto;
     return this.issuerService.update(user.organization_id, allowedDto);
+  }
+
+  @Post('upload-logo')
+  @HttpCode(HttpStatus.OK)
+  @UseInterceptors(FileInterceptor('file'))
+  @ApiOperation({
+    summary: '[Issuer] Upload organization logo image to Cloudinary',
+    description:
+      'Uploads an image file (PNG, JPG, WEBP, SVG) to Cloudinary cloud storage and updates the organization logo URL. Only issuer account can perform this action.',
+  })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        file: {
+          type: 'string',
+          format: 'binary',
+          description: 'Image file (max 5MB)',
+        },
+      },
+      required: ['file'],
+    },
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Logo image uploaded and updated successfully',
+  })
+  @ApiResponse({
+    status: 403,
+    description: 'Forbidden - Only organization issuer admin can upload logo',
+  })
+  async uploadLogo(@Req() req: Request, @UploadedFile() file: any) {
+    const user = req.user as any;
+    if (user.role !== 'issuer') {
+      throw new ForbiddenException(
+        'Only issuing organization accounts can upload organization logo',
+      );
+    }
+    if (!file) {
+      throw new BadRequestException('No image file provided');
+    }
+    return this.issuerService.uploadLogo(user.organization_id, file);
   }
 
 
