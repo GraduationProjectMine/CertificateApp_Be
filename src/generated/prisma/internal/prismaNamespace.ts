@@ -395,7 +395,8 @@ export const ModelName = {
   IssuanceBatch: 'IssuanceBatch',
   IssuanceBatchItem: 'IssuanceBatchItem',
   AuditLog: 'AuditLog',
-  SystemAdmin: 'SystemAdmin'
+  SystemAdmin: 'SystemAdmin',
+  Dispute: 'Dispute'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -411,7 +412,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "issuingOrganization" | "staffAccount" | "studentAccount" | "notification" | "studentImportBatch" | "certificateTemplate" | "certificate" | "onlineCertificate" | "issuanceBatch" | "issuanceBatchItem" | "auditLog" | "systemAdmin"
+    modelProps: "issuingOrganization" | "staffAccount" | "studentAccount" | "notification" | "studentImportBatch" | "certificateTemplate" | "certificate" | "onlineCertificate" | "issuanceBatch" | "issuanceBatchItem" | "auditLog" | "systemAdmin" | "dispute"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1207,6 +1208,72 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Dispute: {
+      payload: Prisma.$DisputePayload<ExtArgs>
+      fields: Prisma.DisputeFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.DisputeFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DisputePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.DisputeFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DisputePayload>
+        }
+        findFirst: {
+          args: Prisma.DisputeFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DisputePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.DisputeFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DisputePayload>
+        }
+        findMany: {
+          args: Prisma.DisputeFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DisputePayload>[]
+        }
+        create: {
+          args: Prisma.DisputeCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DisputePayload>
+        }
+        createMany: {
+          args: Prisma.DisputeCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.DisputeDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DisputePayload>
+        }
+        update: {
+          args: Prisma.DisputeUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DisputePayload>
+        }
+        deleteMany: {
+          args: Prisma.DisputeDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.DisputeUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.DisputeUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DisputePayload>
+        }
+        aggregate: {
+          args: Prisma.DisputeAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDispute>
+        }
+        groupBy: {
+          args: Prisma.DisputeGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DisputeGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.DisputeCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DisputeCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1454,6 +1521,25 @@ export const SystemAdminScalarFieldEnum = {
 export type SystemAdminScalarFieldEnum = (typeof SystemAdminScalarFieldEnum)[keyof typeof SystemAdminScalarFieldEnum]
 
 
+export const DisputeScalarFieldEnum = {
+  id: 'id',
+  student_id: 'student_id',
+  organization_id: 'organization_id',
+  certificate_id: 'certificate_id',
+  reason: 'reason',
+  details: 'details',
+  status: 'status',
+  reviewer_id: 'reviewer_id',
+  reviewer_note: 'reviewer_note',
+  resolved_at: 'resolved_at',
+  new_cert_id: 'new_cert_id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DisputeScalarFieldEnum = (typeof DisputeScalarFieldEnum)[keyof typeof DisputeScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -1674,6 +1760,22 @@ export const SystemAdminOrderByRelevanceFieldEnum = {
 export type SystemAdminOrderByRelevanceFieldEnum = (typeof SystemAdminOrderByRelevanceFieldEnum)[keyof typeof SystemAdminOrderByRelevanceFieldEnum]
 
 
+export const DisputeOrderByRelevanceFieldEnum = {
+  id: 'id',
+  student_id: 'student_id',
+  organization_id: 'organization_id',
+  certificate_id: 'certificate_id',
+  reason: 'reason',
+  details: 'details',
+  status: 'status',
+  reviewer_id: 'reviewer_id',
+  reviewer_note: 'reviewer_note',
+  new_cert_id: 'new_cert_id'
+} as const
+
+export type DisputeOrderByRelevanceFieldEnum = (typeof DisputeOrderByRelevanceFieldEnum)[keyof typeof DisputeOrderByRelevanceFieldEnum]
+
+
 
 /**
  * Field references
@@ -1850,6 +1952,7 @@ export type GlobalOmitConfig = {
   issuanceBatchItem?: Prisma.IssuanceBatchItemOmit
   auditLog?: Prisma.AuditLogOmit
   systemAdmin?: Prisma.SystemAdminOmit
+  dispute?: Prisma.DisputeOmit
 }
 
 /* Types for Logging */

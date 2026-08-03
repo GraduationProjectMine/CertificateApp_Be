@@ -99,3 +99,8 @@ export type AuditLog = Prisma.AuditLogModel
  * 
  */
 export type SystemAdmin = Prisma.SystemAdminModel
+/**
+ * Model Dispute
+ * 
+ */
+export type Dispute = Prisma.DisputeModel

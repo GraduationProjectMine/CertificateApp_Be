@@ -16,6 +16,7 @@ import { AuditModule } from './modules/audit/audit.module';
 import { BatchesModule } from './modules/batches/batches.module';
 import { MonitorModule } from './modules/monitor/monitor.module';
 import { NotificationsModule } from './modules/notifications/notifications.module';
+import { DisputeModule } from './modules/dispute/dispute.module';
 
 @Module({
   imports: [
@@ -53,6 +54,7 @@ import { NotificationsModule } from './modules/notifications/notifications.modul
     BatchesModule,
     MonitorModule,
     NotificationsModule,
+    DisputeModule,
   ],
   controllers: [AppController],
   providers: [
