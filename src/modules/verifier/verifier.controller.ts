@@ -1,5 +1,17 @@
-import { Controller, Get, Query, HttpCode, HttpStatus, Param } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiQuery } from '@nestjs/swagger';
+import {
+  Controller,
+  Get,
+  Post,
+  Query,
+  HttpCode,
+  HttpStatus,
+  Param,
+  UseInterceptors,
+  UploadedFile,
+  BadRequestException,
+} from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { ApiTags, ApiOperation, ApiResponse, ApiQuery, ApiConsumes, ApiBody } from '@nestjs/swagger';
 import { VerifierService } from './verifier.service';
 import { VerifyQueryDto } from './dto/verify-query.dto';
 
@@ -67,6 +79,34 @@ export class VerifierController {
   })
   async getOnlineCertificateById(@Param('id') id: string) {
     return this.verifierService.getOnlineCertificateById(id);
+  }
+
+  @Post('scan-ocr')
+  @HttpCode(HttpStatus.OK)
+  @UseInterceptors(FileInterceptor('file'))
+  @ApiOperation({
+    summary: 'Public OCR scan of a diploma image to extract serial and registry numbers',
+    description: 'Scans a diploma image taken by camera or selected from device files and extracts serial and registry numbers for public verification.',
+  })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        file: {
+          type: 'string',
+          format: 'binary',
+          description: 'Diploma image file (PNG, JPG, WEBP)',
+        },
+      },
+      required: ['file'],
+    },
+  })
+  async scanOcr(@UploadedFile() file: any) {
+    if (!file) {
+      throw new BadRequestException('No image file provided');
+    }
+    return this.verifierService.scanDiplomaOcr(file);
   }
 }
 
