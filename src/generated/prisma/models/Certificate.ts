@@ -423,6 +423,7 @@ export type CertificateWhereInput = {
   organization?: Prisma.XOR<Prisma.IssuingOrganizationScalarRelationFilter, Prisma.IssuingOrganizationWhereInput>
   student?: Prisma.XOR<Prisma.StudentAccountScalarRelationFilter, Prisma.StudentAccountWhereInput>
   template?: Prisma.XOR<Prisma.CertificateTemplateNullableScalarRelationFilter, Prisma.CertificateTemplateWhereInput> | null
+  disputes?: Prisma.DisputeListRelationFilter
 }
 
 export type CertificateOrderByWithRelationInput = {
@@ -459,6 +460,7 @@ export type CertificateOrderByWithRelationInput = {
   organization?: Prisma.IssuingOrganizationOrderByWithRelationInput
   student?: Prisma.StudentAccountOrderByWithRelationInput
   template?: Prisma.CertificateTemplateOrderByWithRelationInput
+  disputes?: Prisma.DisputeOrderByRelationAggregateInput
   _relevance?: Prisma.CertificateOrderByRelevanceInput
 }
 
@@ -499,6 +501,7 @@ export type CertificateWhereUniqueInput = Prisma.AtLeast<{
   organization?: Prisma.XOR<Prisma.IssuingOrganizationScalarRelationFilter, Prisma.IssuingOrganizationWhereInput>
   student?: Prisma.XOR<Prisma.StudentAccountScalarRelationFilter, Prisma.StudentAccountWhereInput>
   template?: Prisma.XOR<Prisma.CertificateTemplateNullableScalarRelationFilter, Prisma.CertificateTemplateWhereInput> | null
+  disputes?: Prisma.DisputeListRelationFilter
 }, "certificate_id">
 
 export type CertificateOrderByWithAggregationInput = {
@@ -606,6 +609,7 @@ export type CertificateCreateInput = {
   organization: Prisma.IssuingOrganizationCreateNestedOneWithoutCertificatesInput
   student: Prisma.StudentAccountCreateNestedOneWithoutCertificatesInput
   template?: Prisma.CertificateTemplateCreateNestedOneWithoutCertificatesInput
+  disputes?: Prisma.DisputeCreateNestedManyWithoutCertificateInput
 }
 
 export type CertificateUncheckedCreateInput = {
@@ -639,6 +643,7 @@ export type CertificateUncheckedCreateInput = {
   revokeReason?: string | null
   revoke_tx_hash?: string | null
   revoke_block_number?: number | null
+  disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutCertificateInput
 }
 
 export type CertificateUpdateInput = {
@@ -672,6 +677,7 @@ export type CertificateUpdateInput = {
   organization?: Prisma.IssuingOrganizationUpdateOneRequiredWithoutCertificatesNestedInput
   student?: Prisma.StudentAccountUpdateOneRequiredWithoutCertificatesNestedInput
   template?: Prisma.CertificateTemplateUpdateOneWithoutCertificatesNestedInput
+  disputes?: Prisma.DisputeUpdateManyWithoutCertificateNestedInput
 }
 
 export type CertificateUncheckedUpdateInput = {
@@ -705,6 +711,7 @@ export type CertificateUncheckedUpdateInput = {
   revokeReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   revoke_tx_hash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   revoke_block_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  disputes?: Prisma.DisputeUncheckedUpdateManyWithoutCertificateNestedInput
 }
 
 export type CertificateCreateManyInput = {
@@ -928,6 +935,11 @@ export type CertificateSumOrderByAggregateInput = {
   revoke_block_number?: Prisma.SortOrder
 }
 
+export type CertificateScalarRelationFilter = {
+  is?: Prisma.CertificateWhereInput
+  isNot?: Prisma.CertificateWhereInput
+}
+
 export type CertificateCreateNestedManyWithoutOrganizationInput = {
   create?: Prisma.XOR<Prisma.CertificateCreateWithoutOrganizationInput, Prisma.CertificateUncheckedCreateWithoutOrganizationInput> | Prisma.CertificateCreateWithoutOrganizationInput[] | Prisma.CertificateUncheckedCreateWithoutOrganizationInput[]
   connectOrCreate?: Prisma.CertificateCreateOrConnectWithoutOrganizationInput | Prisma.CertificateCreateOrConnectWithoutOrganizationInput[]
@@ -1066,6 +1078,20 @@ export type NullableDateTimeFieldUpdateOperationsInput = {
   set?: Date | string | null
 }
 
+export type CertificateCreateNestedOneWithoutDisputesInput = {
+  create?: Prisma.XOR<Prisma.CertificateCreateWithoutDisputesInput, Prisma.CertificateUncheckedCreateWithoutDisputesInput>
+  connectOrCreate?: Prisma.CertificateCreateOrConnectWithoutDisputesInput
+  connect?: Prisma.CertificateWhereUniqueInput
+}
+
+export type CertificateUpdateOneRequiredWithoutDisputesNestedInput = {
+  create?: Prisma.XOR<Prisma.CertificateCreateWithoutDisputesInput, Prisma.CertificateUncheckedCreateWithoutDisputesInput>
+  connectOrCreate?: Prisma.CertificateCreateOrConnectWithoutDisputesInput
+  upsert?: Prisma.CertificateUpsertWithoutDisputesInput
+  connect?: Prisma.CertificateWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CertificateUpdateToOneWithWhereWithoutDisputesInput, Prisma.CertificateUpdateWithoutDisputesInput>, Prisma.CertificateUncheckedUpdateWithoutDisputesInput>
+}
+
 export type CertificateCreateWithoutOrganizationInput = {
   certificate_id?: string
   certificate_title: string
@@ -1096,6 +1122,7 @@ export type CertificateCreateWithoutOrganizationInput = {
   revoke_block_number?: number | null
   student: Prisma.StudentAccountCreateNestedOneWithoutCertificatesInput
   template?: Prisma.CertificateTemplateCreateNestedOneWithoutCertificatesInput
+  disputes?: Prisma.DisputeCreateNestedManyWithoutCertificateInput
 }
 
 export type CertificateUncheckedCreateWithoutOrganizationInput = {
@@ -1128,6 +1155,7 @@ export type CertificateUncheckedCreateWithoutOrganizationInput = {
   revokeReason?: string | null
   revoke_tx_hash?: string | null
   revoke_block_number?: number | null
+  disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutCertificateInput
 }
 
 export type CertificateCreateOrConnectWithoutOrganizationInput = {
@@ -1222,6 +1250,7 @@ export type CertificateCreateWithoutStudentInput = {
   revoke_block_number?: number | null
   organization: Prisma.IssuingOrganizationCreateNestedOneWithoutCertificatesInput
   template?: Prisma.CertificateTemplateCreateNestedOneWithoutCertificatesInput
+  disputes?: Prisma.DisputeCreateNestedManyWithoutCertificateInput
 }
 
 export type CertificateUncheckedCreateWithoutStudentInput = {
@@ -1254,6 +1283,7 @@ export type CertificateUncheckedCreateWithoutStudentInput = {
   revokeReason?: string | null
   revoke_tx_hash?: string | null
   revoke_block_number?: number | null
+  disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutCertificateInput
 }
 
 export type CertificateCreateOrConnectWithoutStudentInput = {
@@ -1312,6 +1342,7 @@ export type CertificateCreateWithoutTemplateInput = {
   revoke_block_number?: number | null
   organization: Prisma.IssuingOrganizationCreateNestedOneWithoutCertificatesInput
   student: Prisma.StudentAccountCreateNestedOneWithoutCertificatesInput
+  disputes?: Prisma.DisputeCreateNestedManyWithoutCertificateInput
 }
 
 export type CertificateUncheckedCreateWithoutTemplateInput = {
@@ -1344,6 +1375,7 @@ export type CertificateUncheckedCreateWithoutTemplateInput = {
   revokeReason?: string | null
   revoke_tx_hash?: string | null
   revoke_block_number?: number | null
+  disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutCertificateInput
 }
 
 export type CertificateCreateOrConnectWithoutTemplateInput = {
@@ -1370,6 +1402,154 @@ export type CertificateUpdateWithWhereUniqueWithoutTemplateInput = {
 export type CertificateUpdateManyWithWhereWithoutTemplateInput = {
   where: Prisma.CertificateScalarWhereInput
   data: Prisma.XOR<Prisma.CertificateUpdateManyMutationInput, Prisma.CertificateUncheckedUpdateManyWithoutTemplateInput>
+}
+
+export type CertificateCreateWithoutDisputesInput = {
+  certificate_id?: string
+  certificate_title: string
+  organization_name: string
+  student_fullName: string
+  dob?: string | null
+  placeOfBirth?: string | null
+  gender?: string | null
+  ethnicity?: string | null
+  schoolName?: string | null
+  examCohort?: string | null
+  examBoard?: string | null
+  issueLocation?: string | null
+  issueDate?: string | null
+  serialNumber?: string | null
+  registryNumber?: string | null
+  ipfs_cid?: string | null
+  file_url?: string | null
+  tx_hash?: string | null
+  block_number?: number | null
+  gas_used?: string | null
+  status?: string
+  issuedAt?: Date | string
+  revokedAt?: Date | string | null
+  revokedById?: string | null
+  revokeReason?: string | null
+  revoke_tx_hash?: string | null
+  revoke_block_number?: number | null
+  organization: Prisma.IssuingOrganizationCreateNestedOneWithoutCertificatesInput
+  student: Prisma.StudentAccountCreateNestedOneWithoutCertificatesInput
+  template?: Prisma.CertificateTemplateCreateNestedOneWithoutCertificatesInput
+}
+
+export type CertificateUncheckedCreateWithoutDisputesInput = {
+  certificate_id?: string
+  organization_id: string
+  student_id: string
+  template_id?: string | null
+  certificate_title: string
+  organization_name: string
+  student_fullName: string
+  dob?: string | null
+  placeOfBirth?: string | null
+  gender?: string | null
+  ethnicity?: string | null
+  schoolName?: string | null
+  examCohort?: string | null
+  examBoard?: string | null
+  issueLocation?: string | null
+  issueDate?: string | null
+  serialNumber?: string | null
+  registryNumber?: string | null
+  ipfs_cid?: string | null
+  file_url?: string | null
+  tx_hash?: string | null
+  block_number?: number | null
+  gas_used?: string | null
+  status?: string
+  issuedAt?: Date | string
+  revokedAt?: Date | string | null
+  revokedById?: string | null
+  revokeReason?: string | null
+  revoke_tx_hash?: string | null
+  revoke_block_number?: number | null
+}
+
+export type CertificateCreateOrConnectWithoutDisputesInput = {
+  where: Prisma.CertificateWhereUniqueInput
+  create: Prisma.XOR<Prisma.CertificateCreateWithoutDisputesInput, Prisma.CertificateUncheckedCreateWithoutDisputesInput>
+}
+
+export type CertificateUpsertWithoutDisputesInput = {
+  update: Prisma.XOR<Prisma.CertificateUpdateWithoutDisputesInput, Prisma.CertificateUncheckedUpdateWithoutDisputesInput>
+  create: Prisma.XOR<Prisma.CertificateCreateWithoutDisputesInput, Prisma.CertificateUncheckedCreateWithoutDisputesInput>
+  where?: Prisma.CertificateWhereInput
+}
+
+export type CertificateUpdateToOneWithWhereWithoutDisputesInput = {
+  where?: Prisma.CertificateWhereInput
+  data: Prisma.XOR<Prisma.CertificateUpdateWithoutDisputesInput, Prisma.CertificateUncheckedUpdateWithoutDisputesInput>
+}
+
+export type CertificateUpdateWithoutDisputesInput = {
+  certificate_id?: Prisma.StringFieldUpdateOperationsInput | string
+  certificate_title?: Prisma.StringFieldUpdateOperationsInput | string
+  organization_name?: Prisma.StringFieldUpdateOperationsInput | string
+  student_fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  dob?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  placeOfBirth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ethnicity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  schoolName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  examCohort?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  examBoard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  issueLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  issueDate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  serialNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  registryNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ipfs_cid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  file_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tx_hash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  block_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gas_used?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  issuedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  revokedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revokeReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revoke_tx_hash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revoke_block_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  organization?: Prisma.IssuingOrganizationUpdateOneRequiredWithoutCertificatesNestedInput
+  student?: Prisma.StudentAccountUpdateOneRequiredWithoutCertificatesNestedInput
+  template?: Prisma.CertificateTemplateUpdateOneWithoutCertificatesNestedInput
+}
+
+export type CertificateUncheckedUpdateWithoutDisputesInput = {
+  certificate_id?: Prisma.StringFieldUpdateOperationsInput | string
+  organization_id?: Prisma.StringFieldUpdateOperationsInput | string
+  student_id?: Prisma.StringFieldUpdateOperationsInput | string
+  template_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  certificate_title?: Prisma.StringFieldUpdateOperationsInput | string
+  organization_name?: Prisma.StringFieldUpdateOperationsInput | string
+  student_fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  dob?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  placeOfBirth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ethnicity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  schoolName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  examCohort?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  examBoard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  issueLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  issueDate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  serialNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  registryNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ipfs_cid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  file_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tx_hash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  block_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gas_used?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  issuedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  revokedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revokeReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revoke_tx_hash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revoke_block_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type CertificateCreateManyOrganizationInput = {
@@ -1434,6 +1614,7 @@ export type CertificateUpdateWithoutOrganizationInput = {
   revoke_block_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   student?: Prisma.StudentAccountUpdateOneRequiredWithoutCertificatesNestedInput
   template?: Prisma.CertificateTemplateUpdateOneWithoutCertificatesNestedInput
+  disputes?: Prisma.DisputeUpdateManyWithoutCertificateNestedInput
 }
 
 export type CertificateUncheckedUpdateWithoutOrganizationInput = {
@@ -1466,6 +1647,7 @@ export type CertificateUncheckedUpdateWithoutOrganizationInput = {
   revokeReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   revoke_tx_hash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   revoke_block_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  disputes?: Prisma.DisputeUncheckedUpdateManyWithoutCertificateNestedInput
 }
 
 export type CertificateUncheckedUpdateManyWithoutOrganizationInput = {
@@ -1562,6 +1744,7 @@ export type CertificateUpdateWithoutStudentInput = {
   revoke_block_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   organization?: Prisma.IssuingOrganizationUpdateOneRequiredWithoutCertificatesNestedInput
   template?: Prisma.CertificateTemplateUpdateOneWithoutCertificatesNestedInput
+  disputes?: Prisma.DisputeUpdateManyWithoutCertificateNestedInput
 }
 
 export type CertificateUncheckedUpdateWithoutStudentInput = {
@@ -1594,6 +1777,7 @@ export type CertificateUncheckedUpdateWithoutStudentInput = {
   revokeReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   revoke_tx_hash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   revoke_block_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  disputes?: Prisma.DisputeUncheckedUpdateManyWithoutCertificateNestedInput
 }
 
 export type CertificateUncheckedUpdateManyWithoutStudentInput = {
@@ -1690,6 +1874,7 @@ export type CertificateUpdateWithoutTemplateInput = {
   revoke_block_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   organization?: Prisma.IssuingOrganizationUpdateOneRequiredWithoutCertificatesNestedInput
   student?: Prisma.StudentAccountUpdateOneRequiredWithoutCertificatesNestedInput
+  disputes?: Prisma.DisputeUpdateManyWithoutCertificateNestedInput
 }
 
 export type CertificateUncheckedUpdateWithoutTemplateInput = {
@@ -1722,6 +1907,7 @@ export type CertificateUncheckedUpdateWithoutTemplateInput = {
   revokeReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   revoke_tx_hash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   revoke_block_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  disputes?: Prisma.DisputeUncheckedUpdateManyWithoutCertificateNestedInput
 }
 
 export type CertificateUncheckedUpdateManyWithoutTemplateInput = {
@@ -1756,6 +1942,35 @@ export type CertificateUncheckedUpdateManyWithoutTemplateInput = {
   revoke_block_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
+
+/**
+ * Count Type CertificateCountOutputType
+ */
+
+export type CertificateCountOutputType = {
+  disputes: number
+}
+
+export type CertificateCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  disputes?: boolean | CertificateCountOutputTypeCountDisputesArgs
+}
+
+/**
+ * CertificateCountOutputType without action
+ */
+export type CertificateCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CertificateCountOutputType
+   */
+  select?: Prisma.CertificateCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * CertificateCountOutputType without action
+ */
+export type CertificateCountOutputTypeCountDisputesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DisputeWhereInput
+}
 
 
 export type CertificateSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1792,6 +2007,8 @@ export type CertificateSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   organization?: boolean | Prisma.IssuingOrganizationDefaultArgs<ExtArgs>
   student?: boolean | Prisma.StudentAccountDefaultArgs<ExtArgs>
   template?: boolean | Prisma.Certificate$templateArgs<ExtArgs>
+  disputes?: boolean | Prisma.Certificate$disputesArgs<ExtArgs>
+  _count?: boolean | Prisma.CertificateCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["certificate"]>
 
 
@@ -1834,6 +2051,8 @@ export type CertificateInclude<ExtArgs extends runtime.Types.Extensions.Internal
   organization?: boolean | Prisma.IssuingOrganizationDefaultArgs<ExtArgs>
   student?: boolean | Prisma.StudentAccountDefaultArgs<ExtArgs>
   template?: boolean | Prisma.Certificate$templateArgs<ExtArgs>
+  disputes?: boolean | Prisma.Certificate$disputesArgs<ExtArgs>
+  _count?: boolean | Prisma.CertificateCountOutputTypeDefaultArgs<ExtArgs>
 }
 
 export type $CertificatePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1842,6 +2061,7 @@ export type $CertificatePayload<ExtArgs extends runtime.Types.Extensions.Interna
     organization: Prisma.$IssuingOrganizationPayload<ExtArgs>
     student: Prisma.$StudentAccountPayload<ExtArgs>
     template: Prisma.$CertificateTemplatePayload<ExtArgs> | null
+    disputes: Prisma.$DisputePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     certificate_id: string
@@ -2217,6 +2437,7 @@ export interface Prisma__CertificateClient<T, Null = never, ExtArgs extends runt
   organization<T extends Prisma.IssuingOrganizationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.IssuingOrganizationDefaultArgs<ExtArgs>>): Prisma.Prisma__IssuingOrganizationClient<runtime.Types.Result.GetResult<Prisma.$IssuingOrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   student<T extends Prisma.StudentAccountDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.StudentAccountDefaultArgs<ExtArgs>>): Prisma.Prisma__StudentAccountClient<runtime.Types.Result.GetResult<Prisma.$StudentAccountPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   template<T extends Prisma.Certificate$templateArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Certificate$templateArgs<ExtArgs>>): Prisma.Prisma__CertificateTemplateClient<runtime.Types.Result.GetResult<Prisma.$CertificateTemplatePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  disputes<T extends Prisma.Certificate$disputesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Certificate$disputesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DisputePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2640,6 +2861,30 @@ export type Certificate$templateArgs<ExtArgs extends runtime.Types.Extensions.In
    */
   include?: Prisma.CertificateTemplateInclude<ExtArgs> | null
   where?: Prisma.CertificateTemplateWhereInput
+}
+
+/**
+ * Certificate.disputes
+ */
+export type Certificate$disputesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Dispute
+   */
+  select?: Prisma.DisputeSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Dispute
+   */
+  omit?: Prisma.DisputeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DisputeInclude<ExtArgs> | null
+  where?: Prisma.DisputeWhereInput
+  orderBy?: Prisma.DisputeOrderByWithRelationInput | Prisma.DisputeOrderByWithRelationInput[]
+  cursor?: Prisma.DisputeWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DisputeScalarFieldEnum | Prisma.DisputeScalarFieldEnum[]
 }
 
 /**

@@ -62,7 +62,8 @@ export const ModelName = {
   IssuanceBatch: 'IssuanceBatch',
   IssuanceBatchItem: 'IssuanceBatchItem',
   AuditLog: 'AuditLog',
-  SystemAdmin: 'SystemAdmin'
+  SystemAdmin: 'SystemAdmin',
+  Dispute: 'Dispute'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -289,6 +290,25 @@ export const SystemAdminScalarFieldEnum = {
 export type SystemAdminScalarFieldEnum = (typeof SystemAdminScalarFieldEnum)[keyof typeof SystemAdminScalarFieldEnum]
 
 
+export const DisputeScalarFieldEnum = {
+  id: 'id',
+  student_id: 'student_id',
+  organization_id: 'organization_id',
+  certificate_id: 'certificate_id',
+  reason: 'reason',
+  details: 'details',
+  status: 'status',
+  reviewer_id: 'reviewer_id',
+  reviewer_note: 'reviewer_note',
+  resolved_at: 'resolved_at',
+  new_cert_id: 'new_cert_id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DisputeScalarFieldEnum = (typeof DisputeScalarFieldEnum)[keyof typeof DisputeScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -507,4 +527,20 @@ export const SystemAdminOrderByRelevanceFieldEnum = {
 } as const
 
 export type SystemAdminOrderByRelevanceFieldEnum = (typeof SystemAdminOrderByRelevanceFieldEnum)[keyof typeof SystemAdminOrderByRelevanceFieldEnum]
+
+
+export const DisputeOrderByRelevanceFieldEnum = {
+  id: 'id',
+  student_id: 'student_id',
+  organization_id: 'organization_id',
+  certificate_id: 'certificate_id',
+  reason: 'reason',
+  details: 'details',
+  status: 'status',
+  reviewer_id: 'reviewer_id',
+  reviewer_note: 'reviewer_note',
+  new_cert_id: 'new_cert_id'
+} as const
+
+export type DisputeOrderByRelevanceFieldEnum = (typeof DisputeOrderByRelevanceFieldEnum)[keyof typeof DisputeOrderByRelevanceFieldEnum]
 

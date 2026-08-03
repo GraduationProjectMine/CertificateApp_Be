@@ -207,6 +207,7 @@ export type IssuingOrganizationWhereInput = {
   audit_logs?: Prisma.AuditLogListRelationFilter
   student_import_batches?: Prisma.StudentImportBatchListRelationFilter
   notifications?: Prisma.NotificationListRelationFilter
+  disputes?: Prisma.DisputeListRelationFilter
 }
 
 export type IssuingOrganizationOrderByWithRelationInput = {
@@ -226,6 +227,7 @@ export type IssuingOrganizationOrderByWithRelationInput = {
   audit_logs?: Prisma.AuditLogOrderByRelationAggregateInput
   student_import_batches?: Prisma.StudentImportBatchOrderByRelationAggregateInput
   notifications?: Prisma.NotificationOrderByRelationAggregateInput
+  disputes?: Prisma.DisputeOrderByRelationAggregateInput
   _relevance?: Prisma.IssuingOrganizationOrderByRelevanceInput
 }
 
@@ -249,6 +251,7 @@ export type IssuingOrganizationWhereUniqueInput = Prisma.AtLeast<{
   audit_logs?: Prisma.AuditLogListRelationFilter
   student_import_batches?: Prisma.StudentImportBatchListRelationFilter
   notifications?: Prisma.NotificationListRelationFilter
+  disputes?: Prisma.DisputeListRelationFilter
 }, "organization_id" | "wallet_address" | "contact_email">
 
 export type IssuingOrganizationOrderByWithAggregationInput = {
@@ -294,6 +297,7 @@ export type IssuingOrganizationCreateInput = {
   audit_logs?: Prisma.AuditLogCreateNestedManyWithoutOrganizationInput
   student_import_batches?: Prisma.StudentImportBatchCreateNestedManyWithoutOrganizationInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutOrganizationInput
+  disputes?: Prisma.DisputeCreateNestedManyWithoutOrganizationInput
 }
 
 export type IssuingOrganizationUncheckedCreateInput = {
@@ -313,6 +317,7 @@ export type IssuingOrganizationUncheckedCreateInput = {
   audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutOrganizationInput
   student_import_batches?: Prisma.StudentImportBatchUncheckedCreateNestedManyWithoutOrganizationInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutOrganizationInput
+  disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type IssuingOrganizationUpdateInput = {
@@ -332,6 +337,7 @@ export type IssuingOrganizationUpdateInput = {
   audit_logs?: Prisma.AuditLogUpdateManyWithoutOrganizationNestedInput
   student_import_batches?: Prisma.StudentImportBatchUpdateManyWithoutOrganizationNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutOrganizationNestedInput
+  disputes?: Prisma.DisputeUpdateManyWithoutOrganizationNestedInput
 }
 
 export type IssuingOrganizationUncheckedUpdateInput = {
@@ -351,6 +357,7 @@ export type IssuingOrganizationUncheckedUpdateInput = {
   audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutOrganizationNestedInput
   student_import_batches?: Prisma.StudentImportBatchUncheckedUpdateManyWithoutOrganizationNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutOrganizationNestedInput
+  disputes?: Prisma.DisputeUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type IssuingOrganizationCreateManyInput = {
@@ -566,6 +573,20 @@ export type IssuingOrganizationUpdateOneRequiredWithoutAudit_logsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.IssuingOrganizationUpdateToOneWithWhereWithoutAudit_logsInput, Prisma.IssuingOrganizationUpdateWithoutAudit_logsInput>, Prisma.IssuingOrganizationUncheckedUpdateWithoutAudit_logsInput>
 }
 
+export type IssuingOrganizationCreateNestedOneWithoutDisputesInput = {
+  create?: Prisma.XOR<Prisma.IssuingOrganizationCreateWithoutDisputesInput, Prisma.IssuingOrganizationUncheckedCreateWithoutDisputesInput>
+  connectOrCreate?: Prisma.IssuingOrganizationCreateOrConnectWithoutDisputesInput
+  connect?: Prisma.IssuingOrganizationWhereUniqueInput
+}
+
+export type IssuingOrganizationUpdateOneRequiredWithoutDisputesNestedInput = {
+  create?: Prisma.XOR<Prisma.IssuingOrganizationCreateWithoutDisputesInput, Prisma.IssuingOrganizationUncheckedCreateWithoutDisputesInput>
+  connectOrCreate?: Prisma.IssuingOrganizationCreateOrConnectWithoutDisputesInput
+  upsert?: Prisma.IssuingOrganizationUpsertWithoutDisputesInput
+  connect?: Prisma.IssuingOrganizationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.IssuingOrganizationUpdateToOneWithWhereWithoutDisputesInput, Prisma.IssuingOrganizationUpdateWithoutDisputesInput>, Prisma.IssuingOrganizationUncheckedUpdateWithoutDisputesInput>
+}
+
 export type IssuingOrganizationCreateWithoutStaff_accountsInput = {
   organization_id?: string
   wallet_address?: string | null
@@ -582,6 +603,7 @@ export type IssuingOrganizationCreateWithoutStaff_accountsInput = {
   audit_logs?: Prisma.AuditLogCreateNestedManyWithoutOrganizationInput
   student_import_batches?: Prisma.StudentImportBatchCreateNestedManyWithoutOrganizationInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutOrganizationInput
+  disputes?: Prisma.DisputeCreateNestedManyWithoutOrganizationInput
 }
 
 export type IssuingOrganizationUncheckedCreateWithoutStaff_accountsInput = {
@@ -600,6 +622,7 @@ export type IssuingOrganizationUncheckedCreateWithoutStaff_accountsInput = {
   audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutOrganizationInput
   student_import_batches?: Prisma.StudentImportBatchUncheckedCreateNestedManyWithoutOrganizationInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutOrganizationInput
+  disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type IssuingOrganizationCreateOrConnectWithoutStaff_accountsInput = {
@@ -634,6 +657,7 @@ export type IssuingOrganizationUpdateWithoutStaff_accountsInput = {
   audit_logs?: Prisma.AuditLogUpdateManyWithoutOrganizationNestedInput
   student_import_batches?: Prisma.StudentImportBatchUpdateManyWithoutOrganizationNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutOrganizationNestedInput
+  disputes?: Prisma.DisputeUpdateManyWithoutOrganizationNestedInput
 }
 
 export type IssuingOrganizationUncheckedUpdateWithoutStaff_accountsInput = {
@@ -652,6 +676,7 @@ export type IssuingOrganizationUncheckedUpdateWithoutStaff_accountsInput = {
   audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutOrganizationNestedInput
   student_import_batches?: Prisma.StudentImportBatchUncheckedUpdateManyWithoutOrganizationNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutOrganizationNestedInput
+  disputes?: Prisma.DisputeUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type IssuingOrganizationCreateWithoutStudent_accountsInput = {
@@ -670,6 +695,7 @@ export type IssuingOrganizationCreateWithoutStudent_accountsInput = {
   audit_logs?: Prisma.AuditLogCreateNestedManyWithoutOrganizationInput
   student_import_batches?: Prisma.StudentImportBatchCreateNestedManyWithoutOrganizationInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutOrganizationInput
+  disputes?: Prisma.DisputeCreateNestedManyWithoutOrganizationInput
 }
 
 export type IssuingOrganizationUncheckedCreateWithoutStudent_accountsInput = {
@@ -688,6 +714,7 @@ export type IssuingOrganizationUncheckedCreateWithoutStudent_accountsInput = {
   audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutOrganizationInput
   student_import_batches?: Prisma.StudentImportBatchUncheckedCreateNestedManyWithoutOrganizationInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutOrganizationInput
+  disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type IssuingOrganizationCreateOrConnectWithoutStudent_accountsInput = {
@@ -722,6 +749,7 @@ export type IssuingOrganizationUpdateWithoutStudent_accountsInput = {
   audit_logs?: Prisma.AuditLogUpdateManyWithoutOrganizationNestedInput
   student_import_batches?: Prisma.StudentImportBatchUpdateManyWithoutOrganizationNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutOrganizationNestedInput
+  disputes?: Prisma.DisputeUpdateManyWithoutOrganizationNestedInput
 }
 
 export type IssuingOrganizationUncheckedUpdateWithoutStudent_accountsInput = {
@@ -740,6 +768,7 @@ export type IssuingOrganizationUncheckedUpdateWithoutStudent_accountsInput = {
   audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutOrganizationNestedInput
   student_import_batches?: Prisma.StudentImportBatchUncheckedUpdateManyWithoutOrganizationNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutOrganizationNestedInput
+  disputes?: Prisma.DisputeUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type IssuingOrganizationCreateWithoutNotificationsInput = {
@@ -758,6 +787,7 @@ export type IssuingOrganizationCreateWithoutNotificationsInput = {
   issuance_batches?: Prisma.IssuanceBatchCreateNestedManyWithoutOrganizationInput
   audit_logs?: Prisma.AuditLogCreateNestedManyWithoutOrganizationInput
   student_import_batches?: Prisma.StudentImportBatchCreateNestedManyWithoutOrganizationInput
+  disputes?: Prisma.DisputeCreateNestedManyWithoutOrganizationInput
 }
 
 export type IssuingOrganizationUncheckedCreateWithoutNotificationsInput = {
@@ -776,6 +806,7 @@ export type IssuingOrganizationUncheckedCreateWithoutNotificationsInput = {
   issuance_batches?: Prisma.IssuanceBatchUncheckedCreateNestedManyWithoutOrganizationInput
   audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutOrganizationInput
   student_import_batches?: Prisma.StudentImportBatchUncheckedCreateNestedManyWithoutOrganizationInput
+  disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type IssuingOrganizationCreateOrConnectWithoutNotificationsInput = {
@@ -810,6 +841,7 @@ export type IssuingOrganizationUpdateWithoutNotificationsInput = {
   issuance_batches?: Prisma.IssuanceBatchUpdateManyWithoutOrganizationNestedInput
   audit_logs?: Prisma.AuditLogUpdateManyWithoutOrganizationNestedInput
   student_import_batches?: Prisma.StudentImportBatchUpdateManyWithoutOrganizationNestedInput
+  disputes?: Prisma.DisputeUpdateManyWithoutOrganizationNestedInput
 }
 
 export type IssuingOrganizationUncheckedUpdateWithoutNotificationsInput = {
@@ -828,6 +860,7 @@ export type IssuingOrganizationUncheckedUpdateWithoutNotificationsInput = {
   issuance_batches?: Prisma.IssuanceBatchUncheckedUpdateManyWithoutOrganizationNestedInput
   audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutOrganizationNestedInput
   student_import_batches?: Prisma.StudentImportBatchUncheckedUpdateManyWithoutOrganizationNestedInput
+  disputes?: Prisma.DisputeUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type IssuingOrganizationCreateWithoutStudent_import_batchesInput = {
@@ -846,6 +879,7 @@ export type IssuingOrganizationCreateWithoutStudent_import_batchesInput = {
   issuance_batches?: Prisma.IssuanceBatchCreateNestedManyWithoutOrganizationInput
   audit_logs?: Prisma.AuditLogCreateNestedManyWithoutOrganizationInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutOrganizationInput
+  disputes?: Prisma.DisputeCreateNestedManyWithoutOrganizationInput
 }
 
 export type IssuingOrganizationUncheckedCreateWithoutStudent_import_batchesInput = {
@@ -864,6 +898,7 @@ export type IssuingOrganizationUncheckedCreateWithoutStudent_import_batchesInput
   issuance_batches?: Prisma.IssuanceBatchUncheckedCreateNestedManyWithoutOrganizationInput
   audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutOrganizationInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutOrganizationInput
+  disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type IssuingOrganizationCreateOrConnectWithoutStudent_import_batchesInput = {
@@ -898,6 +933,7 @@ export type IssuingOrganizationUpdateWithoutStudent_import_batchesInput = {
   issuance_batches?: Prisma.IssuanceBatchUpdateManyWithoutOrganizationNestedInput
   audit_logs?: Prisma.AuditLogUpdateManyWithoutOrganizationNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutOrganizationNestedInput
+  disputes?: Prisma.DisputeUpdateManyWithoutOrganizationNestedInput
 }
 
 export type IssuingOrganizationUncheckedUpdateWithoutStudent_import_batchesInput = {
@@ -916,6 +952,7 @@ export type IssuingOrganizationUncheckedUpdateWithoutStudent_import_batchesInput
   issuance_batches?: Prisma.IssuanceBatchUncheckedUpdateManyWithoutOrganizationNestedInput
   audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutOrganizationNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutOrganizationNestedInput
+  disputes?: Prisma.DisputeUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type IssuingOrganizationCreateWithoutTemplatesInput = {
@@ -934,6 +971,7 @@ export type IssuingOrganizationCreateWithoutTemplatesInput = {
   audit_logs?: Prisma.AuditLogCreateNestedManyWithoutOrganizationInput
   student_import_batches?: Prisma.StudentImportBatchCreateNestedManyWithoutOrganizationInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutOrganizationInput
+  disputes?: Prisma.DisputeCreateNestedManyWithoutOrganizationInput
 }
 
 export type IssuingOrganizationUncheckedCreateWithoutTemplatesInput = {
@@ -952,6 +990,7 @@ export type IssuingOrganizationUncheckedCreateWithoutTemplatesInput = {
   audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutOrganizationInput
   student_import_batches?: Prisma.StudentImportBatchUncheckedCreateNestedManyWithoutOrganizationInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutOrganizationInput
+  disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type IssuingOrganizationCreateOrConnectWithoutTemplatesInput = {
@@ -986,6 +1025,7 @@ export type IssuingOrganizationUpdateWithoutTemplatesInput = {
   audit_logs?: Prisma.AuditLogUpdateManyWithoutOrganizationNestedInput
   student_import_batches?: Prisma.StudentImportBatchUpdateManyWithoutOrganizationNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutOrganizationNestedInput
+  disputes?: Prisma.DisputeUpdateManyWithoutOrganizationNestedInput
 }
 
 export type IssuingOrganizationUncheckedUpdateWithoutTemplatesInput = {
@@ -1004,6 +1044,7 @@ export type IssuingOrganizationUncheckedUpdateWithoutTemplatesInput = {
   audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutOrganizationNestedInput
   student_import_batches?: Prisma.StudentImportBatchUncheckedUpdateManyWithoutOrganizationNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutOrganizationNestedInput
+  disputes?: Prisma.DisputeUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type IssuingOrganizationCreateWithoutCertificatesInput = {
@@ -1022,6 +1063,7 @@ export type IssuingOrganizationCreateWithoutCertificatesInput = {
   audit_logs?: Prisma.AuditLogCreateNestedManyWithoutOrganizationInput
   student_import_batches?: Prisma.StudentImportBatchCreateNestedManyWithoutOrganizationInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutOrganizationInput
+  disputes?: Prisma.DisputeCreateNestedManyWithoutOrganizationInput
 }
 
 export type IssuingOrganizationUncheckedCreateWithoutCertificatesInput = {
@@ -1040,6 +1082,7 @@ export type IssuingOrganizationUncheckedCreateWithoutCertificatesInput = {
   audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutOrganizationInput
   student_import_batches?: Prisma.StudentImportBatchUncheckedCreateNestedManyWithoutOrganizationInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutOrganizationInput
+  disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type IssuingOrganizationCreateOrConnectWithoutCertificatesInput = {
@@ -1074,6 +1117,7 @@ export type IssuingOrganizationUpdateWithoutCertificatesInput = {
   audit_logs?: Prisma.AuditLogUpdateManyWithoutOrganizationNestedInput
   student_import_batches?: Prisma.StudentImportBatchUpdateManyWithoutOrganizationNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutOrganizationNestedInput
+  disputes?: Prisma.DisputeUpdateManyWithoutOrganizationNestedInput
 }
 
 export type IssuingOrganizationUncheckedUpdateWithoutCertificatesInput = {
@@ -1092,6 +1136,7 @@ export type IssuingOrganizationUncheckedUpdateWithoutCertificatesInput = {
   audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutOrganizationNestedInput
   student_import_batches?: Prisma.StudentImportBatchUncheckedUpdateManyWithoutOrganizationNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutOrganizationNestedInput
+  disputes?: Prisma.DisputeUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type IssuingOrganizationCreateWithoutOnline_certificatesInput = {
@@ -1110,6 +1155,7 @@ export type IssuingOrganizationCreateWithoutOnline_certificatesInput = {
   audit_logs?: Prisma.AuditLogCreateNestedManyWithoutOrganizationInput
   student_import_batches?: Prisma.StudentImportBatchCreateNestedManyWithoutOrganizationInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutOrganizationInput
+  disputes?: Prisma.DisputeCreateNestedManyWithoutOrganizationInput
 }
 
 export type IssuingOrganizationUncheckedCreateWithoutOnline_certificatesInput = {
@@ -1128,6 +1174,7 @@ export type IssuingOrganizationUncheckedCreateWithoutOnline_certificatesInput = 
   audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutOrganizationInput
   student_import_batches?: Prisma.StudentImportBatchUncheckedCreateNestedManyWithoutOrganizationInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutOrganizationInput
+  disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type IssuingOrganizationCreateOrConnectWithoutOnline_certificatesInput = {
@@ -1162,6 +1209,7 @@ export type IssuingOrganizationUpdateWithoutOnline_certificatesInput = {
   audit_logs?: Prisma.AuditLogUpdateManyWithoutOrganizationNestedInput
   student_import_batches?: Prisma.StudentImportBatchUpdateManyWithoutOrganizationNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutOrganizationNestedInput
+  disputes?: Prisma.DisputeUpdateManyWithoutOrganizationNestedInput
 }
 
 export type IssuingOrganizationUncheckedUpdateWithoutOnline_certificatesInput = {
@@ -1180,6 +1228,7 @@ export type IssuingOrganizationUncheckedUpdateWithoutOnline_certificatesInput = 
   audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutOrganizationNestedInput
   student_import_batches?: Prisma.StudentImportBatchUncheckedUpdateManyWithoutOrganizationNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutOrganizationNestedInput
+  disputes?: Prisma.DisputeUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type IssuingOrganizationCreateWithoutIssuance_batchesInput = {
@@ -1198,6 +1247,7 @@ export type IssuingOrganizationCreateWithoutIssuance_batchesInput = {
   audit_logs?: Prisma.AuditLogCreateNestedManyWithoutOrganizationInput
   student_import_batches?: Prisma.StudentImportBatchCreateNestedManyWithoutOrganizationInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutOrganizationInput
+  disputes?: Prisma.DisputeCreateNestedManyWithoutOrganizationInput
 }
 
 export type IssuingOrganizationUncheckedCreateWithoutIssuance_batchesInput = {
@@ -1216,6 +1266,7 @@ export type IssuingOrganizationUncheckedCreateWithoutIssuance_batchesInput = {
   audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutOrganizationInput
   student_import_batches?: Prisma.StudentImportBatchUncheckedCreateNestedManyWithoutOrganizationInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutOrganizationInput
+  disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type IssuingOrganizationCreateOrConnectWithoutIssuance_batchesInput = {
@@ -1250,6 +1301,7 @@ export type IssuingOrganizationUpdateWithoutIssuance_batchesInput = {
   audit_logs?: Prisma.AuditLogUpdateManyWithoutOrganizationNestedInput
   student_import_batches?: Prisma.StudentImportBatchUpdateManyWithoutOrganizationNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutOrganizationNestedInput
+  disputes?: Prisma.DisputeUpdateManyWithoutOrganizationNestedInput
 }
 
 export type IssuingOrganizationUncheckedUpdateWithoutIssuance_batchesInput = {
@@ -1268,6 +1320,7 @@ export type IssuingOrganizationUncheckedUpdateWithoutIssuance_batchesInput = {
   audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutOrganizationNestedInput
   student_import_batches?: Prisma.StudentImportBatchUncheckedUpdateManyWithoutOrganizationNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutOrganizationNestedInput
+  disputes?: Prisma.DisputeUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type IssuingOrganizationCreateWithoutAudit_logsInput = {
@@ -1286,6 +1339,7 @@ export type IssuingOrganizationCreateWithoutAudit_logsInput = {
   issuance_batches?: Prisma.IssuanceBatchCreateNestedManyWithoutOrganizationInput
   student_import_batches?: Prisma.StudentImportBatchCreateNestedManyWithoutOrganizationInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutOrganizationInput
+  disputes?: Prisma.DisputeCreateNestedManyWithoutOrganizationInput
 }
 
 export type IssuingOrganizationUncheckedCreateWithoutAudit_logsInput = {
@@ -1304,6 +1358,7 @@ export type IssuingOrganizationUncheckedCreateWithoutAudit_logsInput = {
   issuance_batches?: Prisma.IssuanceBatchUncheckedCreateNestedManyWithoutOrganizationInput
   student_import_batches?: Prisma.StudentImportBatchUncheckedCreateNestedManyWithoutOrganizationInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutOrganizationInput
+  disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type IssuingOrganizationCreateOrConnectWithoutAudit_logsInput = {
@@ -1338,6 +1393,7 @@ export type IssuingOrganizationUpdateWithoutAudit_logsInput = {
   issuance_batches?: Prisma.IssuanceBatchUpdateManyWithoutOrganizationNestedInput
   student_import_batches?: Prisma.StudentImportBatchUpdateManyWithoutOrganizationNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutOrganizationNestedInput
+  disputes?: Prisma.DisputeUpdateManyWithoutOrganizationNestedInput
 }
 
 export type IssuingOrganizationUncheckedUpdateWithoutAudit_logsInput = {
@@ -1354,6 +1410,99 @@ export type IssuingOrganizationUncheckedUpdateWithoutAudit_logsInput = {
   online_certificates?: Prisma.OnlineCertificateUncheckedUpdateManyWithoutOrganizationNestedInput
   templates?: Prisma.CertificateTemplateUncheckedUpdateManyWithoutOrganizationNestedInput
   issuance_batches?: Prisma.IssuanceBatchUncheckedUpdateManyWithoutOrganizationNestedInput
+  student_import_batches?: Prisma.StudentImportBatchUncheckedUpdateManyWithoutOrganizationNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutOrganizationNestedInput
+  disputes?: Prisma.DisputeUncheckedUpdateManyWithoutOrganizationNestedInput
+}
+
+export type IssuingOrganizationCreateWithoutDisputesInput = {
+  organization_id?: string
+  wallet_address?: string | null
+  organization_name: string
+  contact_email: string
+  logo_url?: string | null
+  is_verified?: boolean
+  created_at?: Date | string
+  staff_accounts?: Prisma.StaffAccountCreateNestedManyWithoutOrganizationInput
+  student_accounts?: Prisma.StudentAccountCreateNestedManyWithoutOrganizationInput
+  certificates?: Prisma.CertificateCreateNestedManyWithoutOrganizationInput
+  online_certificates?: Prisma.OnlineCertificateCreateNestedManyWithoutOrganizationInput
+  templates?: Prisma.CertificateTemplateCreateNestedManyWithoutOrganizationInput
+  issuance_batches?: Prisma.IssuanceBatchCreateNestedManyWithoutOrganizationInput
+  audit_logs?: Prisma.AuditLogCreateNestedManyWithoutOrganizationInput
+  student_import_batches?: Prisma.StudentImportBatchCreateNestedManyWithoutOrganizationInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutOrganizationInput
+}
+
+export type IssuingOrganizationUncheckedCreateWithoutDisputesInput = {
+  organization_id?: string
+  wallet_address?: string | null
+  organization_name: string
+  contact_email: string
+  logo_url?: string | null
+  is_verified?: boolean
+  created_at?: Date | string
+  staff_accounts?: Prisma.StaffAccountUncheckedCreateNestedManyWithoutOrganizationInput
+  student_accounts?: Prisma.StudentAccountUncheckedCreateNestedManyWithoutOrganizationInput
+  certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutOrganizationInput
+  online_certificates?: Prisma.OnlineCertificateUncheckedCreateNestedManyWithoutOrganizationInput
+  templates?: Prisma.CertificateTemplateUncheckedCreateNestedManyWithoutOrganizationInput
+  issuance_batches?: Prisma.IssuanceBatchUncheckedCreateNestedManyWithoutOrganizationInput
+  audit_logs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutOrganizationInput
+  student_import_batches?: Prisma.StudentImportBatchUncheckedCreateNestedManyWithoutOrganizationInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutOrganizationInput
+}
+
+export type IssuingOrganizationCreateOrConnectWithoutDisputesInput = {
+  where: Prisma.IssuingOrganizationWhereUniqueInput
+  create: Prisma.XOR<Prisma.IssuingOrganizationCreateWithoutDisputesInput, Prisma.IssuingOrganizationUncheckedCreateWithoutDisputesInput>
+}
+
+export type IssuingOrganizationUpsertWithoutDisputesInput = {
+  update: Prisma.XOR<Prisma.IssuingOrganizationUpdateWithoutDisputesInput, Prisma.IssuingOrganizationUncheckedUpdateWithoutDisputesInput>
+  create: Prisma.XOR<Prisma.IssuingOrganizationCreateWithoutDisputesInput, Prisma.IssuingOrganizationUncheckedCreateWithoutDisputesInput>
+  where?: Prisma.IssuingOrganizationWhereInput
+}
+
+export type IssuingOrganizationUpdateToOneWithWhereWithoutDisputesInput = {
+  where?: Prisma.IssuingOrganizationWhereInput
+  data: Prisma.XOR<Prisma.IssuingOrganizationUpdateWithoutDisputesInput, Prisma.IssuingOrganizationUncheckedUpdateWithoutDisputesInput>
+}
+
+export type IssuingOrganizationUpdateWithoutDisputesInput = {
+  organization_id?: Prisma.StringFieldUpdateOperationsInput | string
+  wallet_address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  organization_name?: Prisma.StringFieldUpdateOperationsInput | string
+  contact_email?: Prisma.StringFieldUpdateOperationsInput | string
+  logo_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  staff_accounts?: Prisma.StaffAccountUpdateManyWithoutOrganizationNestedInput
+  student_accounts?: Prisma.StudentAccountUpdateManyWithoutOrganizationNestedInput
+  certificates?: Prisma.CertificateUpdateManyWithoutOrganizationNestedInput
+  online_certificates?: Prisma.OnlineCertificateUpdateManyWithoutOrganizationNestedInput
+  templates?: Prisma.CertificateTemplateUpdateManyWithoutOrganizationNestedInput
+  issuance_batches?: Prisma.IssuanceBatchUpdateManyWithoutOrganizationNestedInput
+  audit_logs?: Prisma.AuditLogUpdateManyWithoutOrganizationNestedInput
+  student_import_batches?: Prisma.StudentImportBatchUpdateManyWithoutOrganizationNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutOrganizationNestedInput
+}
+
+export type IssuingOrganizationUncheckedUpdateWithoutDisputesInput = {
+  organization_id?: Prisma.StringFieldUpdateOperationsInput | string
+  wallet_address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  organization_name?: Prisma.StringFieldUpdateOperationsInput | string
+  contact_email?: Prisma.StringFieldUpdateOperationsInput | string
+  logo_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  staff_accounts?: Prisma.StaffAccountUncheckedUpdateManyWithoutOrganizationNestedInput
+  student_accounts?: Prisma.StudentAccountUncheckedUpdateManyWithoutOrganizationNestedInput
+  certificates?: Prisma.CertificateUncheckedUpdateManyWithoutOrganizationNestedInput
+  online_certificates?: Prisma.OnlineCertificateUncheckedUpdateManyWithoutOrganizationNestedInput
+  templates?: Prisma.CertificateTemplateUncheckedUpdateManyWithoutOrganizationNestedInput
+  issuance_batches?: Prisma.IssuanceBatchUncheckedUpdateManyWithoutOrganizationNestedInput
+  audit_logs?: Prisma.AuditLogUncheckedUpdateManyWithoutOrganizationNestedInput
   student_import_batches?: Prisma.StudentImportBatchUncheckedUpdateManyWithoutOrganizationNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutOrganizationNestedInput
 }
@@ -1373,6 +1522,7 @@ export type IssuingOrganizationCountOutputType = {
   audit_logs: number
   student_import_batches: number
   notifications: number
+  disputes: number
 }
 
 export type IssuingOrganizationCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1385,6 +1535,7 @@ export type IssuingOrganizationCountOutputTypeSelect<ExtArgs extends runtime.Typ
   audit_logs?: boolean | IssuingOrganizationCountOutputTypeCountAudit_logsArgs
   student_import_batches?: boolean | IssuingOrganizationCountOutputTypeCountStudent_import_batchesArgs
   notifications?: boolean | IssuingOrganizationCountOutputTypeCountNotificationsArgs
+  disputes?: boolean | IssuingOrganizationCountOutputTypeCountDisputesArgs
 }
 
 /**
@@ -1460,6 +1611,13 @@ export type IssuingOrganizationCountOutputTypeCountNotificationsArgs<ExtArgs ext
   where?: Prisma.NotificationWhereInput
 }
 
+/**
+ * IssuingOrganizationCountOutputType without action
+ */
+export type IssuingOrganizationCountOutputTypeCountDisputesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DisputeWhereInput
+}
+
 
 export type IssuingOrganizationSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   organization_id?: boolean
@@ -1478,6 +1636,7 @@ export type IssuingOrganizationSelect<ExtArgs extends runtime.Types.Extensions.I
   audit_logs?: boolean | Prisma.IssuingOrganization$audit_logsArgs<ExtArgs>
   student_import_batches?: boolean | Prisma.IssuingOrganization$student_import_batchesArgs<ExtArgs>
   notifications?: boolean | Prisma.IssuingOrganization$notificationsArgs<ExtArgs>
+  disputes?: boolean | Prisma.IssuingOrganization$disputesArgs<ExtArgs>
   _count?: boolean | Prisma.IssuingOrganizationCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["issuingOrganization"]>
 
@@ -1504,6 +1663,7 @@ export type IssuingOrganizationInclude<ExtArgs extends runtime.Types.Extensions.
   audit_logs?: boolean | Prisma.IssuingOrganization$audit_logsArgs<ExtArgs>
   student_import_batches?: boolean | Prisma.IssuingOrganization$student_import_batchesArgs<ExtArgs>
   notifications?: boolean | Prisma.IssuingOrganization$notificationsArgs<ExtArgs>
+  disputes?: boolean | Prisma.IssuingOrganization$disputesArgs<ExtArgs>
   _count?: boolean | Prisma.IssuingOrganizationCountOutputTypeDefaultArgs<ExtArgs>
 }
 
@@ -1519,6 +1679,7 @@ export type $IssuingOrganizationPayload<ExtArgs extends runtime.Types.Extensions
     audit_logs: Prisma.$AuditLogPayload<ExtArgs>[]
     student_import_batches: Prisma.$StudentImportBatchPayload<ExtArgs>[]
     notifications: Prisma.$NotificationPayload<ExtArgs>[]
+    disputes: Prisma.$DisputePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     organization_id: string
@@ -1877,6 +2038,7 @@ export interface Prisma__IssuingOrganizationClient<T, Null = never, ExtArgs exte
   audit_logs<T extends Prisma.IssuingOrganization$audit_logsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.IssuingOrganization$audit_logsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   student_import_batches<T extends Prisma.IssuingOrganization$student_import_batchesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.IssuingOrganization$student_import_batchesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StudentImportBatchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   notifications<T extends Prisma.IssuingOrganization$notificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.IssuingOrganization$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  disputes<T extends Prisma.IssuingOrganization$disputesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.IssuingOrganization$disputesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DisputePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2474,6 +2636,30 @@ export type IssuingOrganization$notificationsArgs<ExtArgs extends runtime.Types.
   take?: number
   skip?: number
   distinct?: Prisma.NotificationScalarFieldEnum | Prisma.NotificationScalarFieldEnum[]
+}
+
+/**
+ * IssuingOrganization.disputes
+ */
+export type IssuingOrganization$disputesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Dispute
+   */
+  select?: Prisma.DisputeSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Dispute
+   */
+  omit?: Prisma.DisputeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DisputeInclude<ExtArgs> | null
+  where?: Prisma.DisputeWhereInput
+  orderBy?: Prisma.DisputeOrderByWithRelationInput | Prisma.DisputeOrderByWithRelationInput[]
+  cursor?: Prisma.DisputeWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DisputeScalarFieldEnum | Prisma.DisputeScalarFieldEnum[]
 }
 
 /**

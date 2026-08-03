@@ -172,15 +172,18 @@ export class CertificateController {
           'You do not have permission to view this certificate',
         );
       }
+      return {
+        ...certificate,
+        file_url: null,
+      };
     } else {
       if (certificate.organization_id !== user.organization_id) {
         throw new ForbiddenException(
           'You do not have permission to view this certificate',
         );
       }
+      return certificate;
     }
-
-    return certificate;
   }
 
   /**

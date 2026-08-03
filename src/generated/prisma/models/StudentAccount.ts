@@ -224,6 +224,7 @@ export type StudentAccountWhereInput = {
   import_batch_id?: Prisma.StringNullableFilter<"StudentAccount"> | string | null
   certificates?: Prisma.CertificateListRelationFilter
   online_certificates?: Prisma.OnlineCertificateListRelationFilter
+  disputes?: Prisma.DisputeListRelationFilter
   organization?: Prisma.XOR<Prisma.IssuingOrganizationScalarRelationFilter, Prisma.IssuingOrganizationWhereInput>
   import_batch?: Prisma.XOR<Prisma.StudentImportBatchNullableScalarRelationFilter, Prisma.StudentImportBatchWhereInput> | null
 }
@@ -241,6 +242,7 @@ export type StudentAccountOrderByWithRelationInput = {
   import_batch_id?: Prisma.SortOrderInput | Prisma.SortOrder
   certificates?: Prisma.CertificateOrderByRelationAggregateInput
   online_certificates?: Prisma.OnlineCertificateOrderByRelationAggregateInput
+  disputes?: Prisma.DisputeOrderByRelationAggregateInput
   organization?: Prisma.IssuingOrganizationOrderByWithRelationInput
   import_batch?: Prisma.StudentImportBatchOrderByWithRelationInput
   _relevance?: Prisma.StudentAccountOrderByRelevanceInput
@@ -262,6 +264,7 @@ export type StudentAccountWhereUniqueInput = Prisma.AtLeast<{
   import_batch_id?: Prisma.StringNullableFilter<"StudentAccount"> | string | null
   certificates?: Prisma.CertificateListRelationFilter
   online_certificates?: Prisma.OnlineCertificateListRelationFilter
+  disputes?: Prisma.DisputeListRelationFilter
   organization?: Prisma.XOR<Prisma.IssuingOrganizationScalarRelationFilter, Prisma.IssuingOrganizationWhereInput>
   import_batch?: Prisma.XOR<Prisma.StudentImportBatchNullableScalarRelationFilter, Prisma.StudentImportBatchWhereInput> | null
 }, "student_id" | "email">
@@ -309,6 +312,7 @@ export type StudentAccountCreateInput = {
   imported_by?: string | null
   certificates?: Prisma.CertificateCreateNestedManyWithoutStudentInput
   online_certificates?: Prisma.OnlineCertificateCreateNestedManyWithoutStudentInput
+  disputes?: Prisma.DisputeCreateNestedManyWithoutStudentInput
   organization: Prisma.IssuingOrganizationCreateNestedOneWithoutStudent_accountsInput
   import_batch?: Prisma.StudentImportBatchCreateNestedOneWithoutStudentsInput
 }
@@ -326,6 +330,7 @@ export type StudentAccountUncheckedCreateInput = {
   import_batch_id?: string | null
   certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutStudentInput
   online_certificates?: Prisma.OnlineCertificateUncheckedCreateNestedManyWithoutStudentInput
+  disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutStudentInput
 }
 
 export type StudentAccountUpdateInput = {
@@ -339,6 +344,7 @@ export type StudentAccountUpdateInput = {
   imported_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   certificates?: Prisma.CertificateUpdateManyWithoutStudentNestedInput
   online_certificates?: Prisma.OnlineCertificateUpdateManyWithoutStudentNestedInput
+  disputes?: Prisma.DisputeUpdateManyWithoutStudentNestedInput
   organization?: Prisma.IssuingOrganizationUpdateOneRequiredWithoutStudent_accountsNestedInput
   import_batch?: Prisma.StudentImportBatchUpdateOneWithoutStudentsNestedInput
 }
@@ -356,6 +362,7 @@ export type StudentAccountUncheckedUpdateInput = {
   import_batch_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   certificates?: Prisma.CertificateUncheckedUpdateManyWithoutStudentNestedInput
   online_certificates?: Prisma.OnlineCertificateUncheckedUpdateManyWithoutStudentNestedInput
+  disputes?: Prisma.DisputeUncheckedUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentAccountCreateManyInput = {
@@ -574,6 +581,20 @@ export type StudentAccountUpdateOneWithoutOnline_certificatesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.StudentAccountUpdateToOneWithWhereWithoutOnline_certificatesInput, Prisma.StudentAccountUpdateWithoutOnline_certificatesInput>, Prisma.StudentAccountUncheckedUpdateWithoutOnline_certificatesInput>
 }
 
+export type StudentAccountCreateNestedOneWithoutDisputesInput = {
+  create?: Prisma.XOR<Prisma.StudentAccountCreateWithoutDisputesInput, Prisma.StudentAccountUncheckedCreateWithoutDisputesInput>
+  connectOrCreate?: Prisma.StudentAccountCreateOrConnectWithoutDisputesInput
+  connect?: Prisma.StudentAccountWhereUniqueInput
+}
+
+export type StudentAccountUpdateOneRequiredWithoutDisputesNestedInput = {
+  create?: Prisma.XOR<Prisma.StudentAccountCreateWithoutDisputesInput, Prisma.StudentAccountUncheckedCreateWithoutDisputesInput>
+  connectOrCreate?: Prisma.StudentAccountCreateOrConnectWithoutDisputesInput
+  upsert?: Prisma.StudentAccountUpsertWithoutDisputesInput
+  connect?: Prisma.StudentAccountWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.StudentAccountUpdateToOneWithWhereWithoutDisputesInput, Prisma.StudentAccountUpdateWithoutDisputesInput>, Prisma.StudentAccountUncheckedUpdateWithoutDisputesInput>
+}
+
 export type StudentAccountCreateWithoutOrganizationInput = {
   student_id?: string
   student_fullName: string
@@ -585,6 +606,7 @@ export type StudentAccountCreateWithoutOrganizationInput = {
   imported_by?: string | null
   certificates?: Prisma.CertificateCreateNestedManyWithoutStudentInput
   online_certificates?: Prisma.OnlineCertificateCreateNestedManyWithoutStudentInput
+  disputes?: Prisma.DisputeCreateNestedManyWithoutStudentInput
   import_batch?: Prisma.StudentImportBatchCreateNestedOneWithoutStudentsInput
 }
 
@@ -600,6 +622,7 @@ export type StudentAccountUncheckedCreateWithoutOrganizationInput = {
   import_batch_id?: string | null
   certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutStudentInput
   online_certificates?: Prisma.OnlineCertificateUncheckedCreateNestedManyWithoutStudentInput
+  disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutStudentInput
 }
 
 export type StudentAccountCreateOrConnectWithoutOrganizationInput = {
@@ -655,6 +678,7 @@ export type StudentAccountCreateWithoutImport_batchInput = {
   imported_by?: string | null
   certificates?: Prisma.CertificateCreateNestedManyWithoutStudentInput
   online_certificates?: Prisma.OnlineCertificateCreateNestedManyWithoutStudentInput
+  disputes?: Prisma.DisputeCreateNestedManyWithoutStudentInput
   organization: Prisma.IssuingOrganizationCreateNestedOneWithoutStudent_accountsInput
 }
 
@@ -670,6 +694,7 @@ export type StudentAccountUncheckedCreateWithoutImport_batchInput = {
   imported_by?: string | null
   certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutStudentInput
   online_certificates?: Prisma.OnlineCertificateUncheckedCreateNestedManyWithoutStudentInput
+  disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutStudentInput
 }
 
 export type StudentAccountCreateOrConnectWithoutImport_batchInput = {
@@ -708,6 +733,7 @@ export type StudentAccountCreateWithoutCertificatesInput = {
   createdAt?: Date | string
   imported_by?: string | null
   online_certificates?: Prisma.OnlineCertificateCreateNestedManyWithoutStudentInput
+  disputes?: Prisma.DisputeCreateNestedManyWithoutStudentInput
   organization: Prisma.IssuingOrganizationCreateNestedOneWithoutStudent_accountsInput
   import_batch?: Prisma.StudentImportBatchCreateNestedOneWithoutStudentsInput
 }
@@ -724,6 +750,7 @@ export type StudentAccountUncheckedCreateWithoutCertificatesInput = {
   imported_by?: string | null
   import_batch_id?: string | null
   online_certificates?: Prisma.OnlineCertificateUncheckedCreateNestedManyWithoutStudentInput
+  disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutStudentInput
 }
 
 export type StudentAccountCreateOrConnectWithoutCertificatesInput = {
@@ -752,6 +779,7 @@ export type StudentAccountUpdateWithoutCertificatesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   imported_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   online_certificates?: Prisma.OnlineCertificateUpdateManyWithoutStudentNestedInput
+  disputes?: Prisma.DisputeUpdateManyWithoutStudentNestedInput
   organization?: Prisma.IssuingOrganizationUpdateOneRequiredWithoutStudent_accountsNestedInput
   import_batch?: Prisma.StudentImportBatchUpdateOneWithoutStudentsNestedInput
 }
@@ -768,6 +796,7 @@ export type StudentAccountUncheckedUpdateWithoutCertificatesInput = {
   imported_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   import_batch_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   online_certificates?: Prisma.OnlineCertificateUncheckedUpdateManyWithoutStudentNestedInput
+  disputes?: Prisma.DisputeUncheckedUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentAccountCreateWithoutOnline_certificatesInput = {
@@ -780,6 +809,7 @@ export type StudentAccountCreateWithoutOnline_certificatesInput = {
   createdAt?: Date | string
   imported_by?: string | null
   certificates?: Prisma.CertificateCreateNestedManyWithoutStudentInput
+  disputes?: Prisma.DisputeCreateNestedManyWithoutStudentInput
   organization: Prisma.IssuingOrganizationCreateNestedOneWithoutStudent_accountsInput
   import_batch?: Prisma.StudentImportBatchCreateNestedOneWithoutStudentsInput
 }
@@ -796,6 +826,7 @@ export type StudentAccountUncheckedCreateWithoutOnline_certificatesInput = {
   imported_by?: string | null
   import_batch_id?: string | null
   certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutStudentInput
+  disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutStudentInput
 }
 
 export type StudentAccountCreateOrConnectWithoutOnline_certificatesInput = {
@@ -824,6 +855,7 @@ export type StudentAccountUpdateWithoutOnline_certificatesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   imported_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   certificates?: Prisma.CertificateUpdateManyWithoutStudentNestedInput
+  disputes?: Prisma.DisputeUpdateManyWithoutStudentNestedInput
   organization?: Prisma.IssuingOrganizationUpdateOneRequiredWithoutStudent_accountsNestedInput
   import_batch?: Prisma.StudentImportBatchUpdateOneWithoutStudentsNestedInput
 }
@@ -840,6 +872,83 @@ export type StudentAccountUncheckedUpdateWithoutOnline_certificatesInput = {
   imported_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   import_batch_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   certificates?: Prisma.CertificateUncheckedUpdateManyWithoutStudentNestedInput
+  disputes?: Prisma.DisputeUncheckedUpdateManyWithoutStudentNestedInput
+}
+
+export type StudentAccountCreateWithoutDisputesInput = {
+  student_id?: string
+  student_fullName: string
+  organization_name: string
+  email: string
+  password: string
+  isActive?: boolean
+  createdAt?: Date | string
+  imported_by?: string | null
+  certificates?: Prisma.CertificateCreateNestedManyWithoutStudentInput
+  online_certificates?: Prisma.OnlineCertificateCreateNestedManyWithoutStudentInput
+  organization: Prisma.IssuingOrganizationCreateNestedOneWithoutStudent_accountsInput
+  import_batch?: Prisma.StudentImportBatchCreateNestedOneWithoutStudentsInput
+}
+
+export type StudentAccountUncheckedCreateWithoutDisputesInput = {
+  student_id?: string
+  organization_id: string
+  student_fullName: string
+  organization_name: string
+  email: string
+  password: string
+  isActive?: boolean
+  createdAt?: Date | string
+  imported_by?: string | null
+  import_batch_id?: string | null
+  certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutStudentInput
+  online_certificates?: Prisma.OnlineCertificateUncheckedCreateNestedManyWithoutStudentInput
+}
+
+export type StudentAccountCreateOrConnectWithoutDisputesInput = {
+  where: Prisma.StudentAccountWhereUniqueInput
+  create: Prisma.XOR<Prisma.StudentAccountCreateWithoutDisputesInput, Prisma.StudentAccountUncheckedCreateWithoutDisputesInput>
+}
+
+export type StudentAccountUpsertWithoutDisputesInput = {
+  update: Prisma.XOR<Prisma.StudentAccountUpdateWithoutDisputesInput, Prisma.StudentAccountUncheckedUpdateWithoutDisputesInput>
+  create: Prisma.XOR<Prisma.StudentAccountCreateWithoutDisputesInput, Prisma.StudentAccountUncheckedCreateWithoutDisputesInput>
+  where?: Prisma.StudentAccountWhereInput
+}
+
+export type StudentAccountUpdateToOneWithWhereWithoutDisputesInput = {
+  where?: Prisma.StudentAccountWhereInput
+  data: Prisma.XOR<Prisma.StudentAccountUpdateWithoutDisputesInput, Prisma.StudentAccountUncheckedUpdateWithoutDisputesInput>
+}
+
+export type StudentAccountUpdateWithoutDisputesInput = {
+  student_id?: Prisma.StringFieldUpdateOperationsInput | string
+  student_fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  organization_name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  imported_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  certificates?: Prisma.CertificateUpdateManyWithoutStudentNestedInput
+  online_certificates?: Prisma.OnlineCertificateUpdateManyWithoutStudentNestedInput
+  organization?: Prisma.IssuingOrganizationUpdateOneRequiredWithoutStudent_accountsNestedInput
+  import_batch?: Prisma.StudentImportBatchUpdateOneWithoutStudentsNestedInput
+}
+
+export type StudentAccountUncheckedUpdateWithoutDisputesInput = {
+  student_id?: Prisma.StringFieldUpdateOperationsInput | string
+  organization_id?: Prisma.StringFieldUpdateOperationsInput | string
+  student_fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  organization_name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  imported_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  import_batch_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  certificates?: Prisma.CertificateUncheckedUpdateManyWithoutStudentNestedInput
+  online_certificates?: Prisma.OnlineCertificateUncheckedUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentAccountCreateManyOrganizationInput = {
@@ -865,6 +974,7 @@ export type StudentAccountUpdateWithoutOrganizationInput = {
   imported_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   certificates?: Prisma.CertificateUpdateManyWithoutStudentNestedInput
   online_certificates?: Prisma.OnlineCertificateUpdateManyWithoutStudentNestedInput
+  disputes?: Prisma.DisputeUpdateManyWithoutStudentNestedInput
   import_batch?: Prisma.StudentImportBatchUpdateOneWithoutStudentsNestedInput
 }
 
@@ -880,6 +990,7 @@ export type StudentAccountUncheckedUpdateWithoutOrganizationInput = {
   import_batch_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   certificates?: Prisma.CertificateUncheckedUpdateManyWithoutStudentNestedInput
   online_certificates?: Prisma.OnlineCertificateUncheckedUpdateManyWithoutStudentNestedInput
+  disputes?: Prisma.DisputeUncheckedUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentAccountUncheckedUpdateManyWithoutOrganizationInput = {
@@ -917,6 +1028,7 @@ export type StudentAccountUpdateWithoutImport_batchInput = {
   imported_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   certificates?: Prisma.CertificateUpdateManyWithoutStudentNestedInput
   online_certificates?: Prisma.OnlineCertificateUpdateManyWithoutStudentNestedInput
+  disputes?: Prisma.DisputeUpdateManyWithoutStudentNestedInput
   organization?: Prisma.IssuingOrganizationUpdateOneRequiredWithoutStudent_accountsNestedInput
 }
 
@@ -932,6 +1044,7 @@ export type StudentAccountUncheckedUpdateWithoutImport_batchInput = {
   imported_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   certificates?: Prisma.CertificateUncheckedUpdateManyWithoutStudentNestedInput
   online_certificates?: Prisma.OnlineCertificateUncheckedUpdateManyWithoutStudentNestedInput
+  disputes?: Prisma.DisputeUncheckedUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentAccountUncheckedUpdateManyWithoutImport_batchInput = {
@@ -954,11 +1067,13 @@ export type StudentAccountUncheckedUpdateManyWithoutImport_batchInput = {
 export type StudentAccountCountOutputType = {
   certificates: number
   online_certificates: number
+  disputes: number
 }
 
 export type StudentAccountCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   certificates?: boolean | StudentAccountCountOutputTypeCountCertificatesArgs
   online_certificates?: boolean | StudentAccountCountOutputTypeCountOnline_certificatesArgs
+  disputes?: boolean | StudentAccountCountOutputTypeCountDisputesArgs
 }
 
 /**
@@ -985,6 +1100,13 @@ export type StudentAccountCountOutputTypeCountOnline_certificatesArgs<ExtArgs ex
   where?: Prisma.OnlineCertificateWhereInput
 }
 
+/**
+ * StudentAccountCountOutputType without action
+ */
+export type StudentAccountCountOutputTypeCountDisputesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DisputeWhereInput
+}
+
 
 export type StudentAccountSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   student_id?: boolean
@@ -999,6 +1121,7 @@ export type StudentAccountSelect<ExtArgs extends runtime.Types.Extensions.Intern
   import_batch_id?: boolean
   certificates?: boolean | Prisma.StudentAccount$certificatesArgs<ExtArgs>
   online_certificates?: boolean | Prisma.StudentAccount$online_certificatesArgs<ExtArgs>
+  disputes?: boolean | Prisma.StudentAccount$disputesArgs<ExtArgs>
   organization?: boolean | Prisma.IssuingOrganizationDefaultArgs<ExtArgs>
   import_batch?: boolean | Prisma.StudentAccount$import_batchArgs<ExtArgs>
   _count?: boolean | Prisma.StudentAccountCountOutputTypeDefaultArgs<ExtArgs>
@@ -1023,6 +1146,7 @@ export type StudentAccountOmit<ExtArgs extends runtime.Types.Extensions.Internal
 export type StudentAccountInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   certificates?: boolean | Prisma.StudentAccount$certificatesArgs<ExtArgs>
   online_certificates?: boolean | Prisma.StudentAccount$online_certificatesArgs<ExtArgs>
+  disputes?: boolean | Prisma.StudentAccount$disputesArgs<ExtArgs>
   organization?: boolean | Prisma.IssuingOrganizationDefaultArgs<ExtArgs>
   import_batch?: boolean | Prisma.StudentAccount$import_batchArgs<ExtArgs>
   _count?: boolean | Prisma.StudentAccountCountOutputTypeDefaultArgs<ExtArgs>
@@ -1033,6 +1157,7 @@ export type $StudentAccountPayload<ExtArgs extends runtime.Types.Extensions.Inte
   objects: {
     certificates: Prisma.$CertificatePayload<ExtArgs>[]
     online_certificates: Prisma.$OnlineCertificatePayload<ExtArgs>[]
+    disputes: Prisma.$DisputePayload<ExtArgs>[]
     organization: Prisma.$IssuingOrganizationPayload<ExtArgs>
     import_batch: Prisma.$StudentImportBatchPayload<ExtArgs> | null
   }
@@ -1389,6 +1514,7 @@ export interface Prisma__StudentAccountClient<T, Null = never, ExtArgs extends r
   readonly [Symbol.toStringTag]: "PrismaPromise"
   certificates<T extends Prisma.StudentAccount$certificatesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.StudentAccount$certificatesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CertificatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   online_certificates<T extends Prisma.StudentAccount$online_certificatesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.StudentAccount$online_certificatesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OnlineCertificatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  disputes<T extends Prisma.StudentAccount$disputesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.StudentAccount$disputesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DisputePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   organization<T extends Prisma.IssuingOrganizationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.IssuingOrganizationDefaultArgs<ExtArgs>>): Prisma.Prisma__IssuingOrganizationClient<runtime.Types.Result.GetResult<Prisma.$IssuingOrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   import_batch<T extends Prisma.StudentAccount$import_batchArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.StudentAccount$import_batchArgs<ExtArgs>>): Prisma.Prisma__StudentImportBatchClient<runtime.Types.Result.GetResult<Prisma.$StudentImportBatchPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
@@ -1823,6 +1949,30 @@ export type StudentAccount$online_certificatesArgs<ExtArgs extends runtime.Types
   take?: number
   skip?: number
   distinct?: Prisma.OnlineCertificateScalarFieldEnum | Prisma.OnlineCertificateScalarFieldEnum[]
+}
+
+/**
+ * StudentAccount.disputes
+ */
+export type StudentAccount$disputesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Dispute
+   */
+  select?: Prisma.DisputeSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Dispute
+   */
+  omit?: Prisma.DisputeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DisputeInclude<ExtArgs> | null
+  where?: Prisma.DisputeWhereInput
+  orderBy?: Prisma.DisputeOrderByWithRelationInput | Prisma.DisputeOrderByWithRelationInput[]
+  cursor?: Prisma.DisputeWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DisputeScalarFieldEnum | Prisma.DisputeScalarFieldEnum[]
 }
 
 /**

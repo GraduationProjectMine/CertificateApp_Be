@@ -26,6 +26,7 @@ model IssuingOrganization {
   audit_logs          AuditLog[]
   student_import_batches StudentImportBatch[]
   notifications       Notification[]
+  disputes            Dispute[]
 
   @@map("issuing_organization")
 }
@@ -62,6 +63,7 @@ model StudentAccount {
   import_batch_id    String?
   certificates       Certificate[]
   online_certificates OnlineCertificate[]
+  disputes           Dispute[]
   organization       IssuingOrganization      @relation(fields: [organization_id], references: [organization_id])
   import_batch       StudentImportBatch?      @relation(fields: [import_batch_id], references: [id])
 
@@ -166,6 +168,7 @@ model Certificate {
   organization       IssuingOrganization @relation(fields: [organization_id], references: [organization_id])
   student            StudentAccount      @relation(fields: [student_id], references: [student_id])
   template           CertificateTemplate? @relation(fields: [template_id], references: [id])
+  disputes           Dispute[]
 
   @@index([organization_id])
   @@index([student_id])
@@ -279,4 +282,32 @@ model SystemAdmin {
   updatedAt      DateTime @updatedAt @map("updated_at")
 
   @@map("system_admins")
+}
+
+// =========================================
+// Certificate Dispute / Correction Request
+// =========================================
+model Dispute {
+  id              String   @id @default(uuid())
+  student_id      String
+  organization_id String
+  certificate_id  String
+  reason          String   @db.Text
+  details         String?  @db.Text
+  status          String   @default("PENDING") // PENDING | APPROVED | REJECTED
+  reviewer_id     String?
+  reviewer_note   String?  @db.Text
+  resolved_at     DateTime?
+  new_cert_id     String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  organization IssuingOrganization @relation(fields: [organization_id], references: [organization_id])
+  student      StudentAccount      @relation(fields: [student_id], references: [student_id])
+  certificate  Certificate         @relation(fields: [certificate_id], references: [certificate_id])
+
+  @@index([student_id])
+  @@index([organization_id, status])
+  @@index([certificate_id])
+  @@map("disputes")
 }
