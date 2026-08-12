@@ -179,9 +179,43 @@ export class CertificateService {
    * Find a single certificate
    */
   async findOne(id: string, organizationId?: string) {
-    const certificate = await this.prisma.certificate.findUnique({
+    let certificate: any = await this.prisma.certificate.findUnique({
       where: { certificate_id: id },
     });
+
+    if (!certificate) {
+      const onlineCert = await this.prisma.onlineCertificate.findUnique({
+        where: { certificate_id: id },
+      });
+      if (onlineCert) {
+        certificate = {
+          certificate_id: onlineCert.certificate_id,
+          organization_id: onlineCert.organization_id,
+          student_id: onlineCert.student_id,
+          certificate_title: onlineCert.certificate_title,
+          organization_name: onlineCert.organization_name || "",
+          student_fullName: onlineCert.student_fullName,
+          dob: onlineCert.dob || null,
+          placeOfBirth: onlineCert.placeOfBirth || null,
+          gender: onlineCert.gender || null,
+          ethnicity: onlineCert.ethnicity || null,
+          schoolName: onlineCert.schoolName || null,
+          examCohort: onlineCert.examCohort || null,
+          examBoard: onlineCert.examBoard || null,
+          issueLocation: onlineCert.issueLocation || null,
+          issueDate: onlineCert.issueDate || null,
+          serialNumber: onlineCert.serialNumber || null,
+          registryNumber: onlineCert.registryNumber || null,
+          ipfs_cid: onlineCert.ipfs_cid || null,
+          file_url: onlineCert.file_url || null,
+          tx_hash: onlineCert.tx_hash || null,
+          block_number: onlineCert.block_number || null,
+          gas_used: onlineCert.gas_used || null,
+          status: onlineCert.status,
+          issuedAt: onlineCert.issuedAt,
+        };
+      }
+    }
 
     if (!certificate) {
       throw new NotFoundException('Certificate not found');
