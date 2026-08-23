@@ -150,67 +150,6 @@ export class CreateCertificateDto {
   @IsString()
   @IsOptional()
   file_url?: string;
-
-  @ApiProperty({
-    example: 'Giỏi',
-    description: 'Graduation ranking',
-    required: false,
-  })
-  @IsString()
-  @IsOptional()
-  ranking?: string;
-
-  @ApiProperty({
-    example: 'Chính quy',
-    description: 'Mode of study',
-    required: false,
-  })
-  @IsString()
-  @IsOptional()
-  modeOfStudy?: string;
-
-  @ApiProperty({
-    example: '2023',
-    description: 'Graduation year',
-    required: false,
-  })
-  @IsString()
-  @IsOptional()
-  graduationYear?: string;
-
-  @ApiProperty({
-    example: 'Hiệu trưởng',
-    description: 'Head of issuing organization',
-    required: false,
-  })
-  @IsString()
-  @IsOptional()
-  headOfOrganization?: string;
-
-  @ApiProperty({
-    example: 'Trường Đại học Bách Khoa',
-    description: 'Organization name',
-    required: false,
-  })
-  @IsString()
-  @IsOptional()
-  organization_name?: string;
-
-  @ApiProperty({
-    example: 'https://example.com/logo.png',
-    description: 'Organization logo URL',
-    required: false,
-  })
-  @IsString()
-  @IsOptional()
-  organization_logo?: string;
-
-  @ApiProperty({
-    description: 'Dynamic JSON metadata',
-    required: false,
-  })
-  @IsOptional()
-  metadata?: Record<string, any>;
 }
 
 export class UpdateCertificateDto {
