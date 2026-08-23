@@ -27,23 +27,9 @@ export class VerifierService {
     const sTrim = serialNumber.trim();
     const rTrim = registryNumber.trim();
 
-    // 1. Fetch certificate from database
-    const certificate = await this.prisma.certificate.findFirst({
-      where: {
-        OR: [
-          { serialNumber: sTrim, registryNumber: rTrim },
-          { serialNumber: sTrim.toUpperCase(), registryNumber: rTrim.toUpperCase() },
-          { serialNumber: sTrim.toLowerCase(), registryNumber: rTrim.toLowerCase() },
-        ],
-      },
-      include: {
-        organization: true,
-      },
-    });
-
-    if (!certificate) {
-      // Fallback: Check online_certificates table
-      const onlineCert = await this.prisma.onlineCertificate.findFirst({
+    // 1. Fetch certificate from database (both tables)
+    const [certificate, onlineCert] = await Promise.all([
+      this.prisma.certificate.findFirst({
         where: {
           OR: [
             { serialNumber: sTrim, registryNumber: rTrim },
@@ -51,16 +37,48 @@ export class VerifierService {
             { serialNumber: sTrim.toLowerCase(), registryNumber: rTrim.toLowerCase() },
           ],
         },
-      });
-      if (onlineCert) {
-        return this.verifyOnlineCertificate(sTrim, rTrim);
-      }
+        include: {
+          organization: true,
+        },
+        orderBy: { issuedAt: 'desc' },
+      }),
+      this.prisma.onlineCertificate.findFirst({
+        where: {
+          OR: [
+            { serialNumber: sTrim, registryNumber: rTrim },
+            { serialNumber: sTrim.toUpperCase(), registryNumber: rTrim.toUpperCase() },
+            { serialNumber: sTrim.toLowerCase(), registryNumber: rTrim.toLowerCase() },
+          ],
+        },
+        include: {
+          organization: true,
+        },
+        orderBy: { issuedAt: 'desc' },
+      }),
+    ]);
+
+    if (!certificate && !onlineCert) {
       throw new NotFoundException(
         'Certificate not found with the provided serial and registry numbers.',
       );
     }
 
+    // If online certificate exists and either no regular cert or online cert is newer, verify online cert first
+    if (
+      onlineCert &&
+      (!certificate || (onlineCert.issuedAt && certificate.issuedAt && onlineCert.issuedAt > certificate.issuedAt))
+    ) {
+      return this.verifyOnlineCertificate(sTrim, rTrim);
+    }
+
+    if (!certificate) {
+      return this.verifyOnlineCertificate(sTrim, rTrim);
+    }
+
     if (certificate.status !== 'ISSUED' && certificate.status !== 'REVOKED') {
+      if (onlineCert) {
+        return this.verifyOnlineCertificate(sTrim, rTrim);
+      }
       throw new BadRequestException(
         `Certificate exists but is currently in '${certificate.status}' status and has not been issued to the blockchain.`,
       );
@@ -111,9 +129,16 @@ export class VerifierService {
         isBlockchainValid = onChainResult.exists && 
                             !onChainResult.isRevoked && 
                             cidMatches;
+
+        if (!onChainResult.exists && onlineCert) {
+          return this.verifyOnlineCertificate(sTrim, rTrim);
+        }
       } catch (error) {
         this.logger.error(`Blockchain verification failed for hash ${calculatedSha3Hash}:`, error);
         isBlockchainValid = false;
+        if (onlineCert) {
+          return this.verifyOnlineCertificate(sTrim, rTrim);
+        }
       }
     } else {
       this.logger.warn('Blockchain service not initialized. Skipping on-chain signature verification.');
@@ -298,19 +323,24 @@ export class VerifierService {
         certificateId: certificate.certificate_id,
         certificateTitle: certificate.certificate_title,
         studentFullName: certificate.student_fullName,
-        dob: null,
-        placeOfBirth: null,
-        gender: null,
-        ethnicity: null,
-        schoolName: null,
-        examCohort: null,
-        examBoard: null,
-        issueLocation: null,
-        issueDate: null,
+        dob: certificate.dob || null,
+        placeOfBirth: certificate.placeOfBirth || null,
+        gender: certificate.gender || null,
+        ethnicity: certificate.ethnicity || null,
+        schoolName: certificate.schoolName || null,
+        examCohort: certificate.examCohort || null,
+        examBoard: certificate.examBoard || null,
+        issueLocation: certificate.issueLocation || null,
+        issueDate: certificate.issueDate || null,
         serialNumber: certificate.serialNumber,
         registryNumber: certificate.registryNumber,
+        ranking: certificate.ranking || null,
+        modeOfStudy: certificate.modeOfStudy || null,
+        graduationYear: certificate.graduationYear || null,
+        headOfOrganization: certificate.headOfOrganization || null,
+        metadata: certificate.metadata || null,
         fileUrl,
-        organizationName: certificate.organization?.organization_name || 'CertiChain Organization',
+        organizationName: certificate.organization_name || certificate.organization?.organization_name || 'CertiChain Organization',
         organizationId: certificate.organization_id,
         organizationLogo: certificate.organization?.logo_url || null,
         organizationWallet: certificate.organization?.wallet_address || null,

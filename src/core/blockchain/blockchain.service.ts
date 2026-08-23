@@ -209,7 +209,23 @@ export class BlockchainService implements OnModuleInit {
         isRevoked: result[5],
         exists: result[6],
       };
-    } catch (error) {
+    } catch (error: any) {
+      const errStr = (error.message || '') + (error.reason || '') + (error.shortMessage || '');
+      if (
+        errStr.includes('Certificate does not exist') ||
+        errStr.includes('could not decode result data') ||
+        errStr.includes('BAD_DATA')
+      ) {
+        return {
+          sha3Hash,
+          cid: '',
+          signature: '',
+          issuer: '',
+          timestamp: 0,
+          isRevoked: false,
+          exists: false,
+        };
+      }
       this.logger.error(
         `Failed to retrieve certificate details for hash ${sha3Hash}:`,
         error,

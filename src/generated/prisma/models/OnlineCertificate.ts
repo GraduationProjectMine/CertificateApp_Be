@@ -40,9 +40,23 @@ export type OnlineCertificateMinAggregateOutputType = {
   student_id: string | null
   template_id: string | null
   certificate_title: string | null
+  organization_name: string | null
   student_fullName: string | null
+  dob: string | null
+  placeOfBirth: string | null
+  gender: string | null
+  ethnicity: string | null
+  schoolName: string | null
+  examCohort: string | null
+  examBoard: string | null
+  issueLocation: string | null
+  issueDate: string | null
   serialNumber: string | null
   registryNumber: string | null
+  ranking: string | null
+  modeOfStudy: string | null
+  graduationYear: string | null
+  headOfOrganization: string | null
   ipfs_cid: string | null
   file_url: string | null
   tx_hash: string | null
@@ -58,9 +72,23 @@ export type OnlineCertificateMaxAggregateOutputType = {
   student_id: string | null
   template_id: string | null
   certificate_title: string | null
+  organization_name: string | null
   student_fullName: string | null
+  dob: string | null
+  placeOfBirth: string | null
+  gender: string | null
+  ethnicity: string | null
+  schoolName: string | null
+  examCohort: string | null
+  examBoard: string | null
+  issueLocation: string | null
+  issueDate: string | null
   serialNumber: string | null
   registryNumber: string | null
+  ranking: string | null
+  modeOfStudy: string | null
+  graduationYear: string | null
+  headOfOrganization: string | null
   ipfs_cid: string | null
   file_url: string | null
   tx_hash: string | null
@@ -76,9 +104,24 @@ export type OnlineCertificateCountAggregateOutputType = {
   student_id: number
   template_id: number
   certificate_title: number
+  organization_name: number
   student_fullName: number
+  dob: number
+  placeOfBirth: number
+  gender: number
+  ethnicity: number
+  schoolName: number
+  examCohort: number
+  examBoard: number
+  issueLocation: number
+  issueDate: number
   serialNumber: number
   registryNumber: number
+  ranking: number
+  modeOfStudy: number
+  graduationYear: number
+  headOfOrganization: number
+  metadata: number
   ipfs_cid: number
   file_url: number
   tx_hash: number
@@ -104,9 +147,23 @@ export type OnlineCertificateMinAggregateInputType = {
   student_id?: true
   template_id?: true
   certificate_title?: true
+  organization_name?: true
   student_fullName?: true
+  dob?: true
+  placeOfBirth?: true
+  gender?: true
+  ethnicity?: true
+  schoolName?: true
+  examCohort?: true
+  examBoard?: true
+  issueLocation?: true
+  issueDate?: true
   serialNumber?: true
   registryNumber?: true
+  ranking?: true
+  modeOfStudy?: true
+  graduationYear?: true
+  headOfOrganization?: true
   ipfs_cid?: true
   file_url?: true
   tx_hash?: true
@@ -122,9 +179,23 @@ export type OnlineCertificateMaxAggregateInputType = {
   student_id?: true
   template_id?: true
   certificate_title?: true
+  organization_name?: true
   student_fullName?: true
+  dob?: true
+  placeOfBirth?: true
+  gender?: true
+  ethnicity?: true
+  schoolName?: true
+  examCohort?: true
+  examBoard?: true
+  issueLocation?: true
+  issueDate?: true
   serialNumber?: true
   registryNumber?: true
+  ranking?: true
+  modeOfStudy?: true
+  graduationYear?: true
+  headOfOrganization?: true
   ipfs_cid?: true
   file_url?: true
   tx_hash?: true
@@ -140,9 +211,24 @@ export type OnlineCertificateCountAggregateInputType = {
   student_id?: true
   template_id?: true
   certificate_title?: true
+  organization_name?: true
   student_fullName?: true
+  dob?: true
+  placeOfBirth?: true
+  gender?: true
+  ethnicity?: true
+  schoolName?: true
+  examCohort?: true
+  examBoard?: true
+  issueLocation?: true
+  issueDate?: true
   serialNumber?: true
   registryNumber?: true
+  ranking?: true
+  modeOfStudy?: true
+  graduationYear?: true
+  headOfOrganization?: true
+  metadata?: true
   ipfs_cid?: true
   file_url?: true
   tx_hash?: true
@@ -245,9 +331,24 @@ export type OnlineCertificateGroupByOutputType = {
   student_id: string | null
   template_id: string | null
   certificate_title: string
+  organization_name: string | null
   student_fullName: string
+  dob: string | null
+  placeOfBirth: string | null
+  gender: string | null
+  ethnicity: string | null
+  schoolName: string | null
+  examCohort: string | null
+  examBoard: string | null
+  issueLocation: string | null
+  issueDate: string | null
   serialNumber: string | null
   registryNumber: string | null
+  ranking: string | null
+  modeOfStudy: string | null
+  graduationYear: string | null
+  headOfOrganization: string | null
+  metadata: runtime.JsonValue | null
   ipfs_cid: string | null
   file_url: string | null
   tx_hash: string | null
@@ -286,9 +387,24 @@ export type OnlineCertificateWhereInput = {
   student_id?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
   template_id?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
   certificate_title?: Prisma.StringFilter<"OnlineCertificate"> | string
+  organization_name?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
   student_fullName?: Prisma.StringFilter<"OnlineCertificate"> | string
+  dob?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
+  placeOfBirth?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
+  gender?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
+  ethnicity?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
+  schoolName?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
+  examCohort?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
+  examBoard?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
+  issueLocation?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
+  issueDate?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
   serialNumber?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
   registryNumber?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
+  ranking?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
+  modeOfStudy?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
+  graduationYear?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
+  headOfOrganization?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
+  metadata?: Prisma.JsonNullableFilter<"OnlineCertificate">
   ipfs_cid?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
   file_url?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
   tx_hash?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
@@ -307,9 +423,24 @@ export type OnlineCertificateOrderByWithRelationInput = {
   student_id?: Prisma.SortOrderInput | Prisma.SortOrder
   template_id?: Prisma.SortOrderInput | Prisma.SortOrder
   certificate_title?: Prisma.SortOrder
+  organization_name?: Prisma.SortOrderInput | Prisma.SortOrder
   student_fullName?: Prisma.SortOrder
+  dob?: Prisma.SortOrderInput | Prisma.SortOrder
+  placeOfBirth?: Prisma.SortOrderInput | Prisma.SortOrder
+  gender?: Prisma.SortOrderInput | Prisma.SortOrder
+  ethnicity?: Prisma.SortOrderInput | Prisma.SortOrder
+  schoolName?: Prisma.SortOrderInput | Prisma.SortOrder
+  examCohort?: Prisma.SortOrderInput | Prisma.SortOrder
+  examBoard?: Prisma.SortOrderInput | Prisma.SortOrder
+  issueLocation?: Prisma.SortOrderInput | Prisma.SortOrder
+  issueDate?: Prisma.SortOrderInput | Prisma.SortOrder
   serialNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   registryNumber?: Prisma.SortOrderInput | Prisma.SortOrder
+  ranking?: Prisma.SortOrderInput | Prisma.SortOrder
+  modeOfStudy?: Prisma.SortOrderInput | Prisma.SortOrder
+  graduationYear?: Prisma.SortOrderInput | Prisma.SortOrder
+  headOfOrganization?: Prisma.SortOrderInput | Prisma.SortOrder
+  metadata?: Prisma.SortOrderInput | Prisma.SortOrder
   ipfs_cid?: Prisma.SortOrderInput | Prisma.SortOrder
   file_url?: Prisma.SortOrderInput | Prisma.SortOrder
   tx_hash?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -332,9 +463,24 @@ export type OnlineCertificateWhereUniqueInput = Prisma.AtLeast<{
   student_id?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
   template_id?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
   certificate_title?: Prisma.StringFilter<"OnlineCertificate"> | string
+  organization_name?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
   student_fullName?: Prisma.StringFilter<"OnlineCertificate"> | string
+  dob?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
+  placeOfBirth?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
+  gender?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
+  ethnicity?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
+  schoolName?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
+  examCohort?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
+  examBoard?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
+  issueLocation?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
+  issueDate?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
   serialNumber?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
   registryNumber?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
+  ranking?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
+  modeOfStudy?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
+  graduationYear?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
+  headOfOrganization?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
+  metadata?: Prisma.JsonNullableFilter<"OnlineCertificate">
   ipfs_cid?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
   file_url?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
   tx_hash?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
@@ -353,9 +499,24 @@ export type OnlineCertificateOrderByWithAggregationInput = {
   student_id?: Prisma.SortOrderInput | Prisma.SortOrder
   template_id?: Prisma.SortOrderInput | Prisma.SortOrder
   certificate_title?: Prisma.SortOrder
+  organization_name?: Prisma.SortOrderInput | Prisma.SortOrder
   student_fullName?: Prisma.SortOrder
+  dob?: Prisma.SortOrderInput | Prisma.SortOrder
+  placeOfBirth?: Prisma.SortOrderInput | Prisma.SortOrder
+  gender?: Prisma.SortOrderInput | Prisma.SortOrder
+  ethnicity?: Prisma.SortOrderInput | Prisma.SortOrder
+  schoolName?: Prisma.SortOrderInput | Prisma.SortOrder
+  examCohort?: Prisma.SortOrderInput | Prisma.SortOrder
+  examBoard?: Prisma.SortOrderInput | Prisma.SortOrder
+  issueLocation?: Prisma.SortOrderInput | Prisma.SortOrder
+  issueDate?: Prisma.SortOrderInput | Prisma.SortOrder
   serialNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   registryNumber?: Prisma.SortOrderInput | Prisma.SortOrder
+  ranking?: Prisma.SortOrderInput | Prisma.SortOrder
+  modeOfStudy?: Prisma.SortOrderInput | Prisma.SortOrder
+  graduationYear?: Prisma.SortOrderInput | Prisma.SortOrder
+  headOfOrganization?: Prisma.SortOrderInput | Prisma.SortOrder
+  metadata?: Prisma.SortOrderInput | Prisma.SortOrder
   ipfs_cid?: Prisma.SortOrderInput | Prisma.SortOrder
   file_url?: Prisma.SortOrderInput | Prisma.SortOrder
   tx_hash?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -379,9 +540,24 @@ export type OnlineCertificateScalarWhereWithAggregatesInput = {
   student_id?: Prisma.StringNullableWithAggregatesFilter<"OnlineCertificate"> | string | null
   template_id?: Prisma.StringNullableWithAggregatesFilter<"OnlineCertificate"> | string | null
   certificate_title?: Prisma.StringWithAggregatesFilter<"OnlineCertificate"> | string
+  organization_name?: Prisma.StringNullableWithAggregatesFilter<"OnlineCertificate"> | string | null
   student_fullName?: Prisma.StringWithAggregatesFilter<"OnlineCertificate"> | string
+  dob?: Prisma.StringNullableWithAggregatesFilter<"OnlineCertificate"> | string | null
+  placeOfBirth?: Prisma.StringNullableWithAggregatesFilter<"OnlineCertificate"> | string | null
+  gender?: Prisma.StringNullableWithAggregatesFilter<"OnlineCertificate"> | string | null
+  ethnicity?: Prisma.StringNullableWithAggregatesFilter<"OnlineCertificate"> | string | null
+  schoolName?: Prisma.StringNullableWithAggregatesFilter<"OnlineCertificate"> | string | null
+  examCohort?: Prisma.StringNullableWithAggregatesFilter<"OnlineCertificate"> | string | null
+  examBoard?: Prisma.StringNullableWithAggregatesFilter<"OnlineCertificate"> | string | null
+  issueLocation?: Prisma.StringNullableWithAggregatesFilter<"OnlineCertificate"> | string | null
+  issueDate?: Prisma.StringNullableWithAggregatesFilter<"OnlineCertificate"> | string | null
   serialNumber?: Prisma.StringNullableWithAggregatesFilter<"OnlineCertificate"> | string | null
   registryNumber?: Prisma.StringNullableWithAggregatesFilter<"OnlineCertificate"> | string | null
+  ranking?: Prisma.StringNullableWithAggregatesFilter<"OnlineCertificate"> | string | null
+  modeOfStudy?: Prisma.StringNullableWithAggregatesFilter<"OnlineCertificate"> | string | null
+  graduationYear?: Prisma.StringNullableWithAggregatesFilter<"OnlineCertificate"> | string | null
+  headOfOrganization?: Prisma.StringNullableWithAggregatesFilter<"OnlineCertificate"> | string | null
+  metadata?: Prisma.JsonNullableWithAggregatesFilter<"OnlineCertificate">
   ipfs_cid?: Prisma.StringNullableWithAggregatesFilter<"OnlineCertificate"> | string | null
   file_url?: Prisma.StringNullableWithAggregatesFilter<"OnlineCertificate"> | string | null
   tx_hash?: Prisma.StringNullableWithAggregatesFilter<"OnlineCertificate"> | string | null
@@ -394,9 +570,24 @@ export type OnlineCertificateScalarWhereWithAggregatesInput = {
 export type OnlineCertificateCreateInput = {
   certificate_id?: string
   certificate_title: string
+  organization_name?: string | null
   student_fullName: string
+  dob?: string | null
+  placeOfBirth?: string | null
+  gender?: string | null
+  ethnicity?: string | null
+  schoolName?: string | null
+  examCohort?: string | null
+  examBoard?: string | null
+  issueLocation?: string | null
+  issueDate?: string | null
   serialNumber?: string | null
   registryNumber?: string | null
+  ranking?: string | null
+  modeOfStudy?: string | null
+  graduationYear?: string | null
+  headOfOrganization?: string | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   ipfs_cid?: string | null
   file_url?: string | null
   tx_hash?: string | null
@@ -415,9 +606,24 @@ export type OnlineCertificateUncheckedCreateInput = {
   student_id?: string | null
   template_id?: string | null
   certificate_title: string
+  organization_name?: string | null
   student_fullName: string
+  dob?: string | null
+  placeOfBirth?: string | null
+  gender?: string | null
+  ethnicity?: string | null
+  schoolName?: string | null
+  examCohort?: string | null
+  examBoard?: string | null
+  issueLocation?: string | null
+  issueDate?: string | null
   serialNumber?: string | null
   registryNumber?: string | null
+  ranking?: string | null
+  modeOfStudy?: string | null
+  graduationYear?: string | null
+  headOfOrganization?: string | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   ipfs_cid?: string | null
   file_url?: string | null
   tx_hash?: string | null
@@ -430,9 +636,24 @@ export type OnlineCertificateUncheckedCreateInput = {
 export type OnlineCertificateUpdateInput = {
   certificate_id?: Prisma.StringFieldUpdateOperationsInput | string
   certificate_title?: Prisma.StringFieldUpdateOperationsInput | string
+  organization_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   student_fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  dob?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  placeOfBirth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ethnicity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  schoolName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  examCohort?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  examBoard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  issueLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  issueDate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   serialNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registryNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ranking?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  modeOfStudy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  graduationYear?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  headOfOrganization?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   ipfs_cid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tx_hash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -451,9 +672,24 @@ export type OnlineCertificateUncheckedUpdateInput = {
   student_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   template_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   certificate_title?: Prisma.StringFieldUpdateOperationsInput | string
+  organization_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   student_fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  dob?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  placeOfBirth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ethnicity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  schoolName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  examCohort?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  examBoard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  issueLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  issueDate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   serialNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registryNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ranking?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  modeOfStudy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  graduationYear?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  headOfOrganization?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   ipfs_cid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tx_hash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -469,9 +705,24 @@ export type OnlineCertificateCreateManyInput = {
   student_id?: string | null
   template_id?: string | null
   certificate_title: string
+  organization_name?: string | null
   student_fullName: string
+  dob?: string | null
+  placeOfBirth?: string | null
+  gender?: string | null
+  ethnicity?: string | null
+  schoolName?: string | null
+  examCohort?: string | null
+  examBoard?: string | null
+  issueLocation?: string | null
+  issueDate?: string | null
   serialNumber?: string | null
   registryNumber?: string | null
+  ranking?: string | null
+  modeOfStudy?: string | null
+  graduationYear?: string | null
+  headOfOrganization?: string | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   ipfs_cid?: string | null
   file_url?: string | null
   tx_hash?: string | null
@@ -484,9 +735,24 @@ export type OnlineCertificateCreateManyInput = {
 export type OnlineCertificateUpdateManyMutationInput = {
   certificate_id?: Prisma.StringFieldUpdateOperationsInput | string
   certificate_title?: Prisma.StringFieldUpdateOperationsInput | string
+  organization_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   student_fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  dob?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  placeOfBirth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ethnicity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  schoolName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  examCohort?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  examBoard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  issueLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  issueDate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   serialNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registryNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ranking?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  modeOfStudy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  graduationYear?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  headOfOrganization?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   ipfs_cid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tx_hash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -502,9 +768,24 @@ export type OnlineCertificateUncheckedUpdateManyInput = {
   student_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   template_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   certificate_title?: Prisma.StringFieldUpdateOperationsInput | string
+  organization_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   student_fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  dob?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  placeOfBirth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ethnicity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  schoolName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  examCohort?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  examBoard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  issueLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  issueDate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   serialNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registryNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ranking?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  modeOfStudy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  graduationYear?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  headOfOrganization?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   ipfs_cid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tx_hash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -536,9 +817,24 @@ export type OnlineCertificateCountOrderByAggregateInput = {
   student_id?: Prisma.SortOrder
   template_id?: Prisma.SortOrder
   certificate_title?: Prisma.SortOrder
+  organization_name?: Prisma.SortOrder
   student_fullName?: Prisma.SortOrder
+  dob?: Prisma.SortOrder
+  placeOfBirth?: Prisma.SortOrder
+  gender?: Prisma.SortOrder
+  ethnicity?: Prisma.SortOrder
+  schoolName?: Prisma.SortOrder
+  examCohort?: Prisma.SortOrder
+  examBoard?: Prisma.SortOrder
+  issueLocation?: Prisma.SortOrder
+  issueDate?: Prisma.SortOrder
   serialNumber?: Prisma.SortOrder
   registryNumber?: Prisma.SortOrder
+  ranking?: Prisma.SortOrder
+  modeOfStudy?: Prisma.SortOrder
+  graduationYear?: Prisma.SortOrder
+  headOfOrganization?: Prisma.SortOrder
+  metadata?: Prisma.SortOrder
   ipfs_cid?: Prisma.SortOrder
   file_url?: Prisma.SortOrder
   tx_hash?: Prisma.SortOrder
@@ -558,9 +854,23 @@ export type OnlineCertificateMaxOrderByAggregateInput = {
   student_id?: Prisma.SortOrder
   template_id?: Prisma.SortOrder
   certificate_title?: Prisma.SortOrder
+  organization_name?: Prisma.SortOrder
   student_fullName?: Prisma.SortOrder
+  dob?: Prisma.SortOrder
+  placeOfBirth?: Prisma.SortOrder
+  gender?: Prisma.SortOrder
+  ethnicity?: Prisma.SortOrder
+  schoolName?: Prisma.SortOrder
+  examCohort?: Prisma.SortOrder
+  examBoard?: Prisma.SortOrder
+  issueLocation?: Prisma.SortOrder
+  issueDate?: Prisma.SortOrder
   serialNumber?: Prisma.SortOrder
   registryNumber?: Prisma.SortOrder
+  ranking?: Prisma.SortOrder
+  modeOfStudy?: Prisma.SortOrder
+  graduationYear?: Prisma.SortOrder
+  headOfOrganization?: Prisma.SortOrder
   ipfs_cid?: Prisma.SortOrder
   file_url?: Prisma.SortOrder
   tx_hash?: Prisma.SortOrder
@@ -576,9 +886,23 @@ export type OnlineCertificateMinOrderByAggregateInput = {
   student_id?: Prisma.SortOrder
   template_id?: Prisma.SortOrder
   certificate_title?: Prisma.SortOrder
+  organization_name?: Prisma.SortOrder
   student_fullName?: Prisma.SortOrder
+  dob?: Prisma.SortOrder
+  placeOfBirth?: Prisma.SortOrder
+  gender?: Prisma.SortOrder
+  ethnicity?: Prisma.SortOrder
+  schoolName?: Prisma.SortOrder
+  examCohort?: Prisma.SortOrder
+  examBoard?: Prisma.SortOrder
+  issueLocation?: Prisma.SortOrder
+  issueDate?: Prisma.SortOrder
   serialNumber?: Prisma.SortOrder
   registryNumber?: Prisma.SortOrder
+  ranking?: Prisma.SortOrder
+  modeOfStudy?: Prisma.SortOrder
+  graduationYear?: Prisma.SortOrder
+  headOfOrganization?: Prisma.SortOrder
   ipfs_cid?: Prisma.SortOrder
   file_url?: Prisma.SortOrder
   tx_hash?: Prisma.SortOrder
@@ -721,9 +1045,24 @@ export type OnlineCertificateUncheckedUpdateManyWithoutTemplateNestedInput = {
 export type OnlineCertificateCreateWithoutOrganizationInput = {
   certificate_id?: string
   certificate_title: string
+  organization_name?: string | null
   student_fullName: string
+  dob?: string | null
+  placeOfBirth?: string | null
+  gender?: string | null
+  ethnicity?: string | null
+  schoolName?: string | null
+  examCohort?: string | null
+  examBoard?: string | null
+  issueLocation?: string | null
+  issueDate?: string | null
   serialNumber?: string | null
   registryNumber?: string | null
+  ranking?: string | null
+  modeOfStudy?: string | null
+  graduationYear?: string | null
+  headOfOrganization?: string | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   ipfs_cid?: string | null
   file_url?: string | null
   tx_hash?: string | null
@@ -740,9 +1079,24 @@ export type OnlineCertificateUncheckedCreateWithoutOrganizationInput = {
   student_id?: string | null
   template_id?: string | null
   certificate_title: string
+  organization_name?: string | null
   student_fullName: string
+  dob?: string | null
+  placeOfBirth?: string | null
+  gender?: string | null
+  ethnicity?: string | null
+  schoolName?: string | null
+  examCohort?: string | null
+  examBoard?: string | null
+  issueLocation?: string | null
+  issueDate?: string | null
   serialNumber?: string | null
   registryNumber?: string | null
+  ranking?: string | null
+  modeOfStudy?: string | null
+  graduationYear?: string | null
+  headOfOrganization?: string | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   ipfs_cid?: string | null
   file_url?: string | null
   tx_hash?: string | null
@@ -787,9 +1141,24 @@ export type OnlineCertificateScalarWhereInput = {
   student_id?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
   template_id?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
   certificate_title?: Prisma.StringFilter<"OnlineCertificate"> | string
+  organization_name?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
   student_fullName?: Prisma.StringFilter<"OnlineCertificate"> | string
+  dob?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
+  placeOfBirth?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
+  gender?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
+  ethnicity?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
+  schoolName?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
+  examCohort?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
+  examBoard?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
+  issueLocation?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
+  issueDate?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
   serialNumber?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
   registryNumber?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
+  ranking?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
+  modeOfStudy?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
+  graduationYear?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
+  headOfOrganization?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
+  metadata?: Prisma.JsonNullableFilter<"OnlineCertificate">
   ipfs_cid?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
   file_url?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
   tx_hash?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
@@ -802,9 +1171,24 @@ export type OnlineCertificateScalarWhereInput = {
 export type OnlineCertificateCreateWithoutStudentInput = {
   certificate_id?: string
   certificate_title: string
+  organization_name?: string | null
   student_fullName: string
+  dob?: string | null
+  placeOfBirth?: string | null
+  gender?: string | null
+  ethnicity?: string | null
+  schoolName?: string | null
+  examCohort?: string | null
+  examBoard?: string | null
+  issueLocation?: string | null
+  issueDate?: string | null
   serialNumber?: string | null
   registryNumber?: string | null
+  ranking?: string | null
+  modeOfStudy?: string | null
+  graduationYear?: string | null
+  headOfOrganization?: string | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   ipfs_cid?: string | null
   file_url?: string | null
   tx_hash?: string | null
@@ -821,9 +1205,24 @@ export type OnlineCertificateUncheckedCreateWithoutStudentInput = {
   organization_id: string
   template_id?: string | null
   certificate_title: string
+  organization_name?: string | null
   student_fullName: string
+  dob?: string | null
+  placeOfBirth?: string | null
+  gender?: string | null
+  ethnicity?: string | null
+  schoolName?: string | null
+  examCohort?: string | null
+  examBoard?: string | null
+  issueLocation?: string | null
+  issueDate?: string | null
   serialNumber?: string | null
   registryNumber?: string | null
+  ranking?: string | null
+  modeOfStudy?: string | null
+  graduationYear?: string | null
+  headOfOrganization?: string | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   ipfs_cid?: string | null
   file_url?: string | null
   tx_hash?: string | null
@@ -862,9 +1261,24 @@ export type OnlineCertificateUpdateManyWithWhereWithoutStudentInput = {
 export type OnlineCertificateCreateWithoutTemplateInput = {
   certificate_id?: string
   certificate_title: string
+  organization_name?: string | null
   student_fullName: string
+  dob?: string | null
+  placeOfBirth?: string | null
+  gender?: string | null
+  ethnicity?: string | null
+  schoolName?: string | null
+  examCohort?: string | null
+  examBoard?: string | null
+  issueLocation?: string | null
+  issueDate?: string | null
   serialNumber?: string | null
   registryNumber?: string | null
+  ranking?: string | null
+  modeOfStudy?: string | null
+  graduationYear?: string | null
+  headOfOrganization?: string | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   ipfs_cid?: string | null
   file_url?: string | null
   tx_hash?: string | null
@@ -881,9 +1295,24 @@ export type OnlineCertificateUncheckedCreateWithoutTemplateInput = {
   organization_id: string
   student_id?: string | null
   certificate_title: string
+  organization_name?: string | null
   student_fullName: string
+  dob?: string | null
+  placeOfBirth?: string | null
+  gender?: string | null
+  ethnicity?: string | null
+  schoolName?: string | null
+  examCohort?: string | null
+  examBoard?: string | null
+  issueLocation?: string | null
+  issueDate?: string | null
   serialNumber?: string | null
   registryNumber?: string | null
+  ranking?: string | null
+  modeOfStudy?: string | null
+  graduationYear?: string | null
+  headOfOrganization?: string | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   ipfs_cid?: string | null
   file_url?: string | null
   tx_hash?: string | null
@@ -924,9 +1353,24 @@ export type OnlineCertificateCreateManyOrganizationInput = {
   student_id?: string | null
   template_id?: string | null
   certificate_title: string
+  organization_name?: string | null
   student_fullName: string
+  dob?: string | null
+  placeOfBirth?: string | null
+  gender?: string | null
+  ethnicity?: string | null
+  schoolName?: string | null
+  examCohort?: string | null
+  examBoard?: string | null
+  issueLocation?: string | null
+  issueDate?: string | null
   serialNumber?: string | null
   registryNumber?: string | null
+  ranking?: string | null
+  modeOfStudy?: string | null
+  graduationYear?: string | null
+  headOfOrganization?: string | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   ipfs_cid?: string | null
   file_url?: string | null
   tx_hash?: string | null
@@ -939,9 +1383,24 @@ export type OnlineCertificateCreateManyOrganizationInput = {
 export type OnlineCertificateUpdateWithoutOrganizationInput = {
   certificate_id?: Prisma.StringFieldUpdateOperationsInput | string
   certificate_title?: Prisma.StringFieldUpdateOperationsInput | string
+  organization_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   student_fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  dob?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  placeOfBirth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ethnicity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  schoolName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  examCohort?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  examBoard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  issueLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  issueDate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   serialNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registryNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ranking?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  modeOfStudy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  graduationYear?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  headOfOrganization?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   ipfs_cid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tx_hash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -958,9 +1417,24 @@ export type OnlineCertificateUncheckedUpdateWithoutOrganizationInput = {
   student_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   template_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   certificate_title?: Prisma.StringFieldUpdateOperationsInput | string
+  organization_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   student_fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  dob?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  placeOfBirth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ethnicity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  schoolName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  examCohort?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  examBoard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  issueLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  issueDate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   serialNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registryNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ranking?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  modeOfStudy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  graduationYear?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  headOfOrganization?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   ipfs_cid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tx_hash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -975,9 +1449,24 @@ export type OnlineCertificateUncheckedUpdateManyWithoutOrganizationInput = {
   student_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   template_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   certificate_title?: Prisma.StringFieldUpdateOperationsInput | string
+  organization_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   student_fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  dob?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  placeOfBirth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ethnicity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  schoolName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  examCohort?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  examBoard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  issueLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  issueDate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   serialNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registryNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ranking?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  modeOfStudy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  graduationYear?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  headOfOrganization?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   ipfs_cid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tx_hash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -992,9 +1481,24 @@ export type OnlineCertificateCreateManyStudentInput = {
   organization_id: string
   template_id?: string | null
   certificate_title: string
+  organization_name?: string | null
   student_fullName: string
+  dob?: string | null
+  placeOfBirth?: string | null
+  gender?: string | null
+  ethnicity?: string | null
+  schoolName?: string | null
+  examCohort?: string | null
+  examBoard?: string | null
+  issueLocation?: string | null
+  issueDate?: string | null
   serialNumber?: string | null
   registryNumber?: string | null
+  ranking?: string | null
+  modeOfStudy?: string | null
+  graduationYear?: string | null
+  headOfOrganization?: string | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   ipfs_cid?: string | null
   file_url?: string | null
   tx_hash?: string | null
@@ -1007,9 +1511,24 @@ export type OnlineCertificateCreateManyStudentInput = {
 export type OnlineCertificateUpdateWithoutStudentInput = {
   certificate_id?: Prisma.StringFieldUpdateOperationsInput | string
   certificate_title?: Prisma.StringFieldUpdateOperationsInput | string
+  organization_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   student_fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  dob?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  placeOfBirth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ethnicity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  schoolName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  examCohort?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  examBoard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  issueLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  issueDate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   serialNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registryNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ranking?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  modeOfStudy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  graduationYear?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  headOfOrganization?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   ipfs_cid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tx_hash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1026,9 +1545,24 @@ export type OnlineCertificateUncheckedUpdateWithoutStudentInput = {
   organization_id?: Prisma.StringFieldUpdateOperationsInput | string
   template_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   certificate_title?: Prisma.StringFieldUpdateOperationsInput | string
+  organization_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   student_fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  dob?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  placeOfBirth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ethnicity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  schoolName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  examCohort?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  examBoard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  issueLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  issueDate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   serialNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registryNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ranking?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  modeOfStudy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  graduationYear?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  headOfOrganization?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   ipfs_cid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tx_hash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1043,9 +1577,24 @@ export type OnlineCertificateUncheckedUpdateManyWithoutStudentInput = {
   organization_id?: Prisma.StringFieldUpdateOperationsInput | string
   template_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   certificate_title?: Prisma.StringFieldUpdateOperationsInput | string
+  organization_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   student_fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  dob?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  placeOfBirth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ethnicity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  schoolName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  examCohort?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  examBoard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  issueLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  issueDate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   serialNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registryNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ranking?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  modeOfStudy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  graduationYear?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  headOfOrganization?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   ipfs_cid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tx_hash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1060,9 +1609,24 @@ export type OnlineCertificateCreateManyTemplateInput = {
   organization_id: string
   student_id?: string | null
   certificate_title: string
+  organization_name?: string | null
   student_fullName: string
+  dob?: string | null
+  placeOfBirth?: string | null
+  gender?: string | null
+  ethnicity?: string | null
+  schoolName?: string | null
+  examCohort?: string | null
+  examBoard?: string | null
+  issueLocation?: string | null
+  issueDate?: string | null
   serialNumber?: string | null
   registryNumber?: string | null
+  ranking?: string | null
+  modeOfStudy?: string | null
+  graduationYear?: string | null
+  headOfOrganization?: string | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   ipfs_cid?: string | null
   file_url?: string | null
   tx_hash?: string | null
@@ -1075,9 +1639,24 @@ export type OnlineCertificateCreateManyTemplateInput = {
 export type OnlineCertificateUpdateWithoutTemplateInput = {
   certificate_id?: Prisma.StringFieldUpdateOperationsInput | string
   certificate_title?: Prisma.StringFieldUpdateOperationsInput | string
+  organization_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   student_fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  dob?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  placeOfBirth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ethnicity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  schoolName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  examCohort?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  examBoard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  issueLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  issueDate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   serialNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registryNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ranking?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  modeOfStudy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  graduationYear?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  headOfOrganization?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   ipfs_cid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tx_hash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1094,9 +1673,24 @@ export type OnlineCertificateUncheckedUpdateWithoutTemplateInput = {
   organization_id?: Prisma.StringFieldUpdateOperationsInput | string
   student_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   certificate_title?: Prisma.StringFieldUpdateOperationsInput | string
+  organization_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   student_fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  dob?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  placeOfBirth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ethnicity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  schoolName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  examCohort?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  examBoard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  issueLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  issueDate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   serialNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registryNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ranking?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  modeOfStudy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  graduationYear?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  headOfOrganization?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   ipfs_cid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tx_hash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1111,9 +1705,24 @@ export type OnlineCertificateUncheckedUpdateManyWithoutTemplateInput = {
   organization_id?: Prisma.StringFieldUpdateOperationsInput | string
   student_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   certificate_title?: Prisma.StringFieldUpdateOperationsInput | string
+  organization_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   student_fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  dob?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  placeOfBirth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ethnicity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  schoolName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  examCohort?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  examBoard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  issueLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  issueDate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   serialNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registryNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ranking?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  modeOfStudy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  graduationYear?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  headOfOrganization?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   ipfs_cid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tx_hash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1131,9 +1740,24 @@ export type OnlineCertificateSelect<ExtArgs extends runtime.Types.Extensions.Int
   student_id?: boolean
   template_id?: boolean
   certificate_title?: boolean
+  organization_name?: boolean
   student_fullName?: boolean
+  dob?: boolean
+  placeOfBirth?: boolean
+  gender?: boolean
+  ethnicity?: boolean
+  schoolName?: boolean
+  examCohort?: boolean
+  examBoard?: boolean
+  issueLocation?: boolean
+  issueDate?: boolean
   serialNumber?: boolean
   registryNumber?: boolean
+  ranking?: boolean
+  modeOfStudy?: boolean
+  graduationYear?: boolean
+  headOfOrganization?: boolean
+  metadata?: boolean
   ipfs_cid?: boolean
   file_url?: boolean
   tx_hash?: boolean
@@ -1154,9 +1778,24 @@ export type OnlineCertificateSelectScalar = {
   student_id?: boolean
   template_id?: boolean
   certificate_title?: boolean
+  organization_name?: boolean
   student_fullName?: boolean
+  dob?: boolean
+  placeOfBirth?: boolean
+  gender?: boolean
+  ethnicity?: boolean
+  schoolName?: boolean
+  examCohort?: boolean
+  examBoard?: boolean
+  issueLocation?: boolean
+  issueDate?: boolean
   serialNumber?: boolean
   registryNumber?: boolean
+  ranking?: boolean
+  modeOfStudy?: boolean
+  graduationYear?: boolean
+  headOfOrganization?: boolean
+  metadata?: boolean
   ipfs_cid?: boolean
   file_url?: boolean
   tx_hash?: boolean
@@ -1166,7 +1805,7 @@ export type OnlineCertificateSelectScalar = {
   issuedAt?: boolean
 }
 
-export type OnlineCertificateOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"certificate_id" | "organization_id" | "student_id" | "template_id" | "certificate_title" | "student_fullName" | "serialNumber" | "registryNumber" | "ipfs_cid" | "file_url" | "tx_hash" | "block_number" | "gas_used" | "status" | "issuedAt", ExtArgs["result"]["onlineCertificate"]>
+export type OnlineCertificateOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"certificate_id" | "organization_id" | "student_id" | "template_id" | "certificate_title" | "organization_name" | "student_fullName" | "dob" | "placeOfBirth" | "gender" | "ethnicity" | "schoolName" | "examCohort" | "examBoard" | "issueLocation" | "issueDate" | "serialNumber" | "registryNumber" | "ranking" | "modeOfStudy" | "graduationYear" | "headOfOrganization" | "metadata" | "ipfs_cid" | "file_url" | "tx_hash" | "block_number" | "gas_used" | "status" | "issuedAt", ExtArgs["result"]["onlineCertificate"]>
 export type OnlineCertificateInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   organization?: boolean | Prisma.IssuingOrganizationDefaultArgs<ExtArgs>
   student?: boolean | Prisma.OnlineCertificate$studentArgs<ExtArgs>
@@ -1186,9 +1825,24 @@ export type $OnlineCertificatePayload<ExtArgs extends runtime.Types.Extensions.I
     student_id: string | null
     template_id: string | null
     certificate_title: string
+    organization_name: string | null
     student_fullName: string
+    dob: string | null
+    placeOfBirth: string | null
+    gender: string | null
+    ethnicity: string | null
+    schoolName: string | null
+    examCohort: string | null
+    examBoard: string | null
+    issueLocation: string | null
+    issueDate: string | null
     serialNumber: string | null
     registryNumber: string | null
+    ranking: string | null
+    modeOfStudy: string | null
+    graduationYear: string | null
+    headOfOrganization: string | null
+    metadata: runtime.JsonValue | null
     ipfs_cid: string | null
     file_url: string | null
     tx_hash: string | null
@@ -1573,9 +2227,24 @@ export interface OnlineCertificateFieldRefs {
   readonly student_id: Prisma.FieldRef<"OnlineCertificate", 'String'>
   readonly template_id: Prisma.FieldRef<"OnlineCertificate", 'String'>
   readonly certificate_title: Prisma.FieldRef<"OnlineCertificate", 'String'>
+  readonly organization_name: Prisma.FieldRef<"OnlineCertificate", 'String'>
   readonly student_fullName: Prisma.FieldRef<"OnlineCertificate", 'String'>
+  readonly dob: Prisma.FieldRef<"OnlineCertificate", 'String'>
+  readonly placeOfBirth: Prisma.FieldRef<"OnlineCertificate", 'String'>
+  readonly gender: Prisma.FieldRef<"OnlineCertificate", 'String'>
+  readonly ethnicity: Prisma.FieldRef<"OnlineCertificate", 'String'>
+  readonly schoolName: Prisma.FieldRef<"OnlineCertificate", 'String'>
+  readonly examCohort: Prisma.FieldRef<"OnlineCertificate", 'String'>
+  readonly examBoard: Prisma.FieldRef<"OnlineCertificate", 'String'>
+  readonly issueLocation: Prisma.FieldRef<"OnlineCertificate", 'String'>
+  readonly issueDate: Prisma.FieldRef<"OnlineCertificate", 'String'>
   readonly serialNumber: Prisma.FieldRef<"OnlineCertificate", 'String'>
   readonly registryNumber: Prisma.FieldRef<"OnlineCertificate", 'String'>
+  readonly ranking: Prisma.FieldRef<"OnlineCertificate", 'String'>
+  readonly modeOfStudy: Prisma.FieldRef<"OnlineCertificate", 'String'>
+  readonly graduationYear: Prisma.FieldRef<"OnlineCertificate", 'String'>
+  readonly headOfOrganization: Prisma.FieldRef<"OnlineCertificate", 'String'>
+  readonly metadata: Prisma.FieldRef<"OnlineCertificate", 'Json'>
   readonly ipfs_cid: Prisma.FieldRef<"OnlineCertificate", 'String'>
   readonly file_url: Prisma.FieldRef<"OnlineCertificate", 'String'>
   readonly tx_hash: Prisma.FieldRef<"OnlineCertificate", 'String'>
