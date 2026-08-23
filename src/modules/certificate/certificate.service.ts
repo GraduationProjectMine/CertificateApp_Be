@@ -50,7 +50,35 @@ export class CertificateService {
     dto: CreateCertificateDto,
     actor?: { id: string; name?: string },
   ) {
-    // 1. Fetch organization to get the official organization name
+    
+    const requiredFields: Array<{ field: keyof CreateCertificateDto; name: string }> = [
+      { field: 'student_id', name: 'student_id' },
+      { field: 'certificate_title', name: 'certificate_title' },
+      { field: 'dob', name: 'dob' },
+      { field: 'placeOfBirth', name: 'placeOfBirth' },
+      { field: 'gender', name: 'gender' },
+      { field: 'ethnicity', name: 'ethnicity' },
+      { field: 'schoolName', name: 'schoolName' },
+      { field: 'examCohort', name: 'examCohort' },
+      { field: 'examBoard', name: 'examBoard' },
+      { field: 'issueLocation', name: 'issueLocation' },
+      { field: 'issueDate', name: 'issueDate' },
+      { field: 'serialNumber', name: 'serialNumber' },
+      { field: 'registryNumber', name: 'registryNumber' },
+    ];
+
+    const missing = requiredFields.filter((item) => {
+      const val = dto[item.field];
+      return typeof val !== 'string' || !val.trim();
+    });
+
+    if (missing.length > 0) {
+      throw new BadRequestException(
+        `All certificate fields must have information to create a draft. Missing fields: ${missing.map((m) => m.name).join(', ')}`,
+      );
+    }
+
+    // Fetch organization to get the official organization name
     const organization = await this.prisma.issuingOrganization.findUnique({
       where: { organization_id: organizationId },
     });
@@ -58,7 +86,7 @@ export class CertificateService {
       throw new NotFoundException('Issuing organization not found');
     }
 
-    // 2. Fetch student to get student name and verify they belong to this organization
+    // Fetch student to get student name and verify they belong to this organization
     const student = await this.prisma.studentAccount.findUnique({
       where: { student_id: dto.student_id },
     });
@@ -72,7 +100,7 @@ export class CertificateService {
       );
     }
 
-    // 3. Validate template if provided
+    //  Validate template if provided
     if (dto.template_id) {
       const template = await this.prisma.certificateTemplate.findUnique({
         where: { id: dto.template_id },
@@ -87,7 +115,7 @@ export class CertificateService {
       }
     }
 
-    // 4. Store original image file to IPFS upon creation if base64 data URL is present
+    //  Store original image file to IPFS upon creation if base64 data URL is present
     let ipfsCid = dto.ipfs_cid;
     let fileUrl = dto.file_url;
     if (!ipfsCid && fileUrl && fileUrl.startsWith('data:')) {
@@ -114,7 +142,7 @@ export class CertificateService {
       fileUrl = fileUrl && !fileUrl.startsWith('data:') ? fileUrl : `https://gateway.pinata.cloud/ipfs/${ipfsCid}`;
     }
 
-    // 5. Create certificate record
+    // Create certificate record
     const created = await this.prisma.certificate.create({
       data: {
         organization_id: organizationId,
@@ -224,7 +252,7 @@ export class CertificateService {
    * Update the status of a certificate draft or pending certificate
    */
   async update(id: string, organizationId: string, dto: UpdateCertificateDto) {
-    // 1. Fetch certificate and check ownership
+    //  Fetch certificate and check ownership
     const certificate = await this.findOne(id, organizationId);
 
     if (certificate.status === 'ISSUED') {
@@ -233,14 +261,14 @@ export class CertificateService {
       );
     }
 
-    // 2. We only allow transitioning status to DRAFT or PENDING
+    //  We only allow transitioning status to DRAFT or PENDING
     if (dto.status !== 'DRAFT' && dto.status !== 'PENDING') {
       throw new BadRequestException(
         'Invalid status. Staff can only transition status to DRAFT or PENDING.',
       );
     }
 
-    // 3. Update status
+    //  Update status
     return this.prisma.certificate.update({
       where: { certificate_id: id },
       data: {
@@ -289,7 +317,7 @@ export class CertificateService {
       );
     }
 
-    // 1. Construct IPFS payload
+    //  Construct IPFS payload
     const ipfsPayload = this.toIpfsPayload(certificate);
 
     let cid: string = certificate.ipfs_cid || '';
@@ -322,7 +350,7 @@ export class CertificateService {
     let blockNumber: number | null = null;
     let gasUsed: string | null = null;
 
-    // 3. Register on blockchain
+    //  Register on blockchain
     if (this.blockchainService.isInitialized()) {
       try {
         const signature = await this.blockchainService.signHash(sha3Hash);
@@ -345,7 +373,7 @@ export class CertificateService {
       );
     }
 
-    // 4. Update the certificate status, cid, file_url, and transaction hash
+    //  Update the certificate status, cid, file_url, and transaction hash
     const fileUrl =
       certificate.file_url ||
       (cid ? `https://gateway.pinata.cloud/ipfs/${cid}` : null);
