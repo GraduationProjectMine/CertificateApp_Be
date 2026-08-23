@@ -121,55 +121,7 @@ export class StoreOnlineCertificateDto {
   @ApiProperty({ description: 'Registry Number', example: '2023/12345', required: false })
   registryNumber?: string;
 
-  @ApiProperty({ description: 'Date of Birth', example: '01/01/2005', required: false })
-  dob?: string;
-
-  @ApiProperty({ description: 'Place of Birth', example: 'Hà Nội', required: false })
-  placeOfBirth?: string;
-
-  @ApiProperty({ description: 'Gender', example: 'Nam', required: false })
-  gender?: string;
-
-  @ApiProperty({ description: 'Ethnicity', example: 'Kinh', required: false })
-  ethnicity?: string;
-
-  @ApiProperty({ description: 'School Name', example: 'THPT Chu Văn An', required: false })
-  schoolName?: string;
-
-  @ApiProperty({ description: 'Exam Cohort / Year', example: '2023', required: false })
-  examCohort?: string;
-
-  @ApiProperty({ description: 'Exam Board', example: 'Sở Giáo dục và Đào tạo Hà Nội', required: false })
-  examBoard?: string;
-
-  @ApiProperty({ description: 'Issue Location', example: 'Hà Nội', required: false })
-  issueLocation?: string;
-
-  @ApiProperty({ description: 'Issue Date', example: '15/06/2023', required: false })
-  issueDate?: string;
-
-  @ApiProperty({ description: 'Graduation Ranking', example: 'Giỏi', required: false })
-  ranking?: string;
-
-  @ApiProperty({ description: 'Mode of Study', example: 'Chính quy', required: false })
-  modeOfStudy?: string;
-
-  @ApiProperty({ description: 'Graduation Year', example: '2023', required: false })
-  graduationYear?: string;
-
-  @ApiProperty({ description: 'Head of Organization', example: 'Hiệu trưởng', required: false })
-  headOfOrganization?: string;
-
-  @ApiProperty({ description: 'Organization Name', example: 'Trường Đại học Bách Khoa', required: false })
-  organization_name?: string;
-
-  @ApiProperty({ description: 'Organization Logo URL', required: false })
-  organization_logo?: string;
-
   @ApiProperty({ description: 'Template ID', example: 'uuid-string', required: false })
   template_id?: string;
-
-  @ApiProperty({ description: 'Custom Metadata / Dynamic Fields', required: false })
-  metadata?: Record<string, unknown>;
 }
 
