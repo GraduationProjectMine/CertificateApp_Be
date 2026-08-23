@@ -108,4 +108,17 @@ describe('CertificateService revoke', () => {
       expect.objectContaining({ details: { recoveredFromBlockchain: true } }),
     );
   });
+
+  describe('createDraft validation', () => {
+    it('throws BadRequestException if any required field is missing', async () => {
+      const service = new CertificateService(prisma, ipfs, blockchain, audit);
+      await expect(
+        service.createDraft('org-1', {
+          student_id: 'std-1',
+          certificate_title: 'Bằng tốt nghiệp',
+          // missing other required fields like dob, placeOfBirth, etc.
+        } as any),
+      ).rejects.toThrow(BadRequestException);
+    });
+  });
 });
