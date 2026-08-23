@@ -187,7 +187,17 @@ model OnlineCertificate {
   student_id        String?
   template_id       String?
   certificate_title String
+  organization_name String?
   student_fullName  String
+  dob               String?
+  placeOfBirth      String?
+  gender            String?
+  ethnicity         String?
+  schoolName        String?
+  examCohort        String?
+  examBoard         String?
+  issueLocation     String?
+  issueDate         String?
   serialNumber      String?
   registryNumber    String?
   ipfs_cid          String?
