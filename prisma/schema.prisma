@@ -182,21 +182,36 @@ model Certificate {
 // Online Certificate (Văn bằng số / Bằng từ mẫu)
 // =========================================
 model OnlineCertificate {
-  certificate_id    String   @id @default(uuid())
-  organization_id   String
-  student_id        String?
-  template_id       String?
-  certificate_title String
-  student_fullName  String
-  serialNumber      String?
-  registryNumber    String?
-  ipfs_cid          String?
-  file_url          String?
-  tx_hash           String?
-  block_number      Int?
-  gas_used          String?
-  status            String   @default("ISSUED")
-  issuedAt          DateTime @default(now())
+  certificate_id      String   @id @default(uuid())
+  organization_id     String
+  student_id          String?
+  template_id         String?
+  certificate_title   String
+  organization_name   String?
+  student_fullName    String
+  dob                 String?
+  placeOfBirth        String?
+  gender              String?
+  ethnicity           String?
+  schoolName          String?
+  examCohort          String?
+  examBoard           String?
+  issueLocation       String?
+  issueDate           String?
+  serialNumber        String?
+  registryNumber      String?
+  ranking             String?
+  modeOfStudy         String?
+  graduationYear      String?
+  headOfOrganization  String?
+  metadata            Json?
+  ipfs_cid            String?
+  file_url            String?
+  tx_hash             String?
+  block_number        Int?
+  gas_used            String?
+  status              String   @default("ISSUED")
+  issuedAt            DateTime @default(now())
 
   organization IssuingOrganization  @relation(fields: [organization_id], references: [organization_id])
   student      StudentAccount?      @relation(fields: [student_id], references: [student_id])
