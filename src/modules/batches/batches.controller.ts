@@ -19,7 +19,7 @@ import { CreateIssuanceBatchDto } from './dto/batch.dto';
 @Controller('issuance-batches')
 @UseGuards(JwtAuthGuard)
 export class BatchesController {
-  constructor(private readonly batches: BatchesService) { }
+  constructor(private readonly batches: BatchesService) {}
 
   @Get()
   @ApiOperation({ summary: 'List issuance batches' })
@@ -38,7 +38,8 @@ export class BatchesController {
   @Post()
   @ApiOperation({
     summary: 'Import rows as DRAFT or issue certificates',
-    description: 'mode=DRAFT_ONLY (staff) creates drafts only. mode=FULL (issuer) creates and approves.',
+    description:
+      'mode=DRAFT_ONLY (staff) creates drafts only. mode=FULL (issuer) creates and approves.',
   })
   create(@Req() req: Request, @Body() dto: CreateIssuanceBatchDto) {
     const user = req.user as any;

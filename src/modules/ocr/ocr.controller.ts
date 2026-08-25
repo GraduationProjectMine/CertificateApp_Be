@@ -12,7 +12,14 @@ import {
   ForbiddenException,
 } from '@nestjs/common';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
-import { ApiTags, ApiConsumes, ApiBody, ApiResponse, ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiConsumes,
+  ApiBody,
+  ApiResponse,
+  ApiBearerAuth,
+  ApiOperation,
+} from '@nestjs/swagger';
 import type { Request } from 'express';
 import { OcrService } from './ocr.service';
 import { DiplomaParserService } from './diploma-parser.service';
@@ -94,7 +101,9 @@ export class OcrController {
   ): Promise<OcrResponseDto> {
     const user = req.user as any;
     if (user.role !== 'issuer' && user.role !== 'staff') {
-      throw new ForbiddenException('Only issuing organization accounts and staff can use OCR');
+      throw new ForbiddenException(
+        'Only issuing organization accounts and staff can use OCR',
+      );
     }
 
     if (!file) {
@@ -164,7 +173,9 @@ export class OcrController {
   ): Promise<DiplomaExtractionResponseDto> {
     const user = req.user as any;
     if (user.role !== 'issuer' && user.role !== 'staff') {
-      throw new ForbiddenException('Only issuing organization accounts and staff can use OCR');
+      throw new ForbiddenException(
+        'Only issuing organization accounts and staff can use OCR',
+      );
     }
 
     if (!file) {
@@ -231,7 +242,9 @@ export class OcrController {
       required: ['files'],
     },
   })
-  @ApiOperation({ summary: 'Extract data from multiple diploma images in batch' })
+  @ApiOperation({
+    summary: 'Extract data from multiple diploma images in batch',
+  })
   async extractDiplomasBatch(
     @Req() req: Request,
     @UploadedFiles() files: Array<Express.Multer.File>,
@@ -239,7 +252,9 @@ export class OcrController {
   ) {
     const user = req.user as any;
     if (user.role !== 'issuer' && user.role !== 'staff') {
-      throw new ForbiddenException('Only issuing organization accounts and staff can use OCR');
+      throw new ForbiddenException(
+        'Only issuing organization accounts and staff can use OCR',
+      );
     }
 
     if (!files || files.length === 0) {
@@ -263,7 +278,8 @@ export class OcrController {
             data,
             accuracy: ocrResult.accuracy,
             rawText: ocrResult.extractedText,
-            validationErrors: Object.keys(errors).length > 0 ? errors : undefined,
+            validationErrors:
+              Object.keys(errors).length > 0 ? errors : undefined,
           };
         } catch (err: any) {
           return {

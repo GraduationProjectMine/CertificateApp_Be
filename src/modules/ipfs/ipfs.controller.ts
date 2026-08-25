@@ -7,7 +7,13 @@ import {
   UploadedFile,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiTags, ApiBody, ApiResponse, ApiOperation, ApiConsumes } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiBody,
+  ApiResponse,
+  ApiOperation,
+  ApiConsumes,
+} from '@nestjs/swagger';
 import { IpfsService } from './ipfs.service';
 import { StoreCertificateDto, StoreCertificateResponseDto } from './ipfs.dto';
 

@@ -7,6 +7,8 @@ export class MetaMaskNonceDto {
     description: 'Ethereum wallet address of the user',
   })
   @IsString()
-  @Matches(/^0x[a-fA-F0-9]{40}$/, { message: 'Invalid Ethereum address format' })
+  @Matches(/^0x[a-fA-F0-9]{40}$/, {
+    message: 'Invalid Ethereum address format',
+  })
   walletAddress!: string;
 }

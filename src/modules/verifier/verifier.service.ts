@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException, BadRequestException, Logger } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+  Logger,
+} from '@nestjs/common';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { BlockchainService } from '../../core/blockchain/blockchain.service';
 import { IpfsService } from '../ipfs/ipfs.service';
@@ -32,8 +37,14 @@ export class VerifierService {
       where: {
         OR: [
           { serialNumber: sTrim, registryNumber: rTrim },
-          { serialNumber: sTrim.toUpperCase(), registryNumber: rTrim.toUpperCase() },
-          { serialNumber: sTrim.toLowerCase(), registryNumber: rTrim.toLowerCase() },
+          {
+            serialNumber: sTrim.toUpperCase(),
+            registryNumber: rTrim.toUpperCase(),
+          },
+          {
+            serialNumber: sTrim.toLowerCase(),
+            registryNumber: rTrim.toLowerCase(),
+          },
         ],
       },
       include: {
@@ -47,8 +58,14 @@ export class VerifierService {
         where: {
           OR: [
             { serialNumber: sTrim, registryNumber: rTrim },
-            { serialNumber: sTrim.toUpperCase(), registryNumber: rTrim.toUpperCase() },
-            { serialNumber: sTrim.toLowerCase(), registryNumber: rTrim.toLowerCase() },
+            {
+              serialNumber: sTrim.toUpperCase(),
+              registryNumber: rTrim.toUpperCase(),
+            },
+            {
+              serialNumber: sTrim.toLowerCase(),
+              registryNumber: rTrim.toLowerCase(),
+            },
           ],
         },
       });
@@ -91,8 +108,9 @@ export class VerifierService {
 
     if (this.blockchainService.isInitialized()) {
       try {
-        const onChainResult = await this.blockchainService.getCertificate(calculatedSha3Hash);
-        
+        const onChainResult =
+          await this.blockchainService.getCertificate(calculatedSha3Hash);
+
         blockchainData = {
           exists: onChainResult.exists,
           isRevoked: onChainResult.isRevoked,
@@ -103,20 +121,25 @@ export class VerifierService {
           sha3Hash: onChainResult.sha3Hash,
         };
 
-        const cidMatches = !certificate.ipfs_cid || 
-                           !onChainResult.cid || 
-                           certificate.ipfs_cid.includes(onChainResult.cid) || 
-                           onChainResult.cid.includes(certificate.ipfs_cid);
+        const cidMatches =
+          !certificate.ipfs_cid ||
+          !onChainResult.cid ||
+          certificate.ipfs_cid.includes(onChainResult.cid) ||
+          onChainResult.cid.includes(certificate.ipfs_cid);
 
-        isBlockchainValid = onChainResult.exists && 
-                            !onChainResult.isRevoked && 
-                            cidMatches;
+        isBlockchainValid =
+          onChainResult.exists && !onChainResult.isRevoked && cidMatches;
       } catch (error) {
-        this.logger.error(`Blockchain verification failed for hash ${calculatedSha3Hash}:`, error);
+        this.logger.error(
+          `Blockchain verification failed for hash ${calculatedSha3Hash}:`,
+          error,
+        );
         isBlockchainValid = false;
       }
     } else {
-      this.logger.warn('Blockchain service not initialized. Skipping on-chain signature verification.');
+      this.logger.warn(
+        'Blockchain service not initialized. Skipping on-chain signature verification.',
+      );
     }
 
     // 4. Construct IPFS file details
@@ -124,7 +147,7 @@ export class VerifierService {
     const fileUrl =
       certificate.file_url ||
       (cid ? `https://gateway.pinata.cloud/ipfs/${cid}` : null);
-    let ipfsData: any = { fileUrl, cid };
+    const ipfsData: any = { fileUrl, cid };
     let ipfsFetchSuccess = !!cid;
 
     if (cid) {
@@ -132,10 +155,13 @@ export class VerifierService {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 3000); // 3s fast check
 
-        const response = await fetch(`https://gateway.pinata.cloud/ipfs/${cid}`, {
-          method: 'HEAD',
-          signal: controller.signal,
-        });
+        const response = await fetch(
+          `https://gateway.pinata.cloud/ipfs/${cid}`,
+          {
+            method: 'HEAD',
+            signal: controller.signal,
+          },
+        );
         clearTimeout(timeoutId);
 
         if (response.ok) {
@@ -172,7 +198,9 @@ export class VerifierService {
         serialNumber: certificate.serialNumber,
         registryNumber: certificate.registryNumber,
         fileUrl,
-        organizationName: certificate.organization?.organization_name || certificate.organization_name,
+        organizationName:
+          certificate.organization?.organization_name ||
+          certificate.organization_name,
         organizationId: certificate.organization_id,
         organizationLogo: certificate.organization?.logo_url || null,
         organizationWallet: certificate.organization?.wallet_address || null,
@@ -199,12 +227,18 @@ export class VerifierService {
         },
       });
       if (onlineCert) {
-        return this.verifyOnlineCertificate(onlineCert.serialNumber || '', onlineCert.registryNumber || '');
+        return this.verifyOnlineCertificate(
+          onlineCert.serialNumber || '',
+          onlineCert.registryNumber || '',
+        );
       }
       throw new NotFoundException('Certificate not found.');
     }
 
-    return this.verifyCertificate(certificate.serialNumber || '', certificate.registryNumber || '');
+    return this.verifyCertificate(
+      certificate.serialNumber || '',
+      certificate.registryNumber || '',
+    );
   }
 
   async verifyOnlineCertificate(serialNumber: string, registryNumber: string) {
@@ -222,8 +256,14 @@ export class VerifierService {
       where: {
         OR: [
           { serialNumber: sTrim, registryNumber: rTrim },
-          { serialNumber: sTrim.toUpperCase(), registryNumber: rTrim.toUpperCase() },
-          { serialNumber: sTrim.toLowerCase(), registryNumber: rTrim.toLowerCase() },
+          {
+            serialNumber: sTrim.toUpperCase(),
+            registryNumber: rTrim.toUpperCase(),
+          },
+          {
+            serialNumber: sTrim.toLowerCase(),
+            registryNumber: rTrim.toLowerCase(),
+          },
         ],
       },
       include: {
@@ -245,7 +285,8 @@ export class VerifierService {
       registryNumber: certificate.registryNumber ?? '',
     };
 
-    const calculatedSha3Hash = this.ipfsService.calculateOnlineCertSha3Hash(ipfsPayload);
+    const calculatedSha3Hash =
+      this.ipfsService.calculateOnlineCertSha3Hash(ipfsPayload);
 
     // 3. Query Blockchain
     let blockchainData: any = null;
@@ -253,8 +294,9 @@ export class VerifierService {
 
     if (this.blockchainService.isInitialized()) {
       try {
-        const onChainResult = await this.blockchainService.getCertificate(calculatedSha3Hash);
-        
+        const onChainResult =
+          await this.blockchainService.getCertificate(calculatedSha3Hash);
+
         blockchainData = {
           exists: onChainResult.exists,
           isRevoked: onChainResult.isRevoked,
@@ -265,16 +307,19 @@ export class VerifierService {
           sha3Hash: onChainResult.sha3Hash,
         };
 
-        const cidMatches = !certificate.ipfs_cid || 
-                           !onChainResult.cid || 
-                           certificate.ipfs_cid.includes(onChainResult.cid) || 
-                           onChainResult.cid.includes(certificate.ipfs_cid);
+        const cidMatches =
+          !certificate.ipfs_cid ||
+          !onChainResult.cid ||
+          certificate.ipfs_cid.includes(onChainResult.cid) ||
+          onChainResult.cid.includes(certificate.ipfs_cid);
 
-        isBlockchainValid = onChainResult.exists && 
-                            !onChainResult.isRevoked && 
-                            cidMatches;
+        isBlockchainValid =
+          onChainResult.exists && !onChainResult.isRevoked && cidMatches;
       } catch (error) {
-        this.logger.error(`Blockchain verification failed for online cert hash ${calculatedSha3Hash}:`, error);
+        this.logger.error(
+          `Blockchain verification failed for online cert hash ${calculatedSha3Hash}:`,
+          error,
+        );
         isBlockchainValid = false;
       }
     }
@@ -310,7 +355,10 @@ export class VerifierService {
         serialNumber: certificate.serialNumber,
         registryNumber: certificate.registryNumber,
         fileUrl,
-        organizationName: certificate.organization?.organization_name || certificate.organization_name || 'CertiChain Organization',
+        organizationName:
+          certificate.organization?.organization_name ||
+          certificate.organization_name ||
+          'CertiChain Organization',
         organizationId: certificate.organization_id,
         organizationLogo: certificate.organization?.logo_url || null,
         organizationWallet: certificate.organization?.wallet_address || null,
@@ -334,14 +382,20 @@ export class VerifierService {
       throw new NotFoundException('Online certificate not found.');
     }
 
-    return this.verifyOnlineCertificate(certificate.serialNumber || '', certificate.registryNumber || '');
+    return this.verifyOnlineCertificate(
+      certificate.serialNumber || '',
+      certificate.registryNumber || '',
+    );
   }
 
   async scanDiplomaOcr(file: any) {
     if (!file || !file.buffer) {
       throw new BadRequestException('No diploma image file provided');
     }
-    const ocrResult = await this.ocrService.extractTextFromImage(file.buffer, 'vie');
+    const ocrResult = await this.ocrService.extractTextFromImage(
+      file.buffer,
+      'vie',
+    );
     const parsed = this.diplomaParserService.parse(ocrResult.extractedText);
 
     let serialNumber = parsed.data.serial_number;
@@ -350,7 +404,9 @@ export class VerifierService {
     const rawText = ocrResult.extractedText;
 
     if (!serialNumber) {
-      const serialMatch = rawText.match(/\b([A-Za-z]\d{5,10}|[A-Z]{1,2}\s*\d{6,8})\b/);
+      const serialMatch = rawText.match(
+        /\b([A-Za-z]\d{5,10}|[A-Z]{1,2}\s*\d{6,8})\b/,
+      );
       if (serialMatch) serialNumber = serialMatch[1].replace(/\s+/g, '');
     }
 
@@ -367,4 +423,3 @@ export class VerifierService {
     };
   }
 }
-

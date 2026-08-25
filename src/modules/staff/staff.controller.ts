@@ -36,7 +36,9 @@ export class StaffController {
     if (user.role !== 'issuer' && user.role !== 'staff') {
       throw new ForbiddenException('Only organization accounts can view staff');
     }
-    const staffList = await this.staffService.findByOrganization(user.organization_id);
+    const staffList = await this.staffService.findByOrganization(
+      user.organization_id,
+    );
     return staffList.map(({ password, ...staff }) => staff);
   }
 
@@ -45,11 +47,15 @@ export class StaffController {
   async findOne(@Req() req: Request, @Param('id') id: string) {
     const user = req.user as any;
     if (user.role !== 'issuer' && user.role !== 'staff') {
-      throw new ForbiddenException('Only organization accounts can view staff details');
+      throw new ForbiddenException(
+        'Only organization accounts can view staff details',
+      );
     }
     const staff = await this.staffService.findById(id);
     if (!staff || staff.organization_id !== user.organization_id) {
-      throw new NotFoundException('Staff member not found or does not belong to your organization');
+      throw new NotFoundException(
+        'Staff member not found or does not belong to your organization',
+      );
     }
     const { password, ...result } = staff;
     return result;
@@ -65,7 +71,9 @@ export class StaffController {
   ) {
     const user = req.user as any;
     if (user.role !== 'issuer') {
-      throw new ForbiddenException('Only organization administrators can update staff');
+      throw new ForbiddenException(
+        'Only organization administrators can update staff',
+      );
     }
     return this.staffService.update(id, user.organization_id, dto);
   }
@@ -75,7 +83,9 @@ export class StaffController {
   async delete(@Req() req: Request, @Param('id') id: string) {
     const user = req.user as any;
     if (user.role !== 'issuer') {
-      throw new ForbiddenException('Only organization administrators can delete staff');
+      throw new ForbiddenException(
+        'Only organization administrators can delete staff',
+      );
     }
     await this.staffService.delete(id, user.organization_id);
     return { message: 'Staff member deleted successfully' };

@@ -89,10 +89,7 @@ export class IssuerController {
 
   @Put()
   @ApiOperation({ summary: 'Update current organization details' })
-  async updateProfile(
-    @Req() req: Request,
-    @Body() dto: UpdateOrganizationDto,
-  ) {
+  async updateProfile(@Req() req: Request, @Body() dto: UpdateOrganizationDto) {
     const user = req.user as any;
     if (user.role !== 'issuer') {
       throw new ForbiddenException(
@@ -146,8 +143,6 @@ export class IssuerController {
     }
     return this.issuerService.uploadLogo(user.organization_id, file);
   }
-
-
 
   @Post('staff')
   @HttpCode(HttpStatus.CREATED)

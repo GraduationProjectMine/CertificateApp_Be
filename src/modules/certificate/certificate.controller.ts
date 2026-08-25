@@ -138,14 +138,19 @@ export class CertificateController {
   @Get('online')
   @ApiOperation({
     summary: 'Get all online certificates issued via templates',
-    description: 'Retrieve a list of online certificates in the online_certificates table.',
+    description:
+      'Retrieve a list of online certificates in the online_certificates table.',
   })
   async findAllOnline(@Req() req: Request) {
     const user = req.user as any;
     if (user.role === 'student') {
-      return this.certificateService.findAllOnlineCertificates({ student_id: user.id });
+      return this.certificateService.findAllOnlineCertificates({
+        student_id: user.id,
+      });
     }
-    return this.certificateService.findAllOnlineCertificates({ organization_id: user.organization_id });
+    return this.certificateService.findAllOnlineCertificates({
+      organization_id: user.organization_id,
+    });
   }
 
   /**
@@ -251,11 +256,17 @@ export class CertificateController {
   }
 
   @Get('import/template')
-  @ApiOperation({ summary: 'Download CSV/Excel template for certificate import' })
+  @ApiOperation({
+    summary: 'Download CSV/Excel template for certificate import',
+  })
   async downloadTemplate(@Res() res: Response) {
-    const header = 'student_id,certificate_title,student_fullName,dob,placeOfBirth,gender,ethnicity,schoolName,examCohort,examBoard,issueLocation,issueDate,serialNumber,registryNumber\n"SV001","Cử nhân CNTT","Nguyễn Văn A","2002-05-15","Hà Nội","Nam","Kinh","ĐH Bách Khoa Hà Nội","2025","Hội đồng 1","Hà Nội","2025-06-15","BK-2025-001","001"\n';
+    const header =
+      'student_id,certificate_title,student_fullName,dob,placeOfBirth,gender,ethnicity,schoolName,examCohort,examBoard,issueLocation,issueDate,serialNumber,registryNumber\n"SV001","Cử nhân CNTT","Nguyễn Văn A","2002-05-15","Hà Nội","Nam","Kinh","ĐH Bách Khoa Hà Nội","2025","Hội đồng 1","Hà Nội","2025-06-15","BK-2025-001","001"\n';
     res.setHeader('Content-Type', 'text/csv; charset=utf-8');
-    res.setHeader('Content-Disposition', 'attachment; filename="certificate-import-template.csv"');
+    res.setHeader(
+      'Content-Disposition',
+      'attachment; filename="certificate-import-template.csv"',
+    );
     res.send(header);
   }
 
@@ -263,7 +274,8 @@ export class CertificateController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
     summary: '[Issuer] Batch approve multiple PENDING certificates',
-    description: 'Approve multiple certificates in batch. Each certificate still creates an individual blockchain transaction.',
+    description:
+      'Approve multiple certificates in batch. Each certificate still creates an individual blockchain transaction.',
   })
   @ApiBody({ type: BatchApproveDto })
   async batchApprove(@Req() req: Request, @Body() dto: BatchApproveDto) {
@@ -351,7 +363,8 @@ export class CertificateController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
     summary: '[Issuer] Direct single certificate issue from Template Generator',
-    description: 'Generates JSON payload, pins JSON to IPFS, and registers certificate on Blockchain.',
+    description:
+      'Generates JSON payload, pins JSON to IPFS, and registers certificate on Blockchain.',
   })
   async issueFromTemplateSingle(
     @Req() req: Request,
@@ -374,7 +387,8 @@ export class CertificateController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
     summary: '[Issuer] Direct batch certificate issue from Template Generator',
-    description: 'Batch issues certificates from Template Generator, pinning JSON for each to IPFS and registering on Blockchain.',
+    description:
+      'Batch issues certificates from Template Generator, pinning JSON for each to IPFS and registering on Blockchain.',
   })
   async issueFromTemplateBatch(
     @Req() req: Request,
@@ -394,5 +408,3 @@ export class CertificateController {
     );
   }
 }
-
-

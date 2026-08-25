@@ -1,4 +1,11 @@
-import { IsEmail, IsString, MinLength, MaxLength, Matches, IsOptional } from 'class-validator';
+import {
+  IsEmail,
+  IsString,
+  MinLength,
+  MaxLength,
+  Matches,
+  IsOptional,
+} from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class MetaMaskRegisterDto {
@@ -7,26 +14,31 @@ export class MetaMaskRegisterDto {
     description: 'Ethereum wallet address of the user',
   })
   @IsString()
-  @Matches(/^0x[a-fA-F0-9]{40}$/, { message: 'Invalid Ethereum address format' })
+  @Matches(/^0x[a-fA-F0-9]{40}$/, {
+    message: 'Invalid Ethereum address format',
+  })
   walletAddress!: string;
 
   @ApiProperty({
     example: '0x30755a5c...',
-    description: 'Cryptographic signature from MetaMask signing the challenge message',
+    description:
+      'Cryptographic signature from MetaMask signing the challenge message',
   })
   @IsString()
   signature!: string;
 
   @ApiProperty({
     example: 'eyJhbGciOi...',
-    description: 'Temporary JWT token containing challenge details issued by /auth/metamask/nonce',
+    description:
+      'Temporary JWT token containing challenge details issued by /auth/metamask/nonce',
   })
   @IsString()
   tempToken!: string;
 
   @ApiProperty({
     example: 'truongthpt@edu.vn',
-    description: 'Email of the school/organization (used for notifications and identifier)',
+    description:
+      'Email of the school/organization (used for notifications and identifier)',
   })
   @IsEmail({}, { message: 'Invalid email format' })
   email!: string;

@@ -50,7 +50,7 @@ export class OcrService implements OnModuleInit {
         },
       };
 
-      const responses = await this.client.annotateImage(request as any);
+      const responses = await this.client.annotateImage(request);
       const result = responses[0];
 
       if (!result.textAnnotations || result.textAnnotations.length === 0) {

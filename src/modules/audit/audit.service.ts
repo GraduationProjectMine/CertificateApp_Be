@@ -37,7 +37,9 @@ export class AuditService {
         },
       });
     } catch (error) {
-      this.logger.warn(`Could not persist audit event ${input.action}: ${error instanceof Error ? error.message : 'unknown error'}`);
+      this.logger.warn(
+        `Could not persist audit event ${input.action}: ${error instanceof Error ? error.message : 'unknown error'}`,
+      );
       return null;
     }
   }

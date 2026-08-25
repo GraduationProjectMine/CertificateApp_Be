@@ -38,7 +38,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       };
     }
 
-    const isStaffOrIssuer = payload.role === 'issuer' || payload.role === 'staff';
+    const isStaffOrIssuer =
+      payload.role === 'issuer' || payload.role === 'staff';
     const user = isStaffOrIssuer
       ? await this.staffService.findById(payload.sub)
       : await this.studentService.findById(payload.sub);

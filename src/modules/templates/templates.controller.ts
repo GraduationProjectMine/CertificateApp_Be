@@ -1,11 +1,32 @@
 import {
-  Controller, Get, Post, Put, Delete,
-  Body, Param, Query, UseGuards, Req, ForbiddenException,
-  HttpCode, HttpStatus, UseInterceptors, UploadedFile, BadRequestException,
+  Controller,
+  Get,
+  Post,
+  Put,
+  Delete,
+  Body,
+  Param,
+  Query,
+  UseGuards,
+  Req,
+  ForbiddenException,
+  HttpCode,
+  HttpStatus,
+  UseInterceptors,
+  UploadedFile,
+  BadRequestException,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import type { Request } from 'express';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiQuery, ApiConsumes, ApiBody } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+  ApiQuery,
+  ApiConsumes,
+  ApiBody,
+} from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { TemplatesService } from './templates.service';
 import { CreateTemplateDto } from './dto/create-template.dto';
@@ -26,7 +47,9 @@ export class TemplatesController {
   async create(@Req() req: Request, @Body() dto: CreateTemplateDto) {
     const user = req.user as any;
     if (user.role !== 'issuer' && user.role !== 'staff') {
-      throw new ForbiddenException('Only issuer and staff can create templates');
+      throw new ForbiddenException(
+        'Only issuer and staff can create templates',
+      );
     }
     return this.templatesService.create(user.organization_id, dto);
   }
@@ -60,10 +83,16 @@ export class TemplatesController {
   @ApiOperation({ summary: '[Issuer/Staff] Update template' })
   @ApiResponse({ status: 200, description: 'Template updated' })
   @ApiResponse({ status: 403, description: 'Forbidden' })
-  async update(@Req() req: Request, @Param('id') id: string, @Body() dto: UpdateTemplateDto) {
+  async update(
+    @Req() req: Request,
+    @Param('id') id: string,
+    @Body() dto: UpdateTemplateDto,
+  ) {
     const user = req.user as any;
     if (user.role !== 'issuer' && user.role !== 'staff') {
-      throw new ForbiddenException('Only issuer and staff can update templates');
+      throw new ForbiddenException(
+        'Only issuer and staff can update templates',
+      );
     }
     return this.templatesService.update(id, user.organization_id, dto);
   }
@@ -76,7 +105,9 @@ export class TemplatesController {
   async delete(@Req() req: Request, @Param('id') id: string) {
     const user = req.user as any;
     if (user.role !== 'issuer' && user.role !== 'staff') {
-      throw new ForbiddenException('Only issuer and staff can delete templates');
+      throw new ForbiddenException(
+        'Only issuer and staff can delete templates',
+      );
     }
     return this.templatesService.delete(id, user.organization_id);
   }
@@ -88,7 +119,9 @@ export class TemplatesController {
   async duplicate(@Req() req: Request, @Param('id') id: string) {
     const user = req.user as any;
     if (user.role !== 'issuer' && user.role !== 'staff') {
-      throw new ForbiddenException('Only issuer and staff can duplicate templates');
+      throw new ForbiddenException(
+        'Only issuer and staff can duplicate templates',
+      );
     }
     return this.templatesService.duplicate(id, user.organization_id);
   }
@@ -104,23 +137,32 @@ export class TemplatesController {
         file: {
           type: 'string',
           format: 'binary',
-          description: 'CSV or Excel (.xlsx, .xls) file containing certificate template data rows',
+          description:
+            'CSV or Excel (.xlsx, .xls) file containing certificate template data rows',
         },
       },
     },
   })
-  @ApiOperation({ summary: '[Issuer/Staff] Import CSV or Excel data file for certificate template loading' })
+  @ApiOperation({
+    summary:
+      '[Issuer/Staff] Import CSV or Excel data file for certificate template loading',
+  })
   async importData(
     @Req() req: Request,
     @UploadedFile() file: Express.Multer.File,
   ) {
     const user = req.user as any;
     if (user.role !== 'issuer' && user.role !== 'staff') {
-      throw new ForbiddenException('Only issuer and staff can import data for templates');
+      throw new ForbiddenException(
+        'Only issuer and staff can import data for templates',
+      );
     }
     if (!file) {
       throw new BadRequestException('Please upload a CSV or Excel file');
     }
-    return this.templatesService.parseAndMapImportFile(file.buffer, file.originalname);
+    return this.templatesService.parseAndMapImportFile(
+      file.buffer,
+      file.originalname,
+    );
   }
 }

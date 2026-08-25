@@ -50,8 +50,10 @@ export class CertificateService {
     dto: CreateCertificateDto,
     actor?: { id: string; name?: string },
   ) {
-    
-    const requiredFields: Array<{ field: keyof CreateCertificateDto; name: string }> = [
+    const requiredFields: Array<{
+      field: keyof CreateCertificateDto;
+      name: string;
+    }> = [
       { field: 'student_id', name: 'student_id' },
       { field: 'certificate_title', name: 'certificate_title' },
       { field: 'dob', name: 'dob' },
@@ -139,7 +141,10 @@ export class CertificateService {
 
     if (!ipfsCid) {
       ipfsCid = `bafk_pending_${Date.now()}`;
-      fileUrl = fileUrl && !fileUrl.startsWith('data:') ? fileUrl : `https://gateway.pinata.cloud/ipfs/${ipfsCid}`;
+      fileUrl =
+        fileUrl && !fileUrl.startsWith('data:')
+          ? fileUrl
+          : `https://gateway.pinata.cloud/ipfs/${ipfsCid}`;
     }
 
     // Create certificate record
@@ -321,7 +326,11 @@ export class CertificateService {
     const ipfsPayload = this.toIpfsPayload(certificate);
 
     let cid: string = certificate.ipfs_cid || '';
-    if ((!cid || cid.startsWith('bafk_')) && certificate.file_url && certificate.file_url.startsWith('data:')) {
+    if (
+      (!cid || cid.startsWith('bafk_')) &&
+      certificate.file_url &&
+      certificate.file_url.startsWith('data:')
+    ) {
       try {
         const matches = certificate.file_url.match(/^data:(.+);base64,(.+)$/);
         if (matches) {
@@ -422,14 +431,25 @@ export class CertificateService {
           where: { certificate_id: id, organization_id: organizationId },
         });
         if (!cert) {
-          results.push({ certificateId: id, status: 'FAILED', error: 'Certificate not found' });
+          results.push({
+            certificateId: id,
+            status: 'FAILED',
+            error: 'Certificate not found',
+          });
           continue;
         }
         if (cert.status !== 'PENDING') {
-          results.push({ certificateId: id, status: 'FAILED', error: `Invalid status: ${cert.status}. Only PENDING can be approved.` });
+          results.push({
+            certificateId: id,
+            status: 'FAILED',
+            error: `Invalid status: ${cert.status}. Only PENDING can be approved.`,
+          });
           continue;
         }
-        await this.approve(id, organizationId, { id: actor.id, name: actor.name });
+        await this.approve(id, organizationId, {
+          id: actor.id,
+          name: actor.name,
+        });
         results.push({ certificateId: id, status: 'SUCCESS' });
       } catch (error) {
         results.push({
@@ -795,7 +815,10 @@ export class CertificateService {
   /**
    * Find online certificates by organization or student
    */
-  async findAllOnlineCertificates(query: { organization_id?: string; student_id?: string }) {
+  async findAllOnlineCertificates(query: {
+    organization_id?: string;
+    student_id?: string;
+  }) {
     const where: any = {};
     if (query.organization_id) where.organization_id = query.organization_id;
     if (query.student_id) where.student_id = query.student_id;
@@ -826,7 +849,6 @@ export class CertificateService {
     return cert;
   }
 
-
   /**
    * Batch issue certificates directly from Template Generator.
    */
@@ -851,7 +873,11 @@ export class CertificateService {
       const row = { ...rows[i] };
       if (template_id) row.template_id = template_id;
       try {
-        const cert = await this.issueFromTemplateSingle(organizationId, row, actor);
+        const cert = await this.issueFromTemplateSingle(
+          organizationId,
+          row,
+          actor,
+        );
         results.push({
           index: i + 1,
           student_fullName: cert.student_fullName,
@@ -895,4 +921,3 @@ export class CertificateService {
     };
   }
 }
-

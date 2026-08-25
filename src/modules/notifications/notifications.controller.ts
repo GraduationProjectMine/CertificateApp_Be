@@ -23,7 +23,8 @@ export class NotificationsController {
   @ApiOperation({ summary: 'Get student notifications' })
   async findAll(@Req() req: Request) {
     const user = req.user as any;
-    if (user.role !== 'student') throw new ForbiddenException('Only students can view notifications');
+    if (user.role !== 'student')
+      throw new ForbiddenException('Only students can view notifications');
     return this.notificationsService.findByStudent(user.sub);
   }
 
@@ -31,7 +32,8 @@ export class NotificationsController {
   @ApiOperation({ summary: 'Get unread notification count' })
   async unreadCount(@Req() req: Request) {
     const user = req.user as any;
-    if (user.role !== 'student') throw new ForbiddenException('Only students can view notifications');
+    if (user.role !== 'student')
+      throw new ForbiddenException('Only students can view notifications');
     const count = await this.notificationsService.countUnread(user.sub);
     return { count };
   }
@@ -40,7 +42,8 @@ export class NotificationsController {
   @ApiOperation({ summary: 'Mark notification as read' })
   async markAsRead(@Req() req: Request, @Param('id') id: string) {
     const user = req.user as any;
-    if (user.role !== 'student') throw new ForbiddenException('Only students can mark notifications');
+    if (user.role !== 'student')
+      throw new ForbiddenException('Only students can mark notifications');
     await this.notificationsService.markAsRead(id, user.sub);
     return { message: 'Marked as read' };
   }
@@ -49,7 +52,8 @@ export class NotificationsController {
   @ApiOperation({ summary: 'Mark all notifications as read' })
   async markAllAsRead(@Req() req: Request) {
     const user = req.user as any;
-    if (user.role !== 'student') throw new ForbiddenException('Only students can mark notifications');
+    if (user.role !== 'student')
+      throw new ForbiddenException('Only students can mark notifications');
     await this.notificationsService.markAllAsRead(user.sub);
     return { message: 'All notifications marked as read' };
   }

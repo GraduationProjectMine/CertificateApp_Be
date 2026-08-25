@@ -109,19 +109,33 @@ export class StoreCertificateResponseDto {
 }
 
 export class StoreOnlineCertificateDto {
-  @ApiProperty({ description: 'Document Title', example: 'CHỨNG NHẬN / VĂN BẰNG' })
+  @ApiProperty({
+    description: 'Document Title',
+    example: 'CHỨNG NHẬN / VĂN BẰNG',
+  })
   documentTitle: string;
 
   @ApiProperty({ description: 'Full Name', example: 'NGUYỄN VĂN A' })
   fullName: string;
 
-  @ApiProperty({ description: 'Serial Number', example: 'A 12345678', required: false })
+  @ApiProperty({
+    description: 'Serial Number',
+    example: 'A 12345678',
+    required: false,
+  })
   serialNumber?: string;
 
-  @ApiProperty({ description: 'Registry Number', example: '2023/12345', required: false })
+  @ApiProperty({
+    description: 'Registry Number',
+    example: '2023/12345',
+    required: false,
+  })
   registryNumber?: string;
 
-  @ApiProperty({ description: 'Template ID', example: 'uuid-string', required: false })
+  @ApiProperty({
+    description: 'Template ID',
+    example: 'uuid-string',
+    required: false,
+  })
   template_id?: string;
 }
-

@@ -14,16 +14,29 @@ export class BlockchainService implements OnModuleInit {
   private wallet: ethers.Wallet | null = null;
   private contract: ethers.Contract | null = null;
 
-  private isValidConfig(rpcUrl?: string, privateKey?: string, contractAddress?: string): boolean {
+  private isValidConfig(
+    rpcUrl?: string,
+    privateKey?: string,
+    contractAddress?: string,
+  ): boolean {
     if (!rpcUrl || !privateKey || !contractAddress) return false;
 
     const cleanUrl = rpcUrl.trim();
     const cleanKey = privateKey.trim();
     const cleanAddr = contractAddress.trim();
 
-    if (cleanUrl.includes('YOUR_ALCHEMY') || cleanUrl.includes('YOUR_KEY')) return false;
-    if (cleanKey.includes('YourRealWallet') || cleanKey.includes('YourWalletPrivateKey')) return false;
-    if (cleanAddr.includes('YourDeployed') || cleanAddr.includes('YourSepoliaContract')) return false;
+    if (cleanUrl.includes('YOUR_ALCHEMY') || cleanUrl.includes('YOUR_KEY'))
+      return false;
+    if (
+      cleanKey.includes('YourRealWallet') ||
+      cleanKey.includes('YourWalletPrivateKey')
+    )
+      return false;
+    if (
+      cleanAddr.includes('YourDeployed') ||
+      cleanAddr.includes('YourSepoliaContract')
+    )
+      return false;
 
     const hexKey = cleanKey.startsWith('0x') ? cleanKey.slice(2) : cleanKey;
     if (hexKey.length !== 64 || !/^[0-9a-fA-F]{64}$/.test(hexKey)) return false;
@@ -39,7 +52,13 @@ export class BlockchainService implements OnModuleInit {
     const sepoliaPrivateKey = process.env.SEPOLIA_PRIVATE_KEY;
     const sepoliaContractAddress = process.env.SEPOLIA_CONTRACT_ADDRESS;
 
-    if (this.isValidConfig(sepoliaRpcUrl, sepoliaPrivateKey, sepoliaContractAddress)) {
+    if (
+      this.isValidConfig(
+        sepoliaRpcUrl,
+        sepoliaPrivateKey,
+        sepoliaContractAddress,
+      )
+    ) {
       try {
         const formattedKey = sepoliaPrivateKey!.trim().startsWith('0x')
           ? sepoliaPrivateKey!.trim()
@@ -57,7 +76,9 @@ export class BlockchainService implements OnModuleInit {
         );
         return;
       } catch (error) {
-        this.logger.warn(`Sepolia connection attempt failed: ${error.message}. Falling back to local configuration...`);
+        this.logger.warn(
+          `Sepolia connection attempt failed: ${error.message}. Falling back to local configuration...`,
+        );
       }
     }
 
@@ -68,7 +89,12 @@ export class BlockchainService implements OnModuleInit {
     const contractAddress =
       process.env.BLOCKCHAIN_CONTRACT_ADDRESS || process.env.CONTRACT_ADDRESS;
 
-    if (!rpcUrl || !privateKey || !contractAddress || !this.isValidConfig(rpcUrl, privateKey, contractAddress)) {
+    if (
+      !rpcUrl ||
+      !privateKey ||
+      !contractAddress ||
+      !this.isValidConfig(rpcUrl, privateKey, contractAddress)
+    ) {
       this.logger.warn(
         'Warning: Blockchain environment variables are not fully configured or contain placeholders.',
       );
@@ -91,7 +117,10 @@ export class BlockchainService implements OnModuleInit {
         `BlockchainService initialized [LOCAL NETWORK]. Contract Address: ${contractAddress}`,
       );
     } catch (error) {
-      this.logger.error('Failed to initialize local blockchain service:', error);
+      this.logger.error(
+        'Failed to initialize local blockchain service:',
+        error,
+      );
     }
   }
 
@@ -284,7 +313,9 @@ export class BlockchainService implements OnModuleInit {
   async authorizeIssuer(issuerAddress: string): Promise<string> {
     const contract = this.ensureInitialized();
     try {
-      this.logger.log(`Authorizing issuer address on blockchain: ${issuerAddress}`);
+      this.logger.log(
+        `Authorizing issuer address on blockchain: ${issuerAddress}`,
+      );
       const tx = await contract.authorizeIssuer(issuerAddress);
       const receipt = await tx.wait();
       this.logger.log(
@@ -305,7 +336,9 @@ export class BlockchainService implements OnModuleInit {
   async deauthorizeIssuer(issuerAddress: string): Promise<string> {
     const contract = this.ensureInitialized();
     try {
-      this.logger.log(`Deauthorizing issuer address on blockchain: ${issuerAddress}`);
+      this.logger.log(
+        `Deauthorizing issuer address on blockchain: ${issuerAddress}`,
+      );
       const tx = await contract.deauthorizeIssuer(issuerAddress);
       const receipt = await tx.wait();
       this.logger.log(
