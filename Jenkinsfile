@@ -100,7 +100,7 @@ pipeline {
                     kubectl set image deployment/backend-deployment \
                         backend="$IMAGE_NAME:$TAG" -n blockchain-dev
                     kubectl rollout status deployment/backend-deployment \
-                        -n blockchain-dev --timeout=240s
+                        -n blockchain-dev --timeout=360s
                     '''
                 }
             }
