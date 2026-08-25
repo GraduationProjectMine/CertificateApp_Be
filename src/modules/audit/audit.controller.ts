@@ -7,7 +7,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
-import type { Request } from 'express';
+import type { AuthenticatedRequest } from '../auth/authenticated-request.interface';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { AuditService } from './audit.service';
 
@@ -21,7 +21,7 @@ export class AuditController {
   @Get()
   @ApiOperation({ summary: 'List immutable audit events for the organization' })
   findAll(
-    @Req() req: Request,
+    @Req() req: AuthenticatedRequest,
     @Query('page') page?: string,
     @Query('limit') limit?: string,
     @Query('action') action?: string,
@@ -30,7 +30,7 @@ export class AuditController {
     @Query('fromDate') fromDate?: string,
     @Query('toDate') toDate?: string,
   ) {
-    const user = req.user as any;
+    const user = req.user;
     if (user.role !== 'issuer' && user.role !== 'staff') {
       throw new ForbiddenException(
         'Only organization administrators and auditors can view audit logs',

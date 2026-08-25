@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ConflictException,
+} from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { PrismaService } from '../../core/prisma/prisma.service';
 
@@ -63,14 +67,22 @@ export class StaffService {
   async update(
     staffId: string,
     organizationId: string,
-    data: { name?: string; email?: string; isActive?: boolean; role?: string; password?: string },
+    data: {
+      name?: string;
+      email?: string;
+      isActive?: boolean;
+      role?: string;
+      password?: string;
+    },
   ) {
     const staff = await this.prisma.staffAccount.findUnique({
       where: { staff_id: staffId },
     });
 
     if (!staff || staff.organization_id !== organizationId) {
-      throw new NotFoundException('Staff member not found or does not belong to your organization');
+      throw new NotFoundException(
+        'Staff member not found or does not belong to your organization',
+      );
     }
 
     const updateData: any = {};
@@ -105,7 +117,9 @@ export class StaffService {
     });
 
     if (!staff || staff.organization_id !== organizationId) {
-      throw new NotFoundException('Staff member not found or does not belong to your organization');
+      throw new NotFoundException(
+        'Staff member not found or does not belong to your organization',
+      );
     }
 
     await this.prisma.staffAccount.delete({

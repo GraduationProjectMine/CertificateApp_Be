@@ -9,7 +9,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
-import type { Request } from 'express';
+import type { AuthenticatedRequest } from '../auth/authenticated-request.interface';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { BatchesService } from './batches.service';
 import { CreateIssuanceBatchDto } from './dto/batch.dto';
@@ -19,18 +19,18 @@ import { CreateIssuanceBatchDto } from './dto/batch.dto';
 @Controller('issuance-batches')
 @UseGuards(JwtAuthGuard)
 export class BatchesController {
-  constructor(private readonly batches: BatchesService) { }
+  constructor(private readonly batches: BatchesService) {}
 
   @Get()
   @ApiOperation({ summary: 'List issuance batches' })
-  findAll(@Req() req: Request) {
+  findAll(@Req() req: AuthenticatedRequest) {
     const user = this.requireOrganizationUser(req);
     return this.batches.findAll(user.organization_id);
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Get batch progress and row results' })
-  findOne(@Req() req: Request, @Param('id') id: string) {
+  findOne(@Req() req: AuthenticatedRequest, @Param('id') id: string) {
     const user = this.requireOrganizationUser(req);
     return this.batches.findOne(id, user.organization_id);
   }
@@ -38,10 +38,11 @@ export class BatchesController {
   @Post()
   @ApiOperation({
     summary: 'Import rows as DRAFT or issue certificates',
-    description: 'mode=DRAFT_ONLY (staff) creates drafts only. mode=FULL (issuer) creates and approves.',
+    description:
+      'mode=DRAFT_ONLY (staff) creates drafts only. mode=FULL (issuer) creates and approves.',
   })
-  create(@Req() req: Request, @Body() dto: CreateIssuanceBatchDto) {
-    const user = req.user as any;
+  create(@Req() req: AuthenticatedRequest, @Body() dto: CreateIssuanceBatchDto) {
+    const user = req.user;
     const mode = dto.mode || 'FULL';
     if (mode === 'FULL' && user.role !== 'issuer') {
       throw new ForbiddenException(
@@ -65,11 +66,11 @@ export class BatchesController {
   @Post(':batchId/items/:itemId/retry')
   @ApiOperation({ summary: 'Retry one failed batch row' })
   retry(
-    @Req() req: Request,
+    @Req() req: AuthenticatedRequest,
     @Param('batchId') batchId: string,
     @Param('itemId') itemId: string,
   ) {
-    const user = req.user as any;
+    const user = req.user;
     if (user.role !== 'issuer') {
       throw new ForbiddenException(
         'Only issuing organization administrators can retry batch rows',
@@ -81,8 +82,8 @@ export class BatchesController {
     });
   }
 
-  private requireOrganizationUser(req: Request) {
-    const user = req.user as any;
+  private requireOrganizationUser(req: AuthenticatedRequest) {
+    const user = req.user;
     if (user.role !== 'issuer' && user.role !== 'staff') {
       throw new ForbiddenException(
         'Only organization accounts can view issuance batches',

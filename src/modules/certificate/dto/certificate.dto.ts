@@ -21,7 +21,8 @@ export class CreateCertificateDto {
 
   @ApiProperty({
     example: 'Nguyễn Văn A',
-    description: 'Full name of the student (optional, fetched from DB if omitted)',
+    description:
+      'Full name of the student (optional, fetched from DB if omitted)',
     required: false,
   })
   @IsString()
@@ -207,4 +208,3 @@ export class TemplateBatchIssueDto {
   @IsOptional()
   template_id?: string;
 }
-

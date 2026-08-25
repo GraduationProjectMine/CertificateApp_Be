@@ -12,9 +12,20 @@ import {
   BadRequestException,
   Logger,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiTags, ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
-import type { Request } from 'express';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiTags,
+  ApiProperty,
+} from '@nestjs/swagger';
+import {
+  IsBoolean,
+  IsEmail,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+} from 'class-validator';
+import type { AuthenticatedRequest } from '../auth/authenticated-request.interface';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { MonitorService } from './monitor.service';
 import { IssuerService } from '../issuer/issuer.service';
@@ -66,8 +77,8 @@ export class MonitorController {
     private readonly blockchainService: BlockchainService,
   ) {}
 
-  private checkSuperAdmin(req: Request) {
-    const user = req.user as any;
+  private checkSuperAdmin(req: AuthenticatedRequest) {
+    const user = req.user;
     if (user?.role !== 'super_admin') {
       throw new ForbiddenException(
         'Only System Administrators (super_admin) can perform this action',
@@ -79,26 +90,26 @@ export class MonitorController {
   @ApiOperation({
     summary: 'Get blockchain, wallet and IPFS health with recent transactions',
   })
-  getOverview(@Req() req: Request) {
+  getOverview(@Req() req: AuthenticatedRequest) {
     this.checkSuperAdmin(req);
     return this.monitorService.getOverview();
   }
 
   @Get('issuers')
   @ApiOperation({
-    summary: 'Get all issuing organizations with on-chain authorization status (System Admin)',
+    summary:
+      'Get all issuing organizations with on-chain authorization status (System Admin)',
   })
-  async getAllIssuers(@Req() req: Request) {
+  async getAllIssuers(@Req() req: AuthenticatedRequest) {
     this.checkSuperAdmin(req);
     const issuers = await this.issuerService.findAll();
-    
+
     return Promise.all(
       issuers.map(async (org) => {
         let is_onchain_authorized = false;
         if (org.wallet_address && this.blockchainService.isInitialized()) {
-          is_onchain_authorized = await this.blockchainService.isIssuerAuthorized(
-            org.wallet_address,
-          );
+          is_onchain_authorized =
+            await this.blockchainService.isIssuerAuthorized(org.wallet_address);
         }
         return {
           ...org,
@@ -112,14 +123,18 @@ export class MonitorController {
   @ApiOperation({
     summary: 'Create a new issuing organization (System Admin)',
   })
-  async createIssuer(@Req() req: Request, @Body() dto: AdminCreateIssuerDto) {
+  async createIssuer(@Req() req: AuthenticatedRequest, @Body() dto: AdminCreateIssuerDto) {
     this.checkSuperAdmin(req);
     if (!dto.organization_name || !dto.contact_email) {
-      throw new BadRequestException('Organization name and contact email are required');
+      throw new BadRequestException(
+        'Organization name and contact email are required',
+      );
     }
     const existing = await this.issuerService.findByEmail(dto.contact_email);
     if (existing) {
-      throw new BadRequestException('Organization with this contact email already exists');
+      throw new BadRequestException(
+        'Organization with this contact email already exists',
+      );
     }
 
     const org = await this.issuerService.create(
@@ -129,12 +144,16 @@ export class MonitorController {
     );
 
     if (dto.is_verified) {
-      const updated = await this.issuerService.update(org.organization_id, { is_verified: true });
+      const updated = await this.issuerService.update(org.organization_id, {
+        is_verified: true,
+      });
       if (org.wallet_address && this.blockchainService.isInitialized()) {
         try {
           await this.blockchainService.authorizeIssuer(org.wallet_address);
         } catch (err) {
-          this.logger.warn(`Failed to authorize new issuer on blockchain: ${err.message}`);
+          this.logger.warn(
+            `Failed to authorize new issuer on blockchain: ${err.message}`,
+          );
         }
       }
       return updated;
@@ -145,28 +164,39 @@ export class MonitorController {
 
   @Put('issuers/:id/verify')
   @ApiOperation({
-    summary: 'Update issuer verification and sync Smart Contract authorization on-chain (System Admin)',
+    summary:
+      'Update issuer verification and sync Smart Contract authorization on-chain (System Admin)',
   })
   async updateIssuerVerification(
-    @Req() req: Request,
+    @Req() req: AuthenticatedRequest,
     @Param('id') id: string,
     @Body() dto: AdminVerifyIssuerDto,
   ) {
     this.checkSuperAdmin(req);
-    const updated = await this.issuerService.update(id, { is_verified: dto.is_verified });
+    const updated = await this.issuerService.update(id, {
+      is_verified: dto.is_verified,
+    });
 
     // Sync on-chain authorization if wallet_address is configured
     if (updated.wallet_address && this.blockchainService.isInitialized()) {
       try {
         if (dto.is_verified) {
-          const isAuth = await this.blockchainService.isIssuerAuthorized(updated.wallet_address);
+          const isAuth = await this.blockchainService.isIssuerAuthorized(
+            updated.wallet_address,
+          );
           if (!isAuth) {
-            await this.blockchainService.authorizeIssuer(updated.wallet_address);
+            await this.blockchainService.authorizeIssuer(
+              updated.wallet_address,
+            );
           }
         } else {
-          const isAuth = await this.blockchainService.isIssuerAuthorized(updated.wallet_address);
+          const isAuth = await this.blockchainService.isIssuerAuthorized(
+            updated.wallet_address,
+          );
           if (isAuth) {
-            await this.blockchainService.deauthorizeIssuer(updated.wallet_address);
+            await this.blockchainService.deauthorizeIssuer(
+              updated.wallet_address,
+            );
           }
         }
       } catch (err) {
@@ -189,13 +219,17 @@ export class MonitorController {
 
   @Delete('issuers/:id')
   @ApiOperation({
-    summary: 'Soft-delete issuing organization (changes status to unverified and revokes on-chain) (System Admin)',
+    summary:
+      'Soft-delete issuing organization (changes status to unverified and revokes on-chain) (System Admin)',
   })
-  async deleteIssuer(@Req() req: Request, @Param('id') id: string) {
+  async deleteIssuer(@Req() req: AuthenticatedRequest, @Param('id') id: string) {
     this.checkSuperAdmin(req);
     const result = await this.issuerService.delete(id);
 
-    if (result.organization.wallet_address && this.blockchainService.isInitialized()) {
+    if (
+      result.organization.wallet_address &&
+      this.blockchainService.isInitialized()
+    ) {
       try {
         const isAuth = await this.blockchainService.isIssuerAuthorized(
           result.organization.wallet_address,
@@ -206,7 +240,9 @@ export class MonitorController {
           );
         }
       } catch (err) {
-        this.logger.warn(`On-chain deauthorization error during soft delete: ${err.message}`);
+        this.logger.warn(
+          `On-chain deauthorization error during soft delete: ${err.message}`,
+        );
       }
     }
 

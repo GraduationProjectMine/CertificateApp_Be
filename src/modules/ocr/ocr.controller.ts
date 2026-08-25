@@ -12,8 +12,15 @@ import {
   ForbiddenException,
 } from '@nestjs/common';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
-import { ApiTags, ApiConsumes, ApiBody, ApiResponse, ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
-import type { Request } from 'express';
+import {
+  ApiTags,
+  ApiConsumes,
+  ApiBody,
+  ApiResponse,
+  ApiBearerAuth,
+  ApiOperation,
+} from '@nestjs/swagger';
+import type { AuthenticatedRequest } from '../auth/authenticated-request.interface';
 import { OcrService } from './ocr.service';
 import { DiplomaParserService } from './diploma-parser.service';
 import { OcrResponseDto, DiplomaExtractionResponseDto } from './ocr.dto';
@@ -88,13 +95,15 @@ export class OcrController {
     description: 'Forbidden - Only organization admins and staff can use OCR',
   })
   async extractText(
-    @Req() req: Request,
+    @Req() req: AuthenticatedRequest,
     @UploadedFile() file: any,
     @Query('language') language: string = 'eng',
   ): Promise<OcrResponseDto> {
-    const user = req.user as any;
+    const user = req.user;
     if (user.role !== 'issuer' && user.role !== 'staff') {
-      throw new ForbiddenException('Only issuing organization accounts and staff can use OCR');
+      throw new ForbiddenException(
+        'Only issuing organization accounts and staff can use OCR',
+      );
     }
 
     if (!file) {
@@ -158,13 +167,15 @@ export class OcrController {
     description: 'Forbidden - Only organization admins and staff can use OCR',
   })
   async extractDiploma(
-    @Req() req: Request,
+    @Req() req: AuthenticatedRequest,
     @UploadedFile() file: any,
     @Query('language') language: string = 'vie',
   ): Promise<DiplomaExtractionResponseDto> {
-    const user = req.user as any;
+    const user = req.user;
     if (user.role !== 'issuer' && user.role !== 'staff') {
-      throw new ForbiddenException('Only issuing organization accounts and staff can use OCR');
+      throw new ForbiddenException(
+        'Only issuing organization accounts and staff can use OCR',
+      );
     }
 
     if (!file) {
@@ -231,15 +242,19 @@ export class OcrController {
       required: ['files'],
     },
   })
-  @ApiOperation({ summary: 'Extract data from multiple diploma images in batch' })
+  @ApiOperation({
+    summary: 'Extract data from multiple diploma images in batch',
+  })
   async extractDiplomasBatch(
-    @Req() req: Request,
+    @Req() req: AuthenticatedRequest,
     @UploadedFiles() files: Array<Express.Multer.File>,
     @Query('language') language: string = 'vie',
   ) {
-    const user = req.user as any;
+    const user = req.user;
     if (user.role !== 'issuer' && user.role !== 'staff') {
-      throw new ForbiddenException('Only issuing organization accounts and staff can use OCR');
+      throw new ForbiddenException(
+        'Only issuing organization accounts and staff can use OCR',
+      );
     }
 
     if (!files || files.length === 0) {
@@ -263,7 +278,8 @@ export class OcrController {
             data,
             accuracy: ocrResult.accuracy,
             rawText: ocrResult.extractedText,
-            validationErrors: Object.keys(errors).length > 0 ? errors : undefined,
+            validationErrors:
+              Object.keys(errors).length > 0 ? errors : undefined,
           };
         } catch (err: any) {
           return {

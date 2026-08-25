@@ -30,7 +30,9 @@ export class DisputeService {
     }
 
     if (cert.student_id !== studentId) {
-      throw new ForbiddenException('Bạn chỉ có thể gửi yêu cầu cho văn bằng của chính mình.');
+      throw new ForbiddenException(
+        'Bạn chỉ có thể gửi yêu cầu cho văn bằng của chính mình.',
+      );
     }
 
     // Enforce DRAFT status rule
@@ -157,7 +159,9 @@ export class DisputeService {
     const dispute = await this.findOne(id);
 
     if (dispute.organization_id !== organizationId) {
-      throw new ForbiddenException('Bạn không có quyền xử lý yêu cầu của tổ chức khác.');
+      throw new ForbiddenException(
+        'Bạn không có quyền xử lý yêu cầu của tổ chức khác.',
+      );
     }
 
     const updated = await this.prisma.dispute.update({
@@ -179,7 +183,8 @@ export class DisputeService {
 
     // Notify student about review decision
     try {
-      const decisionText = dto.decision === 'APPROVED' ? 'chấp thuận' : 'từ chối';
+      const decisionText =
+        dto.decision === 'APPROVED' ? 'chấp thuận' : 'từ chối';
       await this.notificationsService.create({
         student_id: dispute.student_id,
         organization_id: dispute.organization_id,

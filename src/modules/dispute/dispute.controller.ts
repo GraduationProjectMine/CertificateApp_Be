@@ -10,8 +10,13 @@ import {
   UseGuards,
   ForbiddenException,
 } from '@nestjs/common';
-import type { Request } from 'express';
-import { ApiTags, ApiOperation, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
+import type { AuthenticatedRequest } from '../auth/authenticated-request.interface';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiBearerAuth,
+  ApiQuery,
+} from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { DisputeService } from './dispute.service';
 import { CreateDisputeDto } from './dto/create-dispute.dto';
@@ -25,35 +30,50 @@ export class DisputeController {
   constructor(private readonly disputeService: DisputeService) {}
 
   @Post()
-  @ApiOperation({ summary: '[Student] Create correction request for DRAFT certificate' })
-  async create(@Req() req: Request, @Body() dto: CreateDisputeDto) {
-    const user = req.user as any;
+  @ApiOperation({
+    summary: '[Student] Create correction request for DRAFT certificate',
+  })
+  async create(@Req() req: AuthenticatedRequest, @Body() dto: CreateDisputeDto) {
+    const user = req.user;
     if (user.role !== 'student') {
-      throw new ForbiddenException('Chỉ có sinh viên mới có thể gửi yêu cầu chỉnh sửa.');
+      throw new ForbiddenException(
+        'Chỉ có sinh viên mới có thể gửi yêu cầu chỉnh sửa.',
+      );
     }
-    return this.disputeService.createDispute(user.id || user.sub, dto);
+    return this.disputeService.createDispute(user.id, dto);
   }
 
   @Get()
   @ApiOperation({ summary: '[Student] List my correction requests' })
-  async findMyDisputes(@Req() req: Request) {
-    const user = req.user as any;
+  async findMyDisputes(@Req() req: AuthenticatedRequest) {
+    const user = req.user;
     if (user.role !== 'student') {
-      throw new ForbiddenException('Chỉ có sinh viên mới có thể xem danh sách yêu cầu của mình.');
+      throw new ForbiddenException(
+        'Chỉ có sinh viên mới có thể xem danh sách yêu cầu của mình.',
+      );
     }
-    return this.disputeService.findByStudent(user.id || user.sub);
+    return this.disputeService.findByStudent(user.id);
   }
 
   @Get('org/list')
-  @ApiOperation({ summary: '[Issuer/Staff] List organization correction requests' })
-  @ApiQuery({ name: 'status', required: false, description: 'Filter status (PENDING, APPROVED, REJECTED)' })
-  async findOrgDisputes(
-    @Req() req: Request,
-    @Query('status') status?: string,
-  ) {
-    const user = req.user as any;
-    if (user.role !== 'issuer' && user.role !== 'staff' && user.role !== 'super_admin') {
-      throw new ForbiddenException('Chỉ có tổ chức phát hành hoặc nhân viên mới có quyền xem danh sách.');
+  @ApiOperation({
+    summary: '[Issuer/Staff] List organization correction requests',
+  })
+  @ApiQuery({
+    name: 'status',
+    required: false,
+    description: 'Filter status (PENDING, APPROVED, REJECTED)',
+  })
+  async findOrgDisputes(@Req() req: AuthenticatedRequest, @Query('status') status?: string) {
+    const user = req.user;
+    if (
+      user.role !== 'issuer' &&
+      user.role !== 'staff' &&
+      user.role !== 'super_admin'
+    ) {
+      throw new ForbiddenException(
+        'Chỉ có tổ chức phát hành hoặc nhân viên mới có quyền xem danh sách.',
+      );
     }
     return this.disputeService.findByOrganization(user.organization_id, status);
   }
@@ -67,18 +87,24 @@ export class DisputeController {
   @Put(':id/review')
   @ApiOperation({ summary: '[Issuer/Staff] Review correction request' })
   async review(
-    @Req() req: Request,
+    @Req() req: AuthenticatedRequest,
     @Param('id') id: string,
     @Body() dto: ReviewDisputeDto,
   ) {
-    const user = req.user as any;
-    if (user.role !== 'issuer' && user.role !== 'staff' && user.role !== 'super_admin') {
-      throw new ForbiddenException('Chỉ có tổ chức phát hành hoặc nhân viên mới có quyền xử lý yêu cầu.');
+    const user = req.user;
+    if (
+      user.role !== 'issuer' &&
+      user.role !== 'staff' &&
+      user.role !== 'super_admin'
+    ) {
+      throw new ForbiddenException(
+        'Chỉ có tổ chức phát hành hoặc nhân viên mới có quyền xử lý yêu cầu.',
+      );
     }
     return this.disputeService.reviewDispute(
       id,
       user.organization_id,
-      user.id || user.sub,
+      user.id,
       dto,
     );
   }

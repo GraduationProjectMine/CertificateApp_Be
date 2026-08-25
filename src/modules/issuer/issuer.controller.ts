@@ -16,7 +16,7 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import type { Request } from 'express';
+import type { AuthenticatedRequest } from '../auth/authenticated-request.interface';
 import {
   ApiTags,
   ApiOperation,
@@ -77,8 +77,8 @@ export class IssuerController {
 
   @Get()
   @ApiOperation({ summary: 'Get current organization details' })
-  async getProfile(@Req() req: Request) {
-    const user = req.user as any;
+  async getProfile(@Req() req: AuthenticatedRequest) {
+    const user = req.user;
     if (user.role !== 'issuer' && user.role !== 'staff') {
       throw new ForbiddenException(
         'Only issuing organization accounts and staff can view organization details',
@@ -89,11 +89,8 @@ export class IssuerController {
 
   @Put()
   @ApiOperation({ summary: 'Update current organization details' })
-  async updateProfile(
-    @Req() req: Request,
-    @Body() dto: UpdateOrganizationDto,
-  ) {
-    const user = req.user as any;
+  async updateProfile(@Req() req: AuthenticatedRequest, @Body() dto: UpdateOrganizationDto) {
+    const user = req.user;
     if (user.role !== 'issuer') {
       throw new ForbiddenException(
         'Only organization administrators can update organization details',
@@ -134,8 +131,8 @@ export class IssuerController {
     status: 403,
     description: 'Forbidden - Only organization issuer admin can upload logo',
   })
-  async uploadLogo(@Req() req: Request, @UploadedFile() file: any) {
-    const user = req.user as any;
+  async uploadLogo(@Req() req: AuthenticatedRequest, @UploadedFile() file: any) {
+    const user = req.user;
     if (user.role !== 'issuer') {
       throw new ForbiddenException(
         'Only issuing organization accounts can upload organization logo',
@@ -146,8 +143,6 @@ export class IssuerController {
     }
     return this.issuerService.uploadLogo(user.organization_id, file);
   }
-
-
 
   @Post('staff')
   @HttpCode(HttpStatus.CREATED)
@@ -164,8 +159,8 @@ export class IssuerController {
     status: 403,
     description: 'Forbidden - Only organization admin can perform this action',
   })
-  async createStaff(@Req() req: Request, @Body() dto: CreateStaffDto) {
-    const issuer = req.user as any;
+  async createStaff(@Req() req: AuthenticatedRequest, @Body() dto: CreateStaffDto) {
+    const issuer = req.user;
     if (issuer.role !== 'issuer') {
       throw new ForbiddenException(
         'Only organization administrators can perform this action',
@@ -204,8 +199,8 @@ export class IssuerController {
     status: 403,
     description: 'Forbidden - Only organization admin can perform this action',
   })
-  async createStudent(@Req() req: Request, @Body() dto: CreateStudentDto) {
-    const issuer = req.user as any;
+  async createStudent(@Req() req: AuthenticatedRequest, @Body() dto: CreateStudentDto) {
+    const issuer = req.user;
     if (issuer.role !== 'issuer') {
       throw new ForbiddenException(
         'Only organization administrators can perform this action',

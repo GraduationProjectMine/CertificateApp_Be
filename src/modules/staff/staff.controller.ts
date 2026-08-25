@@ -10,7 +10,7 @@ import {
   ForbiddenException,
   NotFoundException,
 } from '@nestjs/common';
-import type { Request } from 'express';
+import type { AuthenticatedRequest } from '../auth/authenticated-request.interface';
 import {
   ApiTags,
   ApiOperation,
@@ -31,25 +31,31 @@ export class StaffController {
 
   @Get()
   @ApiOperation({ summary: 'Get all staff members of the organization' })
-  async findAll(@Req() req: Request) {
-    const user = req.user as any;
+  async findAll(@Req() req: AuthenticatedRequest) {
+    const user = req.user;
     if (user.role !== 'issuer' && user.role !== 'staff') {
       throw new ForbiddenException('Only organization accounts can view staff');
     }
-    const staffList = await this.staffService.findByOrganization(user.organization_id);
+    const staffList = await this.staffService.findByOrganization(
+      user.organization_id,
+    );
     return staffList.map(({ password, ...staff }) => staff);
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Get a staff member by ID' })
-  async findOne(@Req() req: Request, @Param('id') id: string) {
-    const user = req.user as any;
+  async findOne(@Req() req: AuthenticatedRequest, @Param('id') id: string) {
+    const user = req.user;
     if (user.role !== 'issuer' && user.role !== 'staff') {
-      throw new ForbiddenException('Only organization accounts can view staff details');
+      throw new ForbiddenException(
+        'Only organization accounts can view staff details',
+      );
     }
     const staff = await this.staffService.findById(id);
     if (!staff || staff.organization_id !== user.organization_id) {
-      throw new NotFoundException('Staff member not found or does not belong to your organization');
+      throw new NotFoundException(
+        'Staff member not found or does not belong to your organization',
+      );
     }
     const { password, ...result } = staff;
     return result;
@@ -59,23 +65,27 @@ export class StaffController {
   @ApiOperation({ summary: '[Issuer] Update a staff member' })
   @ApiBody({ type: UpdateStaffDto })
   async update(
-    @Req() req: Request,
+    @Req() req: AuthenticatedRequest,
     @Param('id') id: string,
     @Body() dto: UpdateStaffDto,
   ) {
-    const user = req.user as any;
+    const user = req.user;
     if (user.role !== 'issuer') {
-      throw new ForbiddenException('Only organization administrators can update staff');
+      throw new ForbiddenException(
+        'Only organization administrators can update staff',
+      );
     }
     return this.staffService.update(id, user.organization_id, dto);
   }
 
   @Delete(':id')
   @ApiOperation({ summary: '[Issuer] Delete a staff member' })
-  async delete(@Req() req: Request, @Param('id') id: string) {
-    const user = req.user as any;
+  async delete(@Req() req: AuthenticatedRequest, @Param('id') id: string) {
+    const user = req.user;
     if (user.role !== 'issuer') {
-      throw new ForbiddenException('Only organization administrators can delete staff');
+      throw new ForbiddenException(
+        'Only organization administrators can delete staff',
+      );
     }
     await this.staffService.delete(id, user.organization_id);
     return { message: 'Staff member deleted successfully' };

@@ -11,20 +11,46 @@ import * as crypto from 'crypto';
 const SALT_ROUNDS = 12;
 
 function parseCsv(text: string): { name: string; email: string }[] {
-  const lines = text.split(/\r?\n/).map(l => l.trim()).filter(l => l.length > 0);
-  if (lines.length < 2) throw new BadRequestException('File CSV phải có header và ít nhất 1 dòng dữ liệu');
+  const lines = text
+    .split(/\r?\n/)
+    .map((l) => l.trim())
+    .filter((l) => l.length > 0);
+  if (lines.length < 2)
+    throw new BadRequestException(
+      'File CSV phải có header và ít nhất 1 dòng dữ liệu',
+    );
 
   const header = lines[0].toLowerCase().replace(/["']/g, '');
-  const cols = header.split(',').map(c => c.trim());
-  const nameIdx = cols.findIndex(c => c === 'name' || c === 'fullname' || c === 'tên' || c === 'ten' || c === 'họ tên' || c === 'ho ten');
-  const emailIdx = cols.findIndex(c => c === 'email' || c === 'e-mail' || c === 'thư điện tử' || c === 'thu dien tu');
+  const cols = header.split(',').map((c) => c.trim());
+  const nameIdx = cols.findIndex(
+    (c) =>
+      c === 'name' ||
+      c === 'fullname' ||
+      c === 'tên' ||
+      c === 'ten' ||
+      c === 'họ tên' ||
+      c === 'ho ten',
+  );
+  const emailIdx = cols.findIndex(
+    (c) =>
+      c === 'email' ||
+      c === 'e-mail' ||
+      c === 'thư điện tử' ||
+      c === 'thu dien tu',
+  );
 
-  if (nameIdx === -1) throw new BadRequestException('Không tìm thấy cột "name" hoặc "fullname" trong file CSV');
-  if (emailIdx === -1) throw new BadRequestException('Không tìm thấy cột "email" trong file CSV');
+  if (nameIdx === -1)
+    throw new BadRequestException(
+      'Không tìm thấy cột "name" hoặc "fullname" trong file CSV',
+    );
+  if (emailIdx === -1)
+    throw new BadRequestException('Không tìm thấy cột "email" trong file CSV');
 
   const rows: { name: string; email: string }[] = [];
   for (let i = 1; i < lines.length; i++) {
-    const vals = lines[i].split(',').map(v => v.trim().replace(/^["']|["']$/g, ''));
+    const vals = lines[i]
+      .split(',')
+      .map((v) => v.trim().replace(/^["']|["']$/g, ''));
     const name = vals[nameIdx]?.trim();
     const email = vals[emailIdx]?.trim();
     if (!name && !email) continue;
@@ -36,7 +62,7 @@ function parseCsv(text: string): { name: string; email: string }[] {
 
 @Injectable()
 export class StudentService {
-  constructor(private readonly prisma: PrismaService) { }
+  constructor(private readonly prisma: PrismaService) {}
 
   async create(
     student_fullName: string,
@@ -93,7 +119,15 @@ export class StudentService {
       },
     });
 
-    const results: { row: number; name: string; email: string; status: string; error?: string; student_id?: string; password?: string }[] = [];
+    const results: {
+      row: number;
+      name: string;
+      email: string;
+      status: string;
+      error?: string;
+      student_id?: string;
+      password?: string;
+    }[] = [];
     let success = 0;
     let failed = 0;
 
@@ -101,7 +135,7 @@ export class StudentService {
       where: { organization_id },
       select: { email: true },
     });
-    const emailSet = new Set(existingEmails.map(e => e.email.toLowerCase()));
+    const emailSet = new Set(existingEmails.map((e) => e.email.toLowerCase()));
 
     for (let i = 0; i < rows.length; i++) {
       const { name, email } = rows[i];
@@ -109,26 +143,50 @@ export class StudentService {
 
       if (!email) {
         failed++;
-        results.push({ row: rowNum, name, email, status: 'failed', error: 'Thiếu email' });
+        results.push({
+          row: rowNum,
+          name,
+          email,
+          status: 'failed',
+          error: 'Thiếu email',
+        });
         continue;
       }
 
       if (!name || name.length < 2) {
         failed++;
-        results.push({ row: rowNum, name, email, status: 'failed', error: 'Tên phải có ít nhất 2 ký tự' });
+        results.push({
+          row: rowNum,
+          name,
+          email,
+          status: 'failed',
+          error: 'Tên phải có ít nhất 2 ký tự',
+        });
         continue;
       }
 
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(email)) {
         failed++;
-        results.push({ row: rowNum, name, email, status: 'failed', error: 'Email không đúng định dạng' });
+        results.push({
+          row: rowNum,
+          name,
+          email,
+          status: 'failed',
+          error: 'Email không đúng định dạng',
+        });
         continue;
       }
 
       if (emailSet.has(email.toLowerCase())) {
         failed++;
-        results.push({ row: rowNum, name, email, status: 'failed', error: 'Email đã tồn tại trong hệ thống' });
+        results.push({
+          row: rowNum,
+          name,
+          email,
+          status: 'failed',
+          error: 'Email đã tồn tại trong hệ thống',
+        });
         continue;
       }
 
@@ -160,7 +218,13 @@ export class StudentService {
         });
       } catch (err: any) {
         failed++;
-        results.push({ row: rowNum, name, email, status: 'failed', error: err.message || 'Lỗi tạo tài khoản' });
+        results.push({
+          row: rowNum,
+          name,
+          email,
+          status: 'failed',
+          error: err.message || 'Lỗi tạo tài khoản',
+        });
       }
     }
 
@@ -203,7 +267,12 @@ export class StudentService {
   async update(
     studentId: string,
     organizationId: string,
-    data: { name?: string; email?: string; isActive?: boolean; password?: string },
+    data: {
+      name?: string;
+      email?: string;
+      isActive?: boolean;
+      password?: string;
+    },
   ) {
     const student = await this.prisma.studentAccount.findUnique({
       where: { student_id: studentId },

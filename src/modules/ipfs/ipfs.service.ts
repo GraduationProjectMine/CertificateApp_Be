@@ -1,6 +1,10 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { createHash } from 'crypto';
-import { StoreCertificateDto, StoreCertificateResponseDto, StoreOnlineCertificateDto } from './ipfs.dto';
+import {
+  StoreCertificateDto,
+  StoreCertificateResponseDto,
+  StoreOnlineCertificateDto,
+} from './ipfs.dto';
 
 @Injectable()
 export class IpfsService {
@@ -179,8 +183,16 @@ export class IpfsService {
     fileName?: string,
     mimeType: string = 'application/octet-stream',
     metadata?: Record<string, string>,
-  ): Promise<{ cid: string; ipfsUrl: string; sha3Hash: string; fileName: string }> {
-    const formattedFileName = this.generateFormattedFileName(fileName, mimeType);
+  ): Promise<{
+    cid: string;
+    ipfsUrl: string;
+    sha3Hash: string;
+    fileName: string;
+  }> {
+    const formattedFileName = this.generateFormattedFileName(
+      fileName,
+      mimeType,
+    );
     const sha3Hash = this.calculateFileSha3Hash(fileBuffer);
 
     const headers: Record<string, string> = {};
@@ -346,4 +358,3 @@ export class IpfsService {
     }
   }
 }
-

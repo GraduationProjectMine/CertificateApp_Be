@@ -3,12 +3,13 @@ import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { StaffService } from '../staff/staff.service';
 import { StudentService } from '../student/student.service';
+import type { AuthenticatedUser, UserRole } from './authenticated-request.interface';
 
 export interface JwtPayload {
   sub: string;
   email: string;
   name: string;
-  role: 'issuer' | 'staff' | 'student' | 'super_admin';
+  role: UserRole;
   organization_id: string;
 }
 
@@ -25,7 +26,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload: JwtPayload) {
+  async validate(payload: JwtPayload): Promise<AuthenticatedUser> {
     payload.role = payload.role?.toLowerCase() as JwtPayload['role'];
     if (payload.role === 'super_admin') {
       return {
@@ -38,7 +39,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       };
     }
 
-    const isStaffOrIssuer = payload.role === 'issuer' || payload.role === 'staff';
+    const isStaffOrIssuer =
+      payload.role === 'issuer' || payload.role === 'staff';
     const user = isStaffOrIssuer
       ? await this.staffService.findById(payload.sub)
       : await this.studentService.findById(payload.sub);
