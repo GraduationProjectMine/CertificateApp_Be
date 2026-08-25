@@ -11,7 +11,14 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiTags, ApiOperation, ApiResponse, ApiQuery, ApiConsumes, ApiBody } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiQuery,
+  ApiConsumes,
+  ApiBody,
+} from '@nestjs/swagger';
 import { VerifierService } from './verifier.service';
 import { VerifyQueryDto } from './dto/verify-query.dto';
 
@@ -23,12 +30,23 @@ export class VerifierController {
   @Get('verify')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
-    summary: 'Verify a certificate using its codes (serial and registry numbers)',
+    summary:
+      'Verify a certificate using its codes (serial and registry numbers)',
     description:
       'Publicly accessible endpoint (no login required) to verify if a certificate is valid, matches the blockchain registry, and retrieves the original data stored on IPFS.',
   })
-  @ApiQuery({ name: 'serialNumber', type: String, required: true, description: 'Serial number (Số hiệu)' })
-  @ApiQuery({ name: 'registryNumber', type: String, required: true, description: 'Registry number (Số vào sổ cấp bằng)' })
+  @ApiQuery({
+    name: 'serialNumber',
+    type: String,
+    required: true,
+    description: 'Serial number (Số hiệu)',
+  })
+  @ApiQuery({
+    name: 'registryNumber',
+    type: String,
+    required: true,
+    description: 'Registry number (Số vào sổ cấp bằng)',
+  })
   @ApiResponse({
     status: 200,
     description: 'Certificate verification completed successfully.',
@@ -52,7 +70,8 @@ export class VerifierController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
     summary: 'Get certificate details by ID publicly',
-    description: 'Retrieve certificate details and validation state by its UUID/ID without authentication.',
+    description:
+      'Retrieve certificate details and validation state by its UUID/ID without authentication.',
   })
   async getCertificateById(@Param('id') id: string) {
     return this.verifierService.getCertificateById(id);
@@ -61,8 +80,10 @@ export class VerifierController {
   @Get('verify-online')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
-    summary: 'Verify an online certificate (issued via template) using serial and registry numbers',
-    description: 'Publicly verify if an online certificate matches blockchain and IPFS.',
+    summary:
+      'Verify an online certificate (issued via template) using serial and registry numbers',
+    description:
+      'Publicly verify if an online certificate matches blockchain and IPFS.',
   })
   async verifyOnline(@Query() query: VerifyQueryDto) {
     return this.verifierService.verifyOnlineCertificate(
@@ -75,7 +96,8 @@ export class VerifierController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
     summary: 'Get online certificate details by ID publicly',
-    description: 'Retrieve online certificate details and validation state by UUID.',
+    description:
+      'Retrieve online certificate details and validation state by UUID.',
   })
   async getOnlineCertificateById(@Param('id') id: string) {
     return this.verifierService.getOnlineCertificateById(id);
@@ -85,8 +107,10 @@ export class VerifierController {
   @HttpCode(HttpStatus.OK)
   @UseInterceptors(FileInterceptor('file'))
   @ApiOperation({
-    summary: 'Public OCR scan of a diploma image to extract serial and registry numbers',
-    description: 'Scans a diploma image taken by camera or selected from device files and extracts serial and registry numbers for public verification.',
+    summary:
+      'Public OCR scan of a diploma image to extract serial and registry numbers',
+    description:
+      'Scans a diploma image taken by camera or selected from device files and extracts serial and registry numbers for public verification.',
   })
   @ApiConsumes('multipart/form-data')
   @ApiBody({
@@ -109,4 +133,3 @@ export class VerifierController {
     return this.verifierService.scanDiplomaOcr(file);
   }
 }
-

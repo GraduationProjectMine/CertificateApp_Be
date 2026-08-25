@@ -85,7 +85,8 @@ export class AuthController {
   @Post('refresh')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
-    summary: 'Refresh the access token using the HTTP-Only refresh token cookie',
+    summary:
+      'Refresh the access token using the HTTP-Only refresh token cookie',
   })
   @ApiResponse({
     status: 200,
@@ -151,12 +152,14 @@ export class AuthController {
   @Post('admin/nonce')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
-    summary: 'Request a challenge nonce for System Administrator MetaMask authentication',
+    summary:
+      'Request a challenge nonce for System Administrator MetaMask authentication',
   })
   @ApiBody({ type: MetaMaskNonceDto })
   @ApiResponse({
     status: 200,
-    description: 'Admin challenge message and temp token successfully generated',
+    description:
+      'Admin challenge message and temp token successfully generated',
   })
   async getAdminMetaMaskNonce(@Body() dto: MetaMaskNonceDto): Promise<any> {
     return this.authService.generateAdminMetaMaskNonce(dto.walletAddress);
@@ -198,7 +201,8 @@ export class AuthController {
   @Post('admin/metamask/login')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
-    summary: 'Authenticate System Administrator using MetaMask signature against SystemAdmin DB table',
+    summary:
+      'Authenticate System Administrator using MetaMask signature against SystemAdmin DB table',
   })
   @ApiBody({ type: MetaMaskLoginDto })
   @ApiResponse({
@@ -206,7 +210,10 @@ export class AuthController {
     description: 'System Admin successfully logged in',
     type: AuthResponseDto,
   })
-  @ApiResponse({ status: 403, description: 'Wallet address not authorized in SystemAdmin DB' })
+  @ApiResponse({
+    status: 403,
+    description: 'Wallet address not authorized in SystemAdmin DB',
+  })
   async loginAdminWithMetaMask(
     @Body() dto: MetaMaskLoginDto,
     @Res({ passthrough: true }) res: express.Response,

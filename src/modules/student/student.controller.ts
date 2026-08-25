@@ -31,19 +31,34 @@ import {
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { StudentService } from './student.service';
 import { CreateStudentDto } from '../issuer/dto/create-student.dto';
-import { IsEmail, IsString, MinLength, Matches, IsOptional, IsNotEmpty } from 'class-validator';
+import {
+  IsEmail,
+  IsString,
+  MinLength,
+  Matches,
+  IsOptional,
+  IsNotEmpty,
+} from 'class-validator';
 import * as bcrypt from 'bcrypt';
 
 const SALT_ROUNDS = 12;
 
 class UpdateProfileDto {
-  @ApiProperty({ example: 'Nguyễn Văn A', description: 'Full name', required: false })
+  @ApiProperty({
+    example: 'Nguyễn Văn A',
+    description: 'Full name',
+    required: false,
+  })
   @IsString()
   @MinLength(2)
   @IsOptional()
   name?: string;
 
-  @ApiProperty({ example: 'sv@example.com', description: 'Email', required: false })
+  @ApiProperty({
+    example: 'sv@example.com',
+    description: 'Email',
+    required: false,
+  })
   @IsEmail()
   @IsOptional()
   email?: string;
@@ -63,22 +78,38 @@ class ChangePasswordDto {
 }
 
 class UpdateStudentDto {
-  @ApiProperty({ example: 'Trần Thị C', description: 'Full name of student', required: false })
+  @ApiProperty({
+    example: 'Trần Thị C',
+    description: 'Full name of student',
+    required: false,
+  })
   @IsString()
   @MinLength(2)
   @IsOptional()
   name?: string;
 
-  @ApiProperty({ example: 'sinhvien@example.com', description: 'Email of student', required: false })
+  @ApiProperty({
+    example: 'sinhvien@example.com',
+    description: 'Email of student',
+    required: false,
+  })
   @IsEmail()
   @IsOptional()
   email?: string;
 
-  @ApiProperty({ example: false, description: 'Active status of student account', required: false })
+  @ApiProperty({
+    example: false,
+    description: 'Active status of student account',
+    required: false,
+  })
   @IsOptional()
   isActive?: boolean;
 
-  @ApiProperty({ example: 'StrongP@ss2', description: 'New password', required: false })
+  @ApiProperty({
+    example: 'StrongP@ss2',
+    description: 'New password',
+    required: false,
+  })
   @IsString()
   @MinLength(8)
   @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/)
@@ -109,9 +140,13 @@ export class StudentController {
   @Get('import/template')
   @ApiOperation({ summary: 'Download CSV template for student import' })
   async downloadTemplate(@Res() res: Response) {
-    const header = 'name,email\n"Nguyễn Văn A",sinhvien1@example.com\n"Trần Thị B",sinhvien2@example.com\n';
+    const header =
+      'name,email\n"Nguyễn Văn A",sinhvien1@example.com\n"Trần Thị B",sinhvien2@example.com\n';
     res.setHeader('Content-Type', 'text/csv; charset=utf-8');
-    res.setHeader('Content-Disposition', 'attachment; filename="student-import-template.csv"');
+    res.setHeader(
+      'Content-Disposition',
+      'attachment; filename="student-import-template.csv"',
+    );
     res.send(header);
   }
 
@@ -120,7 +155,9 @@ export class StudentController {
   async importHistory(@Req() req: Request) {
     const user = req.user as any;
     if (user.role !== 'issuer' && user.role !== 'staff') {
-      throw new ForbiddenException('Only issuing organization accounts and staff can view import history');
+      throw new ForbiddenException(
+        'Only issuing organization accounts and staff can view import history',
+      );
     }
     return this.studentService.getImportHistory(user.organization_id);
   }
@@ -129,7 +166,8 @@ export class StudentController {
   @ApiOperation({ summary: 'Student update own profile' })
   async updateProfile(@Req() req: Request, @Body() dto: UpdateProfileDto) {
     const user = req.user as any;
-    if (user.role !== 'student') throw new ForbiddenException('Only students can update their profile');
+    if (user.role !== 'student')
+      throw new ForbiddenException('Only students can update their profile');
     const student = await this.studentService.updateProfile(user.sub, dto);
     const { password, ...result } = student;
     return { message: 'Profile updated successfully', student: result };
@@ -139,8 +177,13 @@ export class StudentController {
   @ApiOperation({ summary: 'Student change own password' })
   async changePassword(@Req() req: Request, @Body() dto: ChangePasswordDto) {
     const user = req.user as any;
-    if (user.role !== 'student') throw new ForbiddenException('Only students can change their password');
-    await this.studentService.changePassword(user.sub, dto.currentPassword, dto.newPassword);
+    if (user.role !== 'student')
+      throw new ForbiddenException('Only students can change their password');
+    await this.studentService.changePassword(
+      user.sub,
+      dto.currentPassword,
+      dto.newPassword,
+    );
     return { message: 'Password changed successfully' };
   }
 
@@ -239,17 +282,18 @@ export class StudentController {
     },
   })
   @ApiOperation({ summary: 'Import students from CSV file' })
-  async import(
-    @Req() req: Request,
-    @UploadedFile() file: Express.Multer.File,
-  ) {
+  async import(@Req() req: Request, @UploadedFile() file: Express.Multer.File) {
     const user = req.user as any;
     if (user.role !== 'issuer' && user.role !== 'staff') {
-      throw new ForbiddenException('Only issuing organization accounts and staff can import students');
+      throw new ForbiddenException(
+        'Only issuing organization accounts and staff can import students',
+      );
     }
     if (!file) throw new BadRequestException('Vui lòng upload file CSV');
-    if (!file.originalname.endsWith('.csv')) throw new BadRequestException('Chỉ hỗ trợ file CSV');
-    if (file.size > 5 * 1024 * 1024) throw new BadRequestException('File không được quá 5MB');
+    if (!file.originalname.endsWith('.csv'))
+      throw new BadRequestException('Chỉ hỗ trợ file CSV');
+    if (file.size > 5 * 1024 * 1024)
+      throw new BadRequestException('File không được quá 5MB');
 
     return this.studentService.importFromCsv(
       file.buffer,

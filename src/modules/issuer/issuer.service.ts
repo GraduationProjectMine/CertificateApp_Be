@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
 
@@ -9,7 +13,11 @@ export class IssuerService {
     private readonly cloudinaryService: CloudinaryService,
   ) {}
 
-  async create(organization_name: string, contact_email: string, wallet_address?: string) {
+  async create(
+    organization_name: string,
+    contact_email: string,
+    wallet_address?: string,
+  ) {
     return this.prisma.issuingOrganization.create({
       data: {
         organization_name,
@@ -113,7 +121,7 @@ export class IssuerService {
     };
   }
 
-  //  changes the account status to unverified (is_verified = false) 
+  //  changes the account status to unverified (is_verified = false)
   async delete(id: string) {
     const org = await this.findById(id);
     if (!org) {
@@ -125,9 +133,10 @@ export class IssuerService {
       data: { is_verified: false },
     });
 
-    return { 
-      message: 'Organization status updated to unverified/inactive (soft deleted)', 
-      organization: updatedOrg 
+    return {
+      message:
+        'Organization status updated to unverified/inactive (soft deleted)',
+      organization: updatedOrg,
     };
   }
 }

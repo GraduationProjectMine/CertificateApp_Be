@@ -1,5 +1,9 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { v2 as cloudinary, UploadApiResponse, UploadApiErrorResponse } from 'cloudinary';
+import {
+  v2 as cloudinary,
+  UploadApiResponse,
+  UploadApiErrorResponse,
+} from 'cloudinary';
 
 @Injectable()
 export class CloudinaryService {
@@ -60,7 +64,10 @@ export class CloudinaryService {
             ? `${Date.now()}_${filename.replace(/\.[^/.]+$/, '').replace(/[^a-zA-Z0-9_-]/g, '_')}`
             : undefined,
         },
-        (error: UploadApiErrorResponse | undefined, result: UploadApiResponse | undefined) => {
+        (
+          error: UploadApiErrorResponse | undefined,
+          result: UploadApiResponse | undefined,
+        ) => {
           if (error) {
             let userFriendlyMsg = `Cloudinary upload error (${error.http_code || 403}): ${error.message}`;
 
@@ -76,7 +83,9 @@ export class CloudinaryService {
 
           if (!result) {
             return reject(
-              new InternalServerErrorException('Cloudinary upload error: Received empty response from server'),
+              new InternalServerErrorException(
+                'Cloudinary upload error: Received empty response from server',
+              ),
             );
           }
 

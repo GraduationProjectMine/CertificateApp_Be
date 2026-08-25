@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException, ForbiddenException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ForbiddenException,
+  BadRequestException,
+} from '@nestjs/common';
 import * as XLSX from 'xlsx';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { CreateTemplateDto } from './dto/create-template.dto';
@@ -63,7 +68,11 @@ export class TemplatesService {
 
     if (dto.is_default) {
       await this.prisma.certificateTemplate.updateMany({
-        where: { organization_id: organizationId, is_default: true, id: { not: id } },
+        where: {
+          organization_id: organizationId,
+          is_default: true,
+          id: { not: id },
+        },
         data: { is_default: false },
       });
     }
@@ -73,8 +82,12 @@ export class TemplatesService {
       data: {
         ...(dto.name !== undefined && { name: dto.name }),
         ...(dto.description !== undefined && { description: dto.description }),
-        ...(dto.design_data !== undefined && { design_data: dto.design_data as any }),
-        ...(dto.thumbnail_url !== undefined && { thumbnail_url: dto.thumbnail_url }),
+        ...(dto.design_data !== undefined && {
+          design_data: dto.design_data as any,
+        }),
+        ...(dto.thumbnail_url !== undefined && {
+          thumbnail_url: dto.thumbnail_url,
+        }),
         ...(dto.is_default !== undefined && { is_default: dto.is_default }),
       },
     });
@@ -115,8 +128,14 @@ export class TemplatesService {
     }
 
     const lower = originalName.toLowerCase();
-    if (!lower.endsWith('.csv') && !lower.endsWith('.xlsx') && !lower.endsWith('.xls')) {
-      throw new BadRequestException('Only CSV and Excel (.xlsx, .xls) files are supported');
+    if (
+      !lower.endsWith('.csv') &&
+      !lower.endsWith('.xlsx') &&
+      !lower.endsWith('.xls')
+    ) {
+      throw new BadRequestException(
+        'Only CSV and Excel (.xlsx, .xls) files are supported',
+      );
     }
 
     try {
@@ -134,7 +153,13 @@ export class TemplatesService {
 
       let headerRowIdx = -1;
       for (let i = 0; i < aoa.length; i++) {
-        const rowStr = (aoa[i] || []).map((c) => String(c ?? '').toLowerCase().trim()).join(' ');
+        const rowStr = (aoa[i] || [])
+          .map((c) =>
+            String(c ?? '')
+              .toLowerCase()
+              .trim(),
+          )
+          .join(' ');
         if (
           rowStr.includes('id sinh viên') ||
           rowStr.includes('student_id') ||
@@ -148,40 +173,95 @@ export class TemplatesService {
         }
       }
       if (headerRowIdx === -1) {
-        headerRowIdx = aoa.findIndex((r) => r && r.some((c) => String(c ?? '').trim().length > 0));
+        headerRowIdx = aoa.findIndex(
+          (r) => r && r.some((c) => String(c ?? '').trim().length > 0),
+        );
       }
       if (headerRowIdx === -1 || headerRowIdx >= aoa.length) {
         throw new BadRequestException('No valid headers found in file');
       }
 
-      const rawHeaders = (aoa[headerRowIdx] as string[]).map((h) => String(h ?? '').trim());
-      const validHdrIndices = rawHeaders.map((h, i) => (h ? i : -1)).filter((i) => i >= 0);
+      const rawHeaders = (aoa[headerRowIdx] as string[]).map((h) =>
+        String(h ?? '').trim(),
+      );
+      const validHdrIndices = rawHeaders
+        .map((h, i) => (h ? i : -1))
+        .filter((i) => i >= 0);
       const headers = validHdrIndices.map((i) => rawHeaders[i]);
 
-      const dataRows = aoa.slice(headerRowIdx + 1).filter((r: unknown[]) => r && r.some((c) => String(c ?? '').trim()));
+      const dataRows = aoa
+        .slice(headerRowIdx + 1)
+        .filter((r: unknown[]) => r && r.some((c) => String(c ?? '').trim()));
 
       const fieldAliasMap: Record<string, string[]> = {
-        student_id: ['id sinh viên', 'mã sinh viên', 'ma sv', 'student_id', 'student id', 'masv'],
-        student_fullName: ['họ và tên', 'họ tên', 'tên sinh viên', 'student_fullname', 'full_name', 'student_name', 'name', 'hoten'],
-        certificate_title: ['tên văn bằng', 'văn bằng', 'certificate_title', 'title', 'cert_title'],
+        student_id: [
+          'id sinh viên',
+          'mã sinh viên',
+          'ma sv',
+          'student_id',
+          'student id',
+          'masv',
+        ],
+        student_fullName: [
+          'họ và tên',
+          'họ tên',
+          'tên sinh viên',
+          'student_fullname',
+          'full_name',
+          'student_name',
+          'name',
+          'hoten',
+        ],
+        certificate_title: [
+          'tên văn bằng',
+          'văn bằng',
+          'certificate_title',
+          'title',
+          'cert_title',
+        ],
         dob: ['ngày sinh', 'dob', 'birth_date', 'date_of_birth', 'ngaysinh'],
         placeOfBirth: ['nơi sinh', 'placeofbirth', 'place_of_birth', 'noisinh'],
         gender: ['giới tính', 'gender', 'gioitinh', 'sex'],
         ethnicity: ['dân tộc', 'ethnicity', 'dantoc'],
-        schoolName: ['tên trường', 'trường', 'schoolname', 'school_name', 'school'],
-        examCohort: ['khóa', 'khóa học', 'năm tn', 'examcohort', 'exam_cohort', 'cohort'],
+        schoolName: [
+          'tên trường',
+          'trường',
+          'schoolname',
+          'school_name',
+          'school',
+        ],
+        examCohort: [
+          'khóa',
+          'khóa học',
+          'năm tn',
+          'examcohort',
+          'exam_cohort',
+          'cohort',
+        ],
         examBoard: ['hội đồng thi', 'examboard', 'exam_board', 'board'],
-        issueLocation: ['nơi cấp', 'issuelocation', 'issue_location', 'location'],
+        issueLocation: [
+          'nơi cấp',
+          'issuelocation',
+          'issue_location',
+          'location',
+        ],
         issueDate: ['ngày cấp', 'issuedate', 'issue_date', 'ngaycap'],
         serialNumber: ['số hiệu', 'serialnumber', 'serial_number', 'serial'],
-        registryNumber: ['số vào sổ', 'registrynumber', 'registry_number', 'registry'],
+        registryNumber: [
+          'số vào sổ',
+          'registrynumber',
+          'registry_number',
+          'registry',
+        ],
       };
 
       const columnMapping: Record<string, string> = {};
       for (const [targetKey, aliases] of Object.entries(fieldAliasMap)) {
         const foundHdr = headers.find((h) => {
           const lowerH = h.toLowerCase().trim();
-          return aliases.some((alias) => lowerH === alias || lowerH.includes(alias));
+          return aliases.some(
+            (alias) => lowerH === alias || lowerH.includes(alias),
+          );
         });
         if (foundHdr) {
           columnMapping[targetKey] = foundHdr;
@@ -193,18 +273,19 @@ export class TemplatesService {
         for (const [targetKey, hdrName] of Object.entries(columnMapping)) {
           const hdrIdx = headers.indexOf(hdrName);
           if (hdrIdx >= 0) {
-            record[targetKey] = String((r as unknown[])[validHdrIndices[hdrIdx]] ?? '').trim();
+            record[targetKey] = String(r[validHdrIndices[hdrIdx]] ?? '').trim();
           }
         }
         headers.forEach((h, hIdx) => {
-          const val = String((r as unknown[])[validHdrIndices[hIdx]] ?? '').trim();
+          const val = String(r[validHdrIndices[hIdx]] ?? '').trim();
           if (val && !record[h]) {
             record[h] = val;
           }
         });
 
         const missingFields: string[] = [];
-        if (!record.student_fullName && !record.student_id) missingFields.push('Họ tên / Mã SV');
+        if (!record.student_fullName && !record.student_id)
+          missingFields.push('Họ tên / Mã SV');
         if (!record.certificate_title) missingFields.push('Tên văn bằng');
 
         return {
@@ -228,7 +309,9 @@ export class TemplatesService {
       };
     } catch (err: any) {
       if (err instanceof BadRequestException) throw err;
-      throw new BadRequestException(`Failed to parse import file: ${err.message}`);
+      throw new BadRequestException(
+        `Failed to parse import file: ${err.message}`,
+      );
     }
   }
 }

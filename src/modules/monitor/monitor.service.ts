@@ -119,7 +119,8 @@ export class MonitorService {
           certificateCode: cert.serialNumber,
           certificateTitle: cert.certificate_title,
           studentName: cert.student_fullName,
-          organizationName: cert.organization_name || cert.organization?.organization_name,
+          organizationName:
+            cert.organization_name || cert.organization?.organization_name,
           creatorAddress: cert.organization?.wallet_address,
           action: 'REVOKE',
           transactionHash: cert.revoke_tx_hash,
@@ -135,7 +136,8 @@ export class MonitorService {
           certificateCode: cert.serialNumber,
           certificateTitle: cert.certificate_title,
           studentName: cert.student_fullName,
-          organizationName: cert.organization_name || cert.organization?.organization_name,
+          organizationName:
+            cert.organization_name || cert.organization?.organization_name,
           creatorAddress: cert.organization?.wallet_address,
           action: 'ISSUE',
           transactionHash: cert.tx_hash,
@@ -155,7 +157,8 @@ export class MonitorService {
           certificateCode: oc.serialNumber,
           certificateTitle: oc.certificate_title,
           studentName: oc.student_fullName,
-          organizationName: oc.organization_name || oc.organization?.organization_name,
+          organizationName:
+            oc.organization_name || oc.organization?.organization_name,
           creatorAddress: oc.organization?.wallet_address,
           action: 'ISSUE',
           transactionHash: oc.tx_hash,
@@ -183,25 +186,30 @@ export class MonitorService {
       .slice(0, 50);
 
     const allCids = [
-      ...certificates.filter((c) => c.ipfs_cid).map((c) => ({
-        certificateId: c.certificate_id,
-        certificateCode: c.serialNumber,
-        cid: c.ipfs_cid!,
-        createdAt: c.issuedAt,
-      })),
-      ...onlineCertificates.filter((oc) => oc.ipfs_cid).map((oc) => ({
-        certificateId: oc.certificate_id,
-        certificateCode: oc.serialNumber,
-        cid: oc.ipfs_cid!,
-        createdAt: oc.issuedAt,
-      })),
+      ...certificates
+        .filter((c) => c.ipfs_cid)
+        .map((c) => ({
+          certificateId: c.certificate_id,
+          certificateCode: c.serialNumber,
+          cid: c.ipfs_cid!,
+          createdAt: c.issuedAt,
+        })),
+      ...onlineCertificates
+        .filter((oc) => oc.ipfs_cid)
+        .map((oc) => ({
+          certificateId: oc.certificate_id,
+          certificateCode: oc.serialNumber,
+          cid: oc.ipfs_cid!,
+          createdAt: oc.issuedAt,
+        })),
     ].slice(0, 30);
 
     return {
       blockchain: chain,
       ipfs,
       totals: {
-        transactions: issuedTransactions + revokedTransactions + onlineCertificates.length,
+        transactions:
+          issuedTransactions + revokedTransactions + onlineCertificates.length,
         cids: totalCids,
         failedTransactions,
       },

@@ -29,7 +29,7 @@ export class AuthService {
     private readonly prisma: PrismaService,
     private readonly jwtService: JwtService,
     private readonly blockchainService: BlockchainService,
-  ) { }
+  ) {}
 
   async generateTokens(payload: any) {
     const accessToken = this.jwtService.sign(payload, { expiresIn: '10m' });
@@ -99,7 +99,9 @@ export class AuthService {
     }
 
     if (!user.isActive) {
-      throw new UnauthorizedException('Tài khoản đã bị khóa hoặc không hoạt động.');
+      throw new UnauthorizedException(
+        'Tài khoản đã bị khóa hoặc không hoạt động.',
+      );
     }
 
     let role: 'issuer' | 'staff' | 'student';
@@ -141,7 +143,8 @@ export class AuthService {
     try {
       const payload = this.jwtService.verify(token);
 
-      const isStaffOrIssuer = payload.role === 'issuer' || payload.role === 'staff';
+      const isStaffOrIssuer =
+        payload.role === 'issuer' || payload.role === 'staff';
       const user = isStaffOrIssuer
         ? await this.staffService.findById(payload.sub)
         : await this.studentService.findById(payload.sub);
@@ -151,7 +154,9 @@ export class AuthService {
       }
 
       if (!user.isActive) {
-        throw new UnauthorizedException('Tài khoản đã bị khóa hoặc không hoạt động.');
+        throw new UnauthorizedException(
+          'Tài khoản đã bị khóa hoặc không hoạt động.',
+        );
       }
 
       let role: 'issuer' | 'staff' | 'student';
@@ -201,7 +206,12 @@ export class AuthService {
     const nonce = crypto.randomUUID();
     const message = `CertChain System Administration Portal\n\nSign this challenge message to authenticate as a System Administrator.\n\nWallet: ${walletAddress.toLowerCase()}\nNonce: ${nonce}`;
     const tempToken = this.jwtService.sign(
-      { walletAddress: walletAddress.toLowerCase(), nonce, message, isAdmin: true },
+      {
+        walletAddress: walletAddress.toLowerCase(),
+        nonce,
+        message,
+        isAdmin: true,
+      },
       { expiresIn: '5m' },
     );
     return { message, tempToken };
@@ -267,7 +277,9 @@ export class AuthService {
     }
 
     if (!owner.isActive) {
-      throw new UnauthorizedException('Tài khoản đã bị khóa hoặc không hoạt động.');
+      throw new UnauthorizedException(
+        'Tài khoản đã bị khóa hoặc không hoạt động.',
+      );
     }
 
     const { accessToken, refreshToken } = await this.generateTokens({
@@ -360,7 +372,10 @@ export class AuthService {
       }
     } catch (err) {
       // Log warning if blockchain authorization fails (e.g. node offline in dev)
-      console.warn(`Could not authorize wallet ${walletAddress} on blockchain:`, err);
+      console.warn(
+        `Could not authorize wallet ${walletAddress} on blockchain:`,
+        err,
+      );
     }
 
     const randomPassword = crypto.randomUUID();

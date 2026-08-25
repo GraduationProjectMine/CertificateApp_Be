@@ -7,19 +7,23 @@ export class MetaMaskLoginDto {
     description: 'Ethereum wallet address of the user',
   })
   @IsString()
-  @Matches(/^0x[a-fA-F0-9]{40}$/, { message: 'Invalid Ethereum address format' })
+  @Matches(/^0x[a-fA-F0-9]{40}$/, {
+    message: 'Invalid Ethereum address format',
+  })
   walletAddress!: string;
 
   @ApiProperty({
     example: '0x30755a5c...',
-    description: 'Cryptographic signature from MetaMask signing the challenge message',
+    description:
+      'Cryptographic signature from MetaMask signing the challenge message',
   })
   @IsString()
   signature!: string;
 
   @ApiProperty({
     example: 'eyJhbGciOi...',
-    description: 'Temporary JWT token containing challenge details issued by /auth/metamask/nonce',
+    description:
+      'Temporary JWT token containing challenge details issued by /auth/metamask/nonce',
   })
   @IsString()
   tempToken!: string;
