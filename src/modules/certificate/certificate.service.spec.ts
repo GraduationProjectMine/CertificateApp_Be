@@ -23,6 +23,12 @@ describe('CertificateService revoke', () => {
 
   const prisma = {
     certificate: {
+      findFirst: jest.fn(),
+      findUnique: jest.fn(),
+      update: jest.fn(),
+    },
+    onlineCertificate: {
+      findFirst: jest.fn(),
       findUnique: jest.fn(),
       update: jest.fn(),
     },
@@ -43,6 +49,7 @@ describe('CertificateService revoke', () => {
   beforeEach(() => jest.clearAllMocks());
 
   it('revokes on-chain, persists metadata and writes an audit event', async () => {
+    prisma.certificate.findFirst.mockResolvedValue(certificate);
     prisma.certificate.findUnique.mockResolvedValue(certificate);
     prisma.certificate.update.mockResolvedValue({
       ...certificate,
@@ -74,6 +81,10 @@ describe('CertificateService revoke', () => {
   });
 
   it('refuses to revoke a certificate that is not issued', async () => {
+    prisma.certificate.findFirst.mockResolvedValue({
+      ...certificate,
+      status: 'DRAFT',
+    });
     prisma.certificate.findUnique.mockResolvedValue({
       ...certificate,
       status: 'DRAFT',
@@ -86,26 +97,27 @@ describe('CertificateService revoke', () => {
     expect(blockchain.revokeCertificate).not.toHaveBeenCalled();
   });
 
-  it('recovers a failed local revocation when blockchain is already revoked', async () => {
-    prisma.certificate.findUnique.mockResolvedValue({
+  it('recovers a failed local revocation by retrying revoke process', async () => {
+    const failedCert = {
       ...certificate,
       status: 'REVOKE_FAILED',
       revokeReason: 'Sai thong tin sinh vien',
       revokedAt: null,
-    });
+    };
+    prisma.certificate.findUnique.mockResolvedValue(failedCert);
+    prisma.certificate.findFirst.mockResolvedValue(failedCert);
     prisma.certificate.update.mockResolvedValue({
       ...certificate,
       status: 'REVOKED',
     });
-    blockchain.getCertificate.mockResolvedValue({ isRevoked: true });
     const service = new CertificateService(prisma, ipfs, blockchain, audit);
 
     const result = await service.retryRevoke('cert-1', 'org-1', 'actor-1');
 
     expect(result.status).toBe('REVOKED');
-    expect(blockchain.revokeCertificate).not.toHaveBeenCalled();
+    expect(blockchain.revokeCertificate).toHaveBeenCalledWith('a'.repeat(64));
     expect(audit.log).toHaveBeenCalledWith(
-      expect.objectContaining({ details: { recoveredFromBlockchain: true } }),
+      expect.objectContaining({ action: 'REVOKE_CERTIFICATE', success: true }),
     );
   });
 
