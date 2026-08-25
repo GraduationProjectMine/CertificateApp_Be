@@ -207,6 +207,11 @@ model OnlineCertificate {
   gas_used          String?
   status            String   @default("ISSUED")
   issuedAt          DateTime @default(now())
+  revokedAt         DateTime?
+  revokedById       String?
+  revokeReason      String?  @db.VarChar(500)
+  revoke_tx_hash    String?
+  revoke_block_number Int?
 
   organization IssuingOrganization  @relation(fields: [organization_id], references: [organization_id])
   student      StudentAccount?      @relation(fields: [student_id], references: [student_id])
@@ -215,6 +220,7 @@ model OnlineCertificate {
   @@index([organization_id])
   @@index([student_id])
   @@index([template_id])
+  @@index([status, revokedAt])
   @@map("online_certificates")
 }
 

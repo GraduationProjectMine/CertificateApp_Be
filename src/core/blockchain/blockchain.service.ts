@@ -301,4 +301,34 @@ export class BlockchainService implements OnModuleInit {
       );
     }
   }
+
+  async deauthorizeIssuer(issuerAddress: string): Promise<string> {
+    const contract = this.ensureInitialized();
+    try {
+      this.logger.log(`Deauthorizing issuer address on blockchain: ${issuerAddress}`);
+      const tx = await contract.deauthorizeIssuer(issuerAddress);
+      const receipt = await tx.wait();
+      this.logger.log(
+        `Successfully deauthorized issuer ${issuerAddress}. Tx hash: ${receipt.hash}`,
+      );
+      return receipt.hash;
+    } catch (error) {
+      this.logger.error(
+        `Failed to deauthorize issuer address ${issuerAddress} on blockchain:`,
+        error,
+      );
+      throw new InternalServerErrorException(
+        `Failed to deauthorize issuer wallet on blockchain: ${error.message}`,
+      );
+    }
+  }
+
+  async isIssuerAuthorized(issuerAddress: string): Promise<boolean> {
+    const contract = this.ensureInitialized();
+    try {
+      return await contract.authorizedIssuers(issuerAddress);
+    } catch {
+      return false;
+    }
+  }
 }
