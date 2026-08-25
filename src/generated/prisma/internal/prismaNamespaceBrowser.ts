@@ -232,7 +232,12 @@ export const OnlineCertificateScalarFieldEnum = {
   block_number: 'block_number',
   gas_used: 'gas_used',
   status: 'status',
-  issuedAt: 'issuedAt'
+  issuedAt: 'issuedAt',
+  revokedAt: 'revokedAt',
+  revokedById: 'revokedById',
+  revokeReason: 'revokeReason',
+  revoke_tx_hash: 'revoke_tx_hash',
+  revoke_block_number: 'revoke_block_number'
 } as const
 
 export type OnlineCertificateScalarFieldEnum = (typeof OnlineCertificateScalarFieldEnum)[keyof typeof OnlineCertificateScalarFieldEnum]
@@ -495,7 +500,10 @@ export const OnlineCertificateOrderByRelevanceFieldEnum = {
   file_url: 'file_url',
   tx_hash: 'tx_hash',
   gas_used: 'gas_used',
-  status: 'status'
+  status: 'status',
+  revokedById: 'revokedById',
+  revokeReason: 'revokeReason',
+  revoke_tx_hash: 'revoke_tx_hash'
 } as const
 
 export type OnlineCertificateOrderByRelevanceFieldEnum = (typeof OnlineCertificateOrderByRelevanceFieldEnum)[keyof typeof OnlineCertificateOrderByRelevanceFieldEnum]

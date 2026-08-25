@@ -113,16 +113,21 @@ export class IssuerService {
     };
   }
 
+  //  changes the account status to unverified (is_verified = false) 
   async delete(id: string) {
     const org = await this.findById(id);
     if (!org) {
       throw new NotFoundException('Organization not found');
     }
 
-    await this.prisma.issuingOrganization.delete({
+    const updatedOrg = await this.prisma.issuingOrganization.update({
       where: { organization_id: id },
+      data: { is_verified: false },
     });
 
-    return { message: 'Organization deleted successfully' };
+    return { 
+      message: 'Organization status updated to unverified/inactive (soft deleted)', 
+      organization: updatedOrg 
+    };
   }
 }

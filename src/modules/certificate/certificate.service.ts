@@ -463,7 +463,22 @@ export class CertificateService {
     reason: string,
     actorName?: string,
   ) {
-    const certificate = await this.findOne(id, organizationId);
+    let certificate: any = await this.prisma.certificate.findFirst({
+      where: { certificate_id: id, organization_id: organizationId },
+    });
+    let isOnline = false;
+
+    if (!certificate) {
+      const onlineCert = await this.prisma.onlineCertificate.findFirst({
+        where: { certificate_id: id, organization_id: organizationId },
+      });
+      if (!onlineCert) {
+        throw new NotFoundException(`Certificate with ID ${id} not found.`);
+      }
+      certificate = onlineCert;
+      isOnline = true;
+    }
+
     const cleanReason = reason.replace(/<[^>]*>/g, '').trim();
     if (cleanReason.length < 5 || cleanReason.length > 500) {
       throw new BadRequestException(
@@ -482,41 +497,25 @@ export class CertificateService {
       throw new BadRequestException('Blockchain service is not initialized.');
     }
 
-    if (certificate.status === 'REVOKE_FAILED') {
-      const hash = this.ipfsService.calculateSha3Hash(
-        this.toIpfsPayload(certificate),
-      );
-      const onChain = await this.blockchainService.getCertificate(hash);
-      if (onChain.isRevoked) {
-        const recovered = await this.prisma.certificate.update({
-          where: { certificate_id: id },
-          data: {
-            status: 'REVOKED',
-            revokedAt: certificate.revokedAt || new Date(),
-          },
-        });
-        await this.auditService.log({
-          organizationId,
-          actorId,
-          actorName,
-          action: 'REVOKE_CERTIFICATE',
-          targetType: 'CERTIFICATE',
-          targetId: id,
-          success: true,
-          details: { recoveredFromBlockchain: true },
-        });
-        return recovered;
-      }
+    if (isOnline) {
+      await this.prisma.onlineCertificate.update({
+        where: { certificate_id: id },
+        data: {
+          status: 'REVOKE_PENDING',
+          revokeReason: cleanReason,
+          revokedById: actorId,
+        },
+      });
+    } else {
+      await this.prisma.certificate.update({
+        where: { certificate_id: id },
+        data: {
+          status: 'REVOKE_PENDING',
+          revokeReason: cleanReason,
+          revokedById: actorId,
+        },
+      });
     }
-
-    await this.prisma.certificate.update({
-      where: { certificate_id: id },
-      data: {
-        status: 'REVOKE_PENDING',
-        revokeReason: cleanReason,
-        revokedById: actorId,
-      },
-    });
 
     try {
       const sha3Hash = this.ipfsService.calculateSha3Hash(
@@ -524,23 +523,40 @@ export class CertificateService {
       );
       const onChainResult =
         await this.blockchainService.revokeCertificate(sha3Hash);
-      const revoked = await this.prisma.certificate.update({
-        where: { certificate_id: id },
-        data: {
-          status: 'REVOKED',
-          revokedAt: new Date(),
-          revokedById: actorId,
-          revokeReason: cleanReason,
-          revoke_tx_hash: onChainResult.transactionHash,
-          revoke_block_number: onChainResult.blockNumber,
-        },
-      });
+
+      let revoked;
+      if (isOnline) {
+        revoked = await this.prisma.onlineCertificate.update({
+          where: { certificate_id: id },
+          data: {
+            status: 'REVOKED',
+            revokedAt: new Date(),
+            revokedById: actorId,
+            revokeReason: cleanReason,
+            revoke_tx_hash: onChainResult.transactionHash,
+            revoke_block_number: onChainResult.blockNumber,
+          },
+        });
+      } else {
+        revoked = await this.prisma.certificate.update({
+          where: { certificate_id: id },
+          data: {
+            status: 'REVOKED',
+            revokedAt: new Date(),
+            revokedById: actorId,
+            revokeReason: cleanReason,
+            revoke_tx_hash: onChainResult.transactionHash,
+            revoke_block_number: onChainResult.blockNumber,
+          },
+        });
+      }
+
       await this.auditService.log({
         organizationId,
         actorId,
         actorName,
         action: 'REVOKE_CERTIFICATE',
-        targetType: 'CERTIFICATE',
+        targetType: isOnline ? 'ONLINE_CERTIFICATE' : 'CERTIFICATE',
         targetId: id,
         success: true,
         details: {
@@ -551,16 +567,23 @@ export class CertificateService {
       });
       return revoked;
     } catch (error) {
-      await this.prisma.certificate.update({
-        where: { certificate_id: id },
-        data: { status: 'REVOKE_FAILED' },
-      });
+      if (isOnline) {
+        await this.prisma.onlineCertificate.update({
+          where: { certificate_id: id },
+          data: { status: 'REVOKE_FAILED' },
+        });
+      } else {
+        await this.prisma.certificate.update({
+          where: { certificate_id: id },
+          data: { status: 'REVOKE_FAILED' },
+        });
+      }
       await this.auditService.log({
         organizationId,
         actorId,
         actorName,
         action: 'REVOKE_CERTIFICATE',
-        targetType: 'CERTIFICATE',
+        targetType: isOnline ? 'ONLINE_CERTIFICATE' : 'CERTIFICATE',
         targetId: id,
         success: false,
         details: { reason: cleanReason, error: error.message },
@@ -594,15 +617,33 @@ export class CertificateService {
     const safePage = Math.max(1, page);
     const safeLimit = Math.min(100, Math.max(1, limit));
     const where = { organization_id: organizationId, status: 'REVOKED' };
-    const [items, total] = await Promise.all([
+
+    const [certItems, onlineItems] = await Promise.all([
       this.prisma.certificate.findMany({
         where,
         orderBy: { revokedAt: 'desc' },
-        skip: (safePage - 1) * safeLimit,
-        take: safeLimit,
       }),
-      this.prisma.certificate.count({ where }),
+      this.prisma.onlineCertificate.findMany({
+        where,
+        orderBy: { revokedAt: 'desc' },
+      }),
     ]);
+
+    const allRevoked = [
+      ...certItems.map((c) => ({ ...c, isOnline: false })),
+      ...onlineItems.map((c) => ({ ...c, isOnline: true })),
+    ].sort((a, b) => {
+      const timeA = a.revokedAt ? new Date(a.revokedAt).getTime() : 0;
+      const timeB = b.revokedAt ? new Date(b.revokedAt).getTime() : 0;
+      return timeB - timeA;
+    });
+
+    const total = allRevoked.length;
+    const items = allRevoked.slice(
+      (safePage - 1) * safeLimit,
+      safePage * safeLimit,
+    );
+
     return {
       items,
       total,

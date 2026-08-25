@@ -28,10 +28,12 @@ export type AggregateOnlineCertificate = {
 
 export type OnlineCertificateAvgAggregateOutputType = {
   block_number: number | null
+  revoke_block_number: number | null
 }
 
 export type OnlineCertificateSumAggregateOutputType = {
   block_number: number | null
+  revoke_block_number: number | null
 }
 
 export type OnlineCertificateMinAggregateOutputType = {
@@ -60,6 +62,11 @@ export type OnlineCertificateMinAggregateOutputType = {
   gas_used: string | null
   status: string | null
   issuedAt: Date | null
+  revokedAt: Date | null
+  revokedById: string | null
+  revokeReason: string | null
+  revoke_tx_hash: string | null
+  revoke_block_number: number | null
 }
 
 export type OnlineCertificateMaxAggregateOutputType = {
@@ -88,6 +95,11 @@ export type OnlineCertificateMaxAggregateOutputType = {
   gas_used: string | null
   status: string | null
   issuedAt: Date | null
+  revokedAt: Date | null
+  revokedById: string | null
+  revokeReason: string | null
+  revoke_tx_hash: string | null
+  revoke_block_number: number | null
 }
 
 export type OnlineCertificateCountAggregateOutputType = {
@@ -116,16 +128,23 @@ export type OnlineCertificateCountAggregateOutputType = {
   gas_used: number
   status: number
   issuedAt: number
+  revokedAt: number
+  revokedById: number
+  revokeReason: number
+  revoke_tx_hash: number
+  revoke_block_number: number
   _all: number
 }
 
 
 export type OnlineCertificateAvgAggregateInputType = {
   block_number?: true
+  revoke_block_number?: true
 }
 
 export type OnlineCertificateSumAggregateInputType = {
   block_number?: true
+  revoke_block_number?: true
 }
 
 export type OnlineCertificateMinAggregateInputType = {
@@ -154,6 +173,11 @@ export type OnlineCertificateMinAggregateInputType = {
   gas_used?: true
   status?: true
   issuedAt?: true
+  revokedAt?: true
+  revokedById?: true
+  revokeReason?: true
+  revoke_tx_hash?: true
+  revoke_block_number?: true
 }
 
 export type OnlineCertificateMaxAggregateInputType = {
@@ -182,6 +206,11 @@ export type OnlineCertificateMaxAggregateInputType = {
   gas_used?: true
   status?: true
   issuedAt?: true
+  revokedAt?: true
+  revokedById?: true
+  revokeReason?: true
+  revoke_tx_hash?: true
+  revoke_block_number?: true
 }
 
 export type OnlineCertificateCountAggregateInputType = {
@@ -210,6 +239,11 @@ export type OnlineCertificateCountAggregateInputType = {
   gas_used?: true
   status?: true
   issuedAt?: true
+  revokedAt?: true
+  revokedById?: true
+  revokeReason?: true
+  revoke_tx_hash?: true
+  revoke_block_number?: true
   _all?: true
 }
 
@@ -325,6 +359,11 @@ export type OnlineCertificateGroupByOutputType = {
   gas_used: string | null
   status: string
   issuedAt: Date
+  revokedAt: Date | null
+  revokedById: string | null
+  revokeReason: string | null
+  revoke_tx_hash: string | null
+  revoke_block_number: number | null
   _count: OnlineCertificateCountAggregateOutputType | null
   _avg: OnlineCertificateAvgAggregateOutputType | null
   _sum: OnlineCertificateSumAggregateOutputType | null
@@ -376,6 +415,11 @@ export type OnlineCertificateWhereInput = {
   gas_used?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
   status?: Prisma.StringFilter<"OnlineCertificate"> | string
   issuedAt?: Prisma.DateTimeFilter<"OnlineCertificate"> | Date | string
+  revokedAt?: Prisma.DateTimeNullableFilter<"OnlineCertificate"> | Date | string | null
+  revokedById?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
+  revokeReason?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
+  revoke_tx_hash?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
+  revoke_block_number?: Prisma.IntNullableFilter<"OnlineCertificate"> | number | null
   organization?: Prisma.XOR<Prisma.IssuingOrganizationScalarRelationFilter, Prisma.IssuingOrganizationWhereInput>
   student?: Prisma.XOR<Prisma.StudentAccountNullableScalarRelationFilter, Prisma.StudentAccountWhereInput> | null
   template?: Prisma.XOR<Prisma.CertificateTemplateNullableScalarRelationFilter, Prisma.CertificateTemplateWhereInput> | null
@@ -407,6 +451,11 @@ export type OnlineCertificateOrderByWithRelationInput = {
   gas_used?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   issuedAt?: Prisma.SortOrder
+  revokedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  revokedById?: Prisma.SortOrderInput | Prisma.SortOrder
+  revokeReason?: Prisma.SortOrderInput | Prisma.SortOrder
+  revoke_tx_hash?: Prisma.SortOrderInput | Prisma.SortOrder
+  revoke_block_number?: Prisma.SortOrderInput | Prisma.SortOrder
   organization?: Prisma.IssuingOrganizationOrderByWithRelationInput
   student?: Prisma.StudentAccountOrderByWithRelationInput
   template?: Prisma.CertificateTemplateOrderByWithRelationInput
@@ -442,6 +491,11 @@ export type OnlineCertificateWhereUniqueInput = Prisma.AtLeast<{
   gas_used?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
   status?: Prisma.StringFilter<"OnlineCertificate"> | string
   issuedAt?: Prisma.DateTimeFilter<"OnlineCertificate"> | Date | string
+  revokedAt?: Prisma.DateTimeNullableFilter<"OnlineCertificate"> | Date | string | null
+  revokedById?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
+  revokeReason?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
+  revoke_tx_hash?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
+  revoke_block_number?: Prisma.IntNullableFilter<"OnlineCertificate"> | number | null
   organization?: Prisma.XOR<Prisma.IssuingOrganizationScalarRelationFilter, Prisma.IssuingOrganizationWhereInput>
   student?: Prisma.XOR<Prisma.StudentAccountNullableScalarRelationFilter, Prisma.StudentAccountWhereInput> | null
   template?: Prisma.XOR<Prisma.CertificateTemplateNullableScalarRelationFilter, Prisma.CertificateTemplateWhereInput> | null
@@ -473,6 +527,11 @@ export type OnlineCertificateOrderByWithAggregationInput = {
   gas_used?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   issuedAt?: Prisma.SortOrder
+  revokedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  revokedById?: Prisma.SortOrderInput | Prisma.SortOrder
+  revokeReason?: Prisma.SortOrderInput | Prisma.SortOrder
+  revoke_tx_hash?: Prisma.SortOrderInput | Prisma.SortOrder
+  revoke_block_number?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.OnlineCertificateCountOrderByAggregateInput
   _avg?: Prisma.OnlineCertificateAvgOrderByAggregateInput
   _max?: Prisma.OnlineCertificateMaxOrderByAggregateInput
@@ -509,6 +568,11 @@ export type OnlineCertificateScalarWhereWithAggregatesInput = {
   gas_used?: Prisma.StringNullableWithAggregatesFilter<"OnlineCertificate"> | string | null
   status?: Prisma.StringWithAggregatesFilter<"OnlineCertificate"> | string
   issuedAt?: Prisma.DateTimeWithAggregatesFilter<"OnlineCertificate"> | Date | string
+  revokedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"OnlineCertificate"> | Date | string | null
+  revokedById?: Prisma.StringNullableWithAggregatesFilter<"OnlineCertificate"> | string | null
+  revokeReason?: Prisma.StringNullableWithAggregatesFilter<"OnlineCertificate"> | string | null
+  revoke_tx_hash?: Prisma.StringNullableWithAggregatesFilter<"OnlineCertificate"> | string | null
+  revoke_block_number?: Prisma.IntNullableWithAggregatesFilter<"OnlineCertificate"> | number | null
 }
 
 export type OnlineCertificateCreateInput = {
@@ -534,6 +598,11 @@ export type OnlineCertificateCreateInput = {
   gas_used?: string | null
   status?: string
   issuedAt?: Date | string
+  revokedAt?: Date | string | null
+  revokedById?: string | null
+  revokeReason?: string | null
+  revoke_tx_hash?: string | null
+  revoke_block_number?: number | null
   organization: Prisma.IssuingOrganizationCreateNestedOneWithoutOnline_certificatesInput
   student?: Prisma.StudentAccountCreateNestedOneWithoutOnline_certificatesInput
   template?: Prisma.CertificateTemplateCreateNestedOneWithoutOnline_certificatesInput
@@ -565,6 +634,11 @@ export type OnlineCertificateUncheckedCreateInput = {
   gas_used?: string | null
   status?: string
   issuedAt?: Date | string
+  revokedAt?: Date | string | null
+  revokedById?: string | null
+  revokeReason?: string | null
+  revoke_tx_hash?: string | null
+  revoke_block_number?: number | null
 }
 
 export type OnlineCertificateUpdateInput = {
@@ -590,6 +664,11 @@ export type OnlineCertificateUpdateInput = {
   gas_used?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   issuedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  revokedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revokeReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revoke_tx_hash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revoke_block_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   organization?: Prisma.IssuingOrganizationUpdateOneRequiredWithoutOnline_certificatesNestedInput
   student?: Prisma.StudentAccountUpdateOneWithoutOnline_certificatesNestedInput
   template?: Prisma.CertificateTemplateUpdateOneWithoutOnline_certificatesNestedInput
@@ -621,6 +700,11 @@ export type OnlineCertificateUncheckedUpdateInput = {
   gas_used?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   issuedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  revokedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revokeReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revoke_tx_hash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revoke_block_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type OnlineCertificateCreateManyInput = {
@@ -649,6 +733,11 @@ export type OnlineCertificateCreateManyInput = {
   gas_used?: string | null
   status?: string
   issuedAt?: Date | string
+  revokedAt?: Date | string | null
+  revokedById?: string | null
+  revokeReason?: string | null
+  revoke_tx_hash?: string | null
+  revoke_block_number?: number | null
 }
 
 export type OnlineCertificateUpdateManyMutationInput = {
@@ -674,6 +763,11 @@ export type OnlineCertificateUpdateManyMutationInput = {
   gas_used?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   issuedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  revokedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revokeReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revoke_tx_hash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revoke_block_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type OnlineCertificateUncheckedUpdateManyInput = {
@@ -702,6 +796,11 @@ export type OnlineCertificateUncheckedUpdateManyInput = {
   gas_used?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   issuedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  revokedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revokeReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revoke_tx_hash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revoke_block_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type OnlineCertificateListRelationFilter = {
@@ -746,10 +845,16 @@ export type OnlineCertificateCountOrderByAggregateInput = {
   gas_used?: Prisma.SortOrder
   status?: Prisma.SortOrder
   issuedAt?: Prisma.SortOrder
+  revokedAt?: Prisma.SortOrder
+  revokedById?: Prisma.SortOrder
+  revokeReason?: Prisma.SortOrder
+  revoke_tx_hash?: Prisma.SortOrder
+  revoke_block_number?: Prisma.SortOrder
 }
 
 export type OnlineCertificateAvgOrderByAggregateInput = {
   block_number?: Prisma.SortOrder
+  revoke_block_number?: Prisma.SortOrder
 }
 
 export type OnlineCertificateMaxOrderByAggregateInput = {
@@ -778,6 +883,11 @@ export type OnlineCertificateMaxOrderByAggregateInput = {
   gas_used?: Prisma.SortOrder
   status?: Prisma.SortOrder
   issuedAt?: Prisma.SortOrder
+  revokedAt?: Prisma.SortOrder
+  revokedById?: Prisma.SortOrder
+  revokeReason?: Prisma.SortOrder
+  revoke_tx_hash?: Prisma.SortOrder
+  revoke_block_number?: Prisma.SortOrder
 }
 
 export type OnlineCertificateMinOrderByAggregateInput = {
@@ -806,10 +916,16 @@ export type OnlineCertificateMinOrderByAggregateInput = {
   gas_used?: Prisma.SortOrder
   status?: Prisma.SortOrder
   issuedAt?: Prisma.SortOrder
+  revokedAt?: Prisma.SortOrder
+  revokedById?: Prisma.SortOrder
+  revokeReason?: Prisma.SortOrder
+  revoke_tx_hash?: Prisma.SortOrder
+  revoke_block_number?: Prisma.SortOrder
 }
 
 export type OnlineCertificateSumOrderByAggregateInput = {
   block_number?: Prisma.SortOrder
+  revoke_block_number?: Prisma.SortOrder
 }
 
 export type OnlineCertificateCreateNestedManyWithoutOrganizationInput = {
@@ -961,6 +1077,11 @@ export type OnlineCertificateCreateWithoutOrganizationInput = {
   gas_used?: string | null
   status?: string
   issuedAt?: Date | string
+  revokedAt?: Date | string | null
+  revokedById?: string | null
+  revokeReason?: string | null
+  revoke_tx_hash?: string | null
+  revoke_block_number?: number | null
   student?: Prisma.StudentAccountCreateNestedOneWithoutOnline_certificatesInput
   template?: Prisma.CertificateTemplateCreateNestedOneWithoutOnline_certificatesInput
 }
@@ -990,6 +1111,11 @@ export type OnlineCertificateUncheckedCreateWithoutOrganizationInput = {
   gas_used?: string | null
   status?: string
   issuedAt?: Date | string
+  revokedAt?: Date | string | null
+  revokedById?: string | null
+  revokeReason?: string | null
+  revoke_tx_hash?: string | null
+  revoke_block_number?: number | null
 }
 
 export type OnlineCertificateCreateOrConnectWithoutOrganizationInput = {
@@ -1047,6 +1173,11 @@ export type OnlineCertificateScalarWhereInput = {
   gas_used?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
   status?: Prisma.StringFilter<"OnlineCertificate"> | string
   issuedAt?: Prisma.DateTimeFilter<"OnlineCertificate"> | Date | string
+  revokedAt?: Prisma.DateTimeNullableFilter<"OnlineCertificate"> | Date | string | null
+  revokedById?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
+  revokeReason?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
+  revoke_tx_hash?: Prisma.StringNullableFilter<"OnlineCertificate"> | string | null
+  revoke_block_number?: Prisma.IntNullableFilter<"OnlineCertificate"> | number | null
 }
 
 export type OnlineCertificateCreateWithoutStudentInput = {
@@ -1072,6 +1203,11 @@ export type OnlineCertificateCreateWithoutStudentInput = {
   gas_used?: string | null
   status?: string
   issuedAt?: Date | string
+  revokedAt?: Date | string | null
+  revokedById?: string | null
+  revokeReason?: string | null
+  revoke_tx_hash?: string | null
+  revoke_block_number?: number | null
   organization: Prisma.IssuingOrganizationCreateNestedOneWithoutOnline_certificatesInput
   template?: Prisma.CertificateTemplateCreateNestedOneWithoutOnline_certificatesInput
 }
@@ -1101,6 +1237,11 @@ export type OnlineCertificateUncheckedCreateWithoutStudentInput = {
   gas_used?: string | null
   status?: string
   issuedAt?: Date | string
+  revokedAt?: Date | string | null
+  revokedById?: string | null
+  revokeReason?: string | null
+  revoke_tx_hash?: string | null
+  revoke_block_number?: number | null
 }
 
 export type OnlineCertificateCreateOrConnectWithoutStudentInput = {
@@ -1152,6 +1293,11 @@ export type OnlineCertificateCreateWithoutTemplateInput = {
   gas_used?: string | null
   status?: string
   issuedAt?: Date | string
+  revokedAt?: Date | string | null
+  revokedById?: string | null
+  revokeReason?: string | null
+  revoke_tx_hash?: string | null
+  revoke_block_number?: number | null
   organization: Prisma.IssuingOrganizationCreateNestedOneWithoutOnline_certificatesInput
   student?: Prisma.StudentAccountCreateNestedOneWithoutOnline_certificatesInput
 }
@@ -1181,6 +1327,11 @@ export type OnlineCertificateUncheckedCreateWithoutTemplateInput = {
   gas_used?: string | null
   status?: string
   issuedAt?: Date | string
+  revokedAt?: Date | string | null
+  revokedById?: string | null
+  revokeReason?: string | null
+  revoke_tx_hash?: string | null
+  revoke_block_number?: number | null
 }
 
 export type OnlineCertificateCreateOrConnectWithoutTemplateInput = {
@@ -1234,6 +1385,11 @@ export type OnlineCertificateCreateManyOrganizationInput = {
   gas_used?: string | null
   status?: string
   issuedAt?: Date | string
+  revokedAt?: Date | string | null
+  revokedById?: string | null
+  revokeReason?: string | null
+  revoke_tx_hash?: string | null
+  revoke_block_number?: number | null
 }
 
 export type OnlineCertificateUpdateWithoutOrganizationInput = {
@@ -1259,6 +1415,11 @@ export type OnlineCertificateUpdateWithoutOrganizationInput = {
   gas_used?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   issuedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  revokedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revokeReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revoke_tx_hash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revoke_block_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   student?: Prisma.StudentAccountUpdateOneWithoutOnline_certificatesNestedInput
   template?: Prisma.CertificateTemplateUpdateOneWithoutOnline_certificatesNestedInput
 }
@@ -1288,6 +1449,11 @@ export type OnlineCertificateUncheckedUpdateWithoutOrganizationInput = {
   gas_used?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   issuedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  revokedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revokeReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revoke_tx_hash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revoke_block_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type OnlineCertificateUncheckedUpdateManyWithoutOrganizationInput = {
@@ -1315,6 +1481,11 @@ export type OnlineCertificateUncheckedUpdateManyWithoutOrganizationInput = {
   gas_used?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   issuedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  revokedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revokeReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revoke_tx_hash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revoke_block_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type OnlineCertificateCreateManyStudentInput = {
@@ -1342,6 +1513,11 @@ export type OnlineCertificateCreateManyStudentInput = {
   gas_used?: string | null
   status?: string
   issuedAt?: Date | string
+  revokedAt?: Date | string | null
+  revokedById?: string | null
+  revokeReason?: string | null
+  revoke_tx_hash?: string | null
+  revoke_block_number?: number | null
 }
 
 export type OnlineCertificateUpdateWithoutStudentInput = {
@@ -1367,6 +1543,11 @@ export type OnlineCertificateUpdateWithoutStudentInput = {
   gas_used?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   issuedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  revokedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revokeReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revoke_tx_hash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revoke_block_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   organization?: Prisma.IssuingOrganizationUpdateOneRequiredWithoutOnline_certificatesNestedInput
   template?: Prisma.CertificateTemplateUpdateOneWithoutOnline_certificatesNestedInput
 }
@@ -1396,6 +1577,11 @@ export type OnlineCertificateUncheckedUpdateWithoutStudentInput = {
   gas_used?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   issuedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  revokedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revokeReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revoke_tx_hash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revoke_block_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type OnlineCertificateUncheckedUpdateManyWithoutStudentInput = {
@@ -1423,6 +1609,11 @@ export type OnlineCertificateUncheckedUpdateManyWithoutStudentInput = {
   gas_used?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   issuedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  revokedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revokeReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revoke_tx_hash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revoke_block_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type OnlineCertificateCreateManyTemplateInput = {
@@ -1450,6 +1641,11 @@ export type OnlineCertificateCreateManyTemplateInput = {
   gas_used?: string | null
   status?: string
   issuedAt?: Date | string
+  revokedAt?: Date | string | null
+  revokedById?: string | null
+  revokeReason?: string | null
+  revoke_tx_hash?: string | null
+  revoke_block_number?: number | null
 }
 
 export type OnlineCertificateUpdateWithoutTemplateInput = {
@@ -1475,6 +1671,11 @@ export type OnlineCertificateUpdateWithoutTemplateInput = {
   gas_used?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   issuedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  revokedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revokeReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revoke_tx_hash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revoke_block_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   organization?: Prisma.IssuingOrganizationUpdateOneRequiredWithoutOnline_certificatesNestedInput
   student?: Prisma.StudentAccountUpdateOneWithoutOnline_certificatesNestedInput
 }
@@ -1504,6 +1705,11 @@ export type OnlineCertificateUncheckedUpdateWithoutTemplateInput = {
   gas_used?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   issuedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  revokedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revokeReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revoke_tx_hash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revoke_block_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type OnlineCertificateUncheckedUpdateManyWithoutTemplateInput = {
@@ -1531,6 +1737,11 @@ export type OnlineCertificateUncheckedUpdateManyWithoutTemplateInput = {
   gas_used?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   issuedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  revokedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revokeReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revoke_tx_hash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revoke_block_number?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 
@@ -1561,6 +1772,11 @@ export type OnlineCertificateSelect<ExtArgs extends runtime.Types.Extensions.Int
   gas_used?: boolean
   status?: boolean
   issuedAt?: boolean
+  revokedAt?: boolean
+  revokedById?: boolean
+  revokeReason?: boolean
+  revoke_tx_hash?: boolean
+  revoke_block_number?: boolean
   organization?: boolean | Prisma.IssuingOrganizationDefaultArgs<ExtArgs>
   student?: boolean | Prisma.OnlineCertificate$studentArgs<ExtArgs>
   template?: boolean | Prisma.OnlineCertificate$templateArgs<ExtArgs>
@@ -1594,9 +1810,14 @@ export type OnlineCertificateSelectScalar = {
   gas_used?: boolean
   status?: boolean
   issuedAt?: boolean
+  revokedAt?: boolean
+  revokedById?: boolean
+  revokeReason?: boolean
+  revoke_tx_hash?: boolean
+  revoke_block_number?: boolean
 }
 
-export type OnlineCertificateOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"certificate_id" | "organization_id" | "student_id" | "template_id" | "certificate_title" | "organization_name" | "student_fullName" | "dob" | "placeOfBirth" | "gender" | "ethnicity" | "schoolName" | "examCohort" | "examBoard" | "issueLocation" | "issueDate" | "serialNumber" | "registryNumber" | "ipfs_cid" | "file_url" | "tx_hash" | "block_number" | "gas_used" | "status" | "issuedAt", ExtArgs["result"]["onlineCertificate"]>
+export type OnlineCertificateOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"certificate_id" | "organization_id" | "student_id" | "template_id" | "certificate_title" | "organization_name" | "student_fullName" | "dob" | "placeOfBirth" | "gender" | "ethnicity" | "schoolName" | "examCohort" | "examBoard" | "issueLocation" | "issueDate" | "serialNumber" | "registryNumber" | "ipfs_cid" | "file_url" | "tx_hash" | "block_number" | "gas_used" | "status" | "issuedAt" | "revokedAt" | "revokedById" | "revokeReason" | "revoke_tx_hash" | "revoke_block_number", ExtArgs["result"]["onlineCertificate"]>
 export type OnlineCertificateInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   organization?: boolean | Prisma.IssuingOrganizationDefaultArgs<ExtArgs>
   student?: boolean | Prisma.OnlineCertificate$studentArgs<ExtArgs>
@@ -1636,6 +1857,11 @@ export type $OnlineCertificatePayload<ExtArgs extends runtime.Types.Extensions.I
     gas_used: string | null
     status: string
     issuedAt: Date
+    revokedAt: Date | null
+    revokedById: string | null
+    revokeReason: string | null
+    revoke_tx_hash: string | null
+    revoke_block_number: number | null
   }, ExtArgs["result"]["onlineCertificate"]>
   composites: {}
 }
@@ -2033,6 +2259,11 @@ export interface OnlineCertificateFieldRefs {
   readonly gas_used: Prisma.FieldRef<"OnlineCertificate", 'String'>
   readonly status: Prisma.FieldRef<"OnlineCertificate", 'String'>
   readonly issuedAt: Prisma.FieldRef<"OnlineCertificate", 'DateTime'>
+  readonly revokedAt: Prisma.FieldRef<"OnlineCertificate", 'DateTime'>
+  readonly revokedById: Prisma.FieldRef<"OnlineCertificate", 'String'>
+  readonly revokeReason: Prisma.FieldRef<"OnlineCertificate", 'String'>
+  readonly revoke_tx_hash: Prisma.FieldRef<"OnlineCertificate", 'String'>
+  readonly revoke_block_number: Prisma.FieldRef<"OnlineCertificate", 'Int'>
 }
     
 
