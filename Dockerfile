@@ -21,6 +21,7 @@ COPY src ./src
 ARG DATABASE_URL="mysql://root:password@localhost:3306/certificate_app"
 ENV DATABASE_URL=${DATABASE_URL}
 
+RUN npx prisma db push
 RUN npx prisma generate
 RUN npm run build
 RUN npm prune --omit=dev
