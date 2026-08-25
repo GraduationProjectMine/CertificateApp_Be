@@ -26,6 +26,10 @@ describe('MonitorService', () => {
           .mockResolvedValueOnce(1)
           .mockResolvedValueOnce(1),
       },
+      onlineCertificate: {
+        findMany: jest.fn().mockResolvedValue([]),
+        count: jest.fn().mockResolvedValue(0),
+      },
     } as any;
     const blockchain = {
       getHealth: jest
