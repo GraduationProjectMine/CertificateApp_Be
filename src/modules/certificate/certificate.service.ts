@@ -227,6 +227,15 @@ export class CertificateService {
           student_id: onlineCert.student_id,
           certificate_title: onlineCert.certificate_title,
           student_fullName: onlineCert.student_fullName,
+          dob: onlineCert.dob || null,
+          placeOfBirth: onlineCert.placeOfBirth || null,
+          gender: onlineCert.gender || null,
+          ethnicity: onlineCert.ethnicity || null,
+          schoolName: onlineCert.schoolName || null,
+          examCohort: onlineCert.examCohort || null,
+          examBoard: onlineCert.examBoard || null,
+          issueLocation: onlineCert.issueLocation || null,
+          issueDate: onlineCert.issueDate || null,
           serialNumber: onlineCert.serialNumber || null,
           registryNumber: onlineCert.registryNumber || null,
           ipfs_cid: onlineCert.ipfs_cid || null,
@@ -236,6 +245,11 @@ export class CertificateService {
           gas_used: onlineCert.gas_used || null,
           status: onlineCert.status,
           issuedAt: onlineCert.issuedAt,
+          revokedAt: onlineCert.revokedAt,
+          revokedById: onlineCert.revokedById,
+          revokeReason: onlineCert.revokeReason,
+          revoke_tx_hash: onlineCert.revoke_tx_hash,
+          revoke_block_number: onlineCert.revoke_block_number,
         };
       }
     }
@@ -538,9 +552,16 @@ export class CertificateService {
     }
 
     try {
-      const sha3Hash = this.ipfsService.calculateSha3Hash(
-        this.toIpfsPayload(certificate),
-      );
+      const sha3Hash = isOnline
+        ? this.ipfsService.calculateOnlineCertSha3Hash({
+            documentTitle: certificate.certificate_title,
+            fullName: certificate.student_fullName,
+            serialNumber: certificate.serialNumber ?? '',
+            registryNumber: certificate.registryNumber ?? '',
+          })
+        : this.ipfsService.calculateSha3Hash(
+            this.toIpfsPayload(certificate),
+          );
       const onChainResult =
         await this.blockchainService.revokeCertificate(sha3Hash);
 

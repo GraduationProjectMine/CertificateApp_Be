@@ -35,6 +35,7 @@ describe('CertificateService revoke', () => {
   } as any;
   const ipfs = {
     calculateSha3Hash: jest.fn().mockReturnValue('a'.repeat(64)),
+    calculateOnlineCertSha3Hash: jest.fn().mockReturnValue('b'.repeat(64)),
   } as any;
   const blockchain = {
     isInitialized: jest.fn().mockReturnValue(true),
@@ -76,6 +77,41 @@ describe('CertificateService revoke', () => {
     );
     expect(audit.log).toHaveBeenCalledWith(
       expect.objectContaining({ action: 'REVOKE_CERTIFICATE', success: true }),
+    );
+    expect(result.status).toBe('REVOKED');
+  });
+
+  it('revokes online certificate using online cert SHA-3 hash', async () => {
+    prisma.certificate.findFirst.mockResolvedValue(null);
+    prisma.onlineCertificate.findFirst.mockResolvedValue(certificate);
+    prisma.onlineCertificate.update.mockResolvedValue({
+      ...certificate,
+      status: 'REVOKED',
+    });
+    const service = new CertificateService(prisma, ipfs, blockchain, audit);
+
+    const result = await service.revoke(
+      'cert-1',
+      'org-1',
+      'actor-1',
+      'Thu hoi bang truc tuyen hop le',
+    );
+
+    expect(ipfs.calculateOnlineCertSha3Hash).toHaveBeenCalledWith({
+      documentTitle: certificate.certificate_title,
+      fullName: certificate.student_fullName,
+      serialNumber: certificate.serialNumber,
+      registryNumber: certificate.registryNumber,
+    });
+    expect(blockchain.revokeCertificate).toHaveBeenCalledWith('b'.repeat(64));
+    expect(prisma.onlineCertificate.update).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({
+          status: 'REVOKED',
+          revokeReason: 'Thu hoi bang truc tuyen hop le',
+          revoke_tx_hash: '0xrevoke',
+        }),
+      }),
     );
     expect(result.status).toBe('REVOKED');
   });

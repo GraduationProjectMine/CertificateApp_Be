@@ -68,10 +68,12 @@ export class DisputeService {
         organization_id: cert.organization_id,
         title: 'Đã gửi yêu cầu chỉnh sửa bản thảo',
         message: `Yêu cầu chỉnh sửa cho văn bằng "${cert.certificate_title}" đã được gửi tới nhà trường.`,
-        type: 'INFO',
+        type: 'DISPUTE_PENDING',
         related_id: cert.certificate_id,
       });
-    } catch {}
+    } catch (err) {
+      console.error('Failed to create student notification on dispute creation:', err);
+    }
 
     return dispute;
   }
@@ -183,17 +185,19 @@ export class DisputeService {
 
     // Notify student about review decision
     try {
-      const decisionText =
-        dto.decision === 'APPROVED' ? 'chấp thuận' : 'từ chối';
+      const isApproved = dto.decision === 'APPROVED';
+      const decisionText = isApproved ? 'chấp thuận' : 'từ chối';
       await this.notificationsService.create({
         student_id: dispute.student_id,
         organization_id: dispute.organization_id,
         title: `Yêu cầu chỉnh sửa đã được ${decisionText}`,
-        message: `Yêu cầu chỉnh sửa văn bằng "${dispute.certificate.certificate_title}" đã được nhà trường ${decisionText}.${dto.reviewer_note ? ` Phản hồi: ${dto.reviewer_note}` : ''}`,
-        type: 'INFO',
+        message: `Yêu cầu chỉnh sửa văn bằng "${dispute.certificate?.certificate_title || 'bản thảo'}" đã được nhà trường ${decisionText}.${dto.reviewer_note ? ` Phản hồi: ${dto.reviewer_note}` : ''}`,
+        type: isApproved ? 'DISPUTE_APPROVED' : 'DISPUTE_REJECTED',
         related_id: dispute.certificate_id,
       });
-    } catch {}
+    } catch (err) {
+      console.error('Failed to create student notification on dispute review:', err);
+    }
 
     return updated;
   }

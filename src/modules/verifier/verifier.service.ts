@@ -364,9 +364,9 @@ export class VerifierService {
         organizationWallet: certificate.organization?.wallet_address || null,
         txHash: certificate.tx_hash,
         issuedAt: certificate.issuedAt,
-        revokedAt: null,
-        revokeReason: null,
-        revokeTransactionHash: null,
+        revokedAt: certificate.revokedAt,
+        revokeReason: certificate.revokeReason,
+        revokeTransactionHash: certificate.revoke_tx_hash,
       },
     };
   }

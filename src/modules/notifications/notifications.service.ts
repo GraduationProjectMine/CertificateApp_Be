@@ -6,9 +6,33 @@ export class NotificationsService {
   constructor(private readonly prisma: PrismaService) {}
 
   async findByStudent(studentId: string) {
-    return this.prisma.notification.findMany({
+    const list = await this.prisma.notification.findMany({
       where: { student_id: studentId },
       orderBy: { createdAt: 'desc' },
+    });
+
+    return list.map((n) => {
+      let deep_link: string | null = null;
+      if (n.type === 'CERT_ISSUED' || n.type === 'CERT_REVOKED') {
+        deep_link = n.related_id
+          ? `/student/certificates/${n.related_id}`
+          : '/student/certificates';
+      } else if (
+        n.type === 'DISPUTE_APPROVED' ||
+        n.type === 'DISPUTE_REJECTED' ||
+        n.type === 'DISPUTE_PENDING' ||
+        n.type?.startsWith('DISPUTE') ||
+        n.title?.toLowerCase().includes('chỉnh sửa')
+      ) {
+        deep_link = '/student/disputes';
+      } else if (n.related_id) {
+        deep_link = `/student/certificates/${n.related_id}`;
+      }
+
+      return {
+        ...n,
+        deep_link,
+      };
     });
   }
 
