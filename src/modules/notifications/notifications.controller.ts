@@ -25,7 +25,8 @@ export class NotificationsController {
     const user = req.user as any;
     if (user.role !== 'student')
       throw new ForbiddenException('Only students can view notifications');
-    return this.notificationsService.findByStudent(user.sub);
+    const studentId = user.id || user.sub;
+    return this.notificationsService.findByStudent(studentId);
   }
 
   @Get('unread-count')
@@ -34,7 +35,8 @@ export class NotificationsController {
     const user = req.user as any;
     if (user.role !== 'student')
       throw new ForbiddenException('Only students can view notifications');
-    const count = await this.notificationsService.countUnread(user.sub);
+    const studentId = user.id || user.sub;
+    const count = await this.notificationsService.countUnread(studentId);
     return { count };
   }
 
@@ -44,7 +46,8 @@ export class NotificationsController {
     const user = req.user as any;
     if (user.role !== 'student')
       throw new ForbiddenException('Only students can mark notifications');
-    await this.notificationsService.markAsRead(id, user.sub);
+    const studentId = user.id || user.sub;
+    await this.notificationsService.markAsRead(id, studentId);
     return { message: 'Marked as read' };
   }
 
@@ -54,7 +57,8 @@ export class NotificationsController {
     const user = req.user as any;
     if (user.role !== 'student')
       throw new ForbiddenException('Only students can mark notifications');
-    await this.notificationsService.markAllAsRead(user.sub);
+    const studentId = user.id || user.sub;
+    await this.notificationsService.markAllAsRead(studentId);
     return { message: 'All notifications marked as read' };
   }
 }
