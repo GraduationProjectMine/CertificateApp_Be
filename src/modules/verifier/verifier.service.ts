@@ -31,18 +31,34 @@ export class VerifierService {
 
     const sTrim = serialNumber.trim();
     const rTrim = registryNumber.trim();
+    const sNoSpace = sTrim.replace(/\s+/g, '');
+    const sWithSpace = sTrim.replace(/^([A-Za-z])\s*(\d+)$/, '$1 $2');
 
     // 1. Fetch certificate from database
     const certificate = await this.prisma.certificate.findFirst({
       where: {
         OR: [
           { serialNumber: sTrim, registryNumber: rTrim },
+          { serialNumber: sNoSpace, registryNumber: rTrim },
+          { serialNumber: sWithSpace, registryNumber: rTrim },
           {
             serialNumber: sTrim.toUpperCase(),
             registryNumber: rTrim.toUpperCase(),
           },
           {
+            serialNumber: sNoSpace.toUpperCase(),
+            registryNumber: rTrim.toUpperCase(),
+          },
+          {
+            serialNumber: sWithSpace.toUpperCase(),
+            registryNumber: rTrim.toUpperCase(),
+          },
+          {
             serialNumber: sTrim.toLowerCase(),
+            registryNumber: rTrim.toLowerCase(),
+          },
+          {
+            serialNumber: sNoSpace.toLowerCase(),
             registryNumber: rTrim.toLowerCase(),
           },
         ],
@@ -58,12 +74,26 @@ export class VerifierService {
         where: {
           OR: [
             { serialNumber: sTrim, registryNumber: rTrim },
+            { serialNumber: sNoSpace, registryNumber: rTrim },
+            { serialNumber: sWithSpace, registryNumber: rTrim },
             {
               serialNumber: sTrim.toUpperCase(),
               registryNumber: rTrim.toUpperCase(),
             },
             {
+              serialNumber: sNoSpace.toUpperCase(),
+              registryNumber: rTrim.toUpperCase(),
+            },
+            {
+              serialNumber: sWithSpace.toUpperCase(),
+              registryNumber: rTrim.toUpperCase(),
+            },
+            {
               serialNumber: sTrim.toLowerCase(),
+              registryNumber: rTrim.toLowerCase(),
+            },
+            {
+              serialNumber: sNoSpace.toLowerCase(),
               registryNumber: rTrim.toLowerCase(),
             },
           ],
@@ -250,18 +280,34 @@ export class VerifierService {
 
     const sTrim = serialNumber.trim();
     const rTrim = registryNumber.trim();
+    const sNoSpace = sTrim.replace(/\s+/g, '');
+    const sWithSpace = sTrim.replace(/^([A-Za-z])\s*(\d+)$/, '$1 $2');
 
     // 1. Fetch online certificate from database
     const certificate = await this.prisma.onlineCertificate.findFirst({
       where: {
         OR: [
           { serialNumber: sTrim, registryNumber: rTrim },
+          { serialNumber: sNoSpace, registryNumber: rTrim },
+          { serialNumber: sWithSpace, registryNumber: rTrim },
           {
             serialNumber: sTrim.toUpperCase(),
             registryNumber: rTrim.toUpperCase(),
           },
           {
+            serialNumber: sNoSpace.toUpperCase(),
+            registryNumber: rTrim.toUpperCase(),
+          },
+          {
+            serialNumber: sWithSpace.toUpperCase(),
+            registryNumber: rTrim.toUpperCase(),
+          },
+          {
             serialNumber: sTrim.toLowerCase(),
+            registryNumber: rTrim.toLowerCase(),
+          },
+          {
+            serialNumber: sNoSpace.toLowerCase(),
             registryNumber: rTrim.toLowerCase(),
           },
         ],
@@ -404,15 +450,29 @@ export class VerifierService {
     const rawText = ocrResult.extractedText;
 
     if (!serialNumber) {
-      const serialMatch = rawText.match(
-        /\b([A-Za-z]\d{5,10}|[A-Z]{1,2}\s*\d{6,8})\b/,
-      );
-      if (serialMatch) serialNumber = serialMatch[1].replace(/\s+/g, '');
+      const serialMatch =
+        rawText.match(
+          /Số\s*hiệu[^\n:]*[:.]?\s*([A-Z0-9-]{1,6})(?:\s*\n\s*|\s*)([0-9-]{4,10})/i,
+        ) ||
+        rawText.match(/([A-Z0-9-]{1,6})\s*\n\s*([0-9-]{5,10})/) ||
+        rawText.match(/\b([A-Za-z0-9-]{5,12}|[A-Z]{1,2}[\s-]*\d{5,8})\b/);
+      if (serialMatch) {
+        if (serialMatch[1] && serialMatch[2]) {
+          serialNumber = `${serialMatch[1]} ${serialMatch[2]}`;
+        } else {
+          serialNumber = (serialMatch[1] || serialMatch[0]).replace(/\s+/g, ' ').trim();
+        }
+      }
     }
 
     if (!registryNumber) {
-      const regMatch = rawText.match(/\b(\d{4}\/\d{2,4}|\d{6,10})\b/);
-      if (regMatch) registryNumber = regMatch[1];
+      const regMatch =
+        rawText.match(/\b(\d{4}\/\d{1,3}\/\d{1,3}\/\d{1,4})\b/) ||
+        rawText.match(/\b(\d{4,5}[-\/]\d{3,5})\b/) ||
+        rawText.match(/\b(\d{2,4}\/[A-Za-zÀ-ỹ0-9-]+)\b/) ||
+        rawText.match(/\b(\d{4}[-\/]\d{4}[\/\s]+[A-Za-zÀ-ỹ0-9\/-]+)\b/) ||
+        rawText.match(/\b(\d{4}\/\d{2,4}|\d{6,10})\b/);
+      if (regMatch) registryNumber = regMatch[1].trim();
     }
 
     return {
